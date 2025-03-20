@@ -10,12 +10,16 @@ interface VideoCardProps {
 }
 
 const VideoCard: React.FC<VideoCardProps> = ({ title, thumbnail, embedUrl, index }) => {
-  const [isHovered, setIsHovered] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [thumbnailSrc, setThumbnailSrc] = useState(thumbnail);
   const [thumbnailLoaded, setThumbnailLoaded] = useState(false);
   const videoRef = useRef<HTMLIFrameElement>(null);
   
   useEffect(() => {
+    // Reset state when video changes
+    setIsPlaying(false);
+    setThumbnailLoaded(false);
+    
     // Try to load the high-quality thumbnail first
     const highQualityThumbnail = thumbnail.replace('hqdefault.jpg', 'maxresdefault.jpg');
     const img = new Image();
@@ -31,22 +35,12 @@ const VideoCard: React.FC<VideoCardProps> = ({ title, thumbnail, embedUrl, index
       setThumbnailSrc(thumbnail);
       setThumbnailLoaded(true);
     };
-  }, [thumbnail]);
+  }, [thumbnail, embedUrl]);
   
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-    // Add a small delay to prevent accidental triggering
-    setTimeout(() => {
-      if (videoRef.current) {
-        videoRef.current.src = `${embedUrl}&autoplay=1&mute=1`;
-      }
-    }, 300);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
+  const handlePlayVideo = () => {
+    setIsPlaying(true);
     if (videoRef.current) {
-      videoRef.current.src = embedUrl;
+      videoRef.current.src = `${embedUrl}?autoplay=1`;
     }
   };
 
@@ -71,20 +65,15 @@ const VideoCard: React.FC<VideoCardProps> = ({ title, thumbnail, embedUrl, index
     }
   };
 
-  // Extract video ID for better fallback handling
-  const videoId = embedUrl.split('/').pop()?.split('?')[0] || '';
-
   return (
     <motion.div
-      className="relative overflow-hidden rounded-sm shadow-md"
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      className="relative w-full h-full"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
     >
-      <div className="relative w-full h-0 pb-[56.25%] bg-zinc-800">
-        {isHovered ? (
+      <div className="relative w-full h-full bg-zinc-800">
+        {isPlaying ? (
           <iframe
             ref={videoRef}
             src={embedUrl}
@@ -98,17 +87,20 @@ const VideoCard: React.FC<VideoCardProps> = ({ title, thumbnail, embedUrl, index
             <img
               src={thumbnailSrc}
               alt={title}
-              className={`absolute top-0 left-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105 ${thumbnailLoaded ? 'opacity-100' : 'opacity-0'}`}
+              className={`absolute top-0 left-0 w-full h-full object-cover ${thumbnailLoaded ? 'opacity-100' : 'opacity-0'}`}
               loading="lazy"
               onError={handleThumbnailError}
             />
-            <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-              <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center transition-transform duration-300 hover:scale-110">
+            <div 
+              className="absolute inset-0 bg-black/30 flex items-center justify-center cursor-pointer"
+              onClick={handlePlayVideo}
+            >
+              <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center transition-transform duration-300 hover:scale-110">
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
                   viewBox="0 0 24 24" 
                   fill="white" 
-                  className="w-8 h-8"
+                  className="w-10 h-10"
                   style={{ marginLeft: '2px' }}
                 >
                   <path d="M8 5v14l11-7z"/>
@@ -117,9 +109,6 @@ const VideoCard: React.FC<VideoCardProps> = ({ title, thumbnail, embedUrl, index
             </div>
           </>
         )}
-      </div>
-      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black/70 to-transparent">
-        <h3 className="text-lg font-medium line-clamp-2">{title}</h3>
       </div>
     </motion.div>
   );

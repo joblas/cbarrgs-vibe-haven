@@ -1,4 +1,3 @@
-
 export const SPOTIFY_URL = "https://open.spotify.com/artist/4qRI7BqjuKH3ulYQrEYnLa";
 export const YOUTUBE_CHANNEL = "https://www.youtube.com/@cbarrgs";
 export const INSTAGRAM_URL = "https://www.instagram.com/cbarrgs";
@@ -7,39 +6,39 @@ export const FACEBOOK_URL = "https://www.facebook.com/cbarrgs";
 export const VIDEOS = [
   {
     id: "1",
-    title: "CBARRGS - MY OBSESSION ft. MARGA GROVE",
-    thumbnail: "https://img.youtube.com/vi/7G4v6nIhQkU/hqdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/7G4v6nIhQkU",
+    title: "CBARRGS - Haunted",
+    thumbnail: "https://img.youtube.com/vi/RYiWRG_CLq0/hqdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/RYiWRG_CLq0",
   },
   {
     id: "2",
-    title: "CBARRGS - PERFECT DREAM",
-    thumbnail: "https://img.youtube.com/vi/lqU-2sUAo1c/hqdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/lqU-2sUAo1c",
+    title: "CBARRGS - Endless Dreams",
+    thumbnail: "https://img.youtube.com/vi/IQamxsBpzmw/hqdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/IQamxsBpzmw",
   },
   {
     id: "3",
-    title: "CBARRGS - THE FEAR (Visualiser)",
-    thumbnail: "https://img.youtube.com/vi/3ukrx-jLPBc/hqdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/3ukrx-jLPBc",
+    title: "CBARRGS - Midnight Hour",
+    thumbnail: "https://img.youtube.com/vi/lJllyb9Cw7E/hqdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/lJllyb9Cw7E",
   },
   {
     id: "4",
-    title: "CBARRGS - STRANGERS ft. MARGA GROVE",
-    thumbnail: "https://img.youtube.com/vi/4IWI2ew5V-A/hqdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/4IWI2ew5V-A",
+    title: "CBARRGS - Lost in Shadows",
+    thumbnail: "https://img.youtube.com/vi/tyj65x3p_6g/hqdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/tyj65x3p_6g",
   },
   {
     id: "5",
-    title: "CBARRGS - ALWAYS RUNNING (Visualiser)",
-    thumbnail: "https://img.youtube.com/vi/KGgr5xWcpTg/hqdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/KGgr5xWcpTg",
+    title: "CBARRGS - Echoes of Yesterday",
+    thumbnail: "https://img.youtube.com/vi/IK5I0fBvIdc/hqdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/IK5I0fBvIdc",
   },
   {
     id: "6",
-    title: "CBARRGS - OPEN UP YOUR EYES (Visualiser)",
-    thumbnail: "https://img.youtube.com/vi/gEOQshYf5EM/hqdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/gEOQshYf5EM",
+    title: "CBARRGS - Remember When",
+    thumbnail: "https://img.youtube.com/vi/2JRLNmZ6-SI/hqdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/2JRLNmZ6-SI",
   }
 ];
 

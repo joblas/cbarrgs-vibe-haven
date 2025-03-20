@@ -1,10 +1,11 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useAnimation, useInView } from 'framer-motion';
 import { VIDEOS, YOUTUBE_CHANNEL } from '@/utils/constants';
 import VideoCard from './VideoCard';
 import { fadeIn, slideUp } from '@/utils/transitions';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Button } from './ui/button';
 
 const Videos: React.FC = () => {
   const ref = useRef(null);
@@ -13,12 +14,27 @@ const Videos: React.FC = () => {
     amount: 0.2
   });
   const controls = useAnimation();
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   useEffect(() => {
     if (isInView) {
       controls.start('animate');
     }
   }, [controls, isInView]);
+
+  const nextVideo = () => {
+    setCurrentVideoIndex((prevIndex) => 
+      prevIndex === VIDEOS.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const prevVideo = () => {
+    setCurrentVideoIndex((prevIndex) => 
+      prevIndex === 0 ? VIDEOS.length - 1 : prevIndex - 1
+    );
+  };
+
+  const currentVideo = VIDEOS[currentVideoIndex];
 
   return (
     <section id="videos" className="relative py-24 md:py-32 bg-zinc-900">
@@ -63,16 +79,53 @@ const Videos: React.FC = () => {
           </motion.div>
         </div>
 
-        <motion.div initial="initial" animate={controls} variants={slideUp(0.3)} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {VIDEOS.map((video, index) => (
+        <motion.div 
+          initial="initial" 
+          animate={controls} 
+          variants={slideUp(0.3)} 
+          className="relative max-w-4xl mx-auto"
+        >
+          <div className="aspect-video bg-zinc-950 rounded-md overflow-hidden shadow-lg">
             <VideoCard 
-              key={video.id} 
-              title={video.title} 
-              thumbnail={video.thumbnail} 
-              embedUrl={video.embedUrl} 
-              index={index} 
+              key={currentVideo.id} 
+              title={currentVideo.title} 
+              thumbnail={currentVideo.thumbnail} 
+              embedUrl={currentVideo.embedUrl} 
+              index={0} 
             />
-          ))}
+          </div>
+          
+          <div className="flex justify-between mt-4">
+            <div className="flex items-center gap-2">
+              <Button 
+                onClick={prevVideo} 
+                variant="outline" 
+                size="icon"
+                className="bg-zinc-800 hover:bg-zinc-700 border-zinc-700"
+              >
+                <ChevronLeft size={24} />
+                <span className="sr-only">Previous video</span>
+              </Button>
+              
+              <span className="text-white/70 text-sm">
+                {currentVideoIndex + 1} / {VIDEOS.length}
+              </span>
+              
+              <Button 
+                onClick={nextVideo} 
+                variant="outline" 
+                size="icon"
+                className="bg-zinc-800 hover:bg-zinc-700 border-zinc-700"
+              >
+                <ChevronRight size={24} />
+                <span className="sr-only">Next video</span>
+              </Button>
+            </div>
+            
+            <h3 className="text-lg font-medium flex-1 text-center line-clamp-1 px-4">
+              {currentVideo.title}
+            </h3>
+          </div>
         </motion.div>
 
         <motion.div initial="initial" animate={controls} variants={fadeIn(0.6)} className="mt-12 text-center">
