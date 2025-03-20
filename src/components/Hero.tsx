@@ -1,7 +1,6 @@
-
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useScroll, useTransform } from 'framer-motion';
-import { ArrowDown, Instagram, Youtube, Music, ExternalLink } from 'lucide-react';
+import { ArrowDown, Instagram, Youtube, Music, Link2 } from 'lucide-react';
 import { fadeIn, slideUp } from '@/utils/transitions';
 import { INSTAGRAM_URL, YOUTUBE_CHANNEL, SPOTIFY_URL, LINKTREE_URL } from '@/utils/constants';
 
@@ -30,7 +29,7 @@ const Hero: React.FC = () => {
     { name: 'Instagram', icon: <Instagram size={20} />, url: INSTAGRAM_URL },
     { name: 'YouTube', icon: <Youtube size={20} />, url: YOUTUBE_CHANNEL },
     { name: 'Spotify', icon: <Music size={20} />, url: SPOTIFY_URL },
-    { name: 'Linktree', icon: <ExternalLink size={20} />, url: LINKTREE_URL },
+    { name: 'Linktree', icon: <Link2 size={20} />, url: LINKTREE_URL },
   ];
 
   return (
