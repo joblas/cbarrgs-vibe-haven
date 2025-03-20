@@ -7,7 +7,7 @@ export const FACEBOOK_URL = "https://www.facebook.com/cbarrgs";
 export const VIDEOS = [
   {
     id: "1",
-    title: "CBARRGS - Haunted",
+    title: "CBARRGS - Fight",
     thumbnail: "https://img.youtube.com/vi/RYiWRG_CLq0/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/RYiWRG_CLq0",
   },
