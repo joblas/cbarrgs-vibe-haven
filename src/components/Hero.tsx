@@ -1,8 +1,9 @@
 
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useScroll, useTransform } from 'framer-motion';
-import { ArrowDown } from 'lucide-react';
+import { ArrowDown, Instagram, Youtube, Music } from 'lucide-react';
 import { fadeIn, slideUp } from '@/utils/transitions';
+import { INSTAGRAM_URL, YOUTUBE_CHANNEL, SPOTIFY_URL } from '@/utils/constants';
 
 const Hero: React.FC = () => {
   const controls = useAnimation();
@@ -24,6 +25,12 @@ const Hero: React.FC = () => {
     
     sequence();
   }, [controls]);
+
+  const socialLinks = [
+    { name: 'Instagram', icon: <Instagram size={20} />, url: INSTAGRAM_URL },
+    { name: 'YouTube', icon: <Youtube size={20} />, url: YOUTUBE_CHANNEL },
+    { name: 'Spotify', icon: <Music size={20} />, url: SPOTIFY_URL },
+  ];
 
   return (
     <motion.section 
@@ -88,6 +95,27 @@ const Hero: React.FC = () => {
             <a href="#about" className="btn-secondary">
               Discover More
             </a>
+          </motion.div>
+          
+          {/* Social Media Icons */}
+          <motion.div 
+            className="flex justify-center space-x-4 mt-6"
+            {...fadeIn(1.0)}
+          >
+            {socialLinks.map((social, i) => (
+              <motion.a
+                key={i}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-300 flex items-center justify-center text-white/90"
+                whileHover={{ y: -3 }}
+                whileTap={{ scale: 0.95 }}
+                title={social.name}
+              >
+                {social.icon}
+              </motion.a>
+            ))}
           </motion.div>
         </motion.div>
       </div>
