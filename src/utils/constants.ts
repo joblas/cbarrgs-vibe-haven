@@ -20,7 +20,7 @@ export const VIDEOS = [
   {
     id: "3",
     title: "CBARRGS - Fall",
-    thumbnail: "https://i3.ytimg.com/vi/lJllyb9Cw7E/hqdefault.jpg",
+    thumbnail: "https://img.youtube.com/vi/lJllyb9Cw7E/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/lJllyb9Cw7E",
   },
   {
