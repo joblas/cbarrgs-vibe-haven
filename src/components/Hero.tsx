@@ -30,16 +30,14 @@ const Hero: React.FC = () => {
       id="hero" 
       ref={containerRef}
       className="relative h-screen flex items-center justify-center overflow-hidden"
-      style={{ opacity }}
+      style={{ opacity, position: 'relative' }}
     >
       {/* Background Image with Parallax */}
       <motion.div
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 bg-center bg-no-repeat"
         style={{ 
           backgroundImage: `url('/lovable-uploads/b0b9136b-bf41-4d77-bc70-a06cc0c82910.png')`, 
           backgroundSize: 'contain',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
           scale,
         }}
       />
