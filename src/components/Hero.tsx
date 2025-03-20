@@ -59,12 +59,16 @@ const Hero: React.FC = () => {
             Artist • Musician • Creator
           </motion.div>
           
-          <motion.h1 
-            className="text-5xl md:text-7xl lg:text-8xl font-display font-bold tracking-tight"
+          <motion.div 
             {...fadeIn(0.4)}
+            className="flex justify-center items-center"
           >
-            CBARRGS
-          </motion.h1>
+            <img 
+              src="/lovable-uploads/69bf9097-f272-4081-92a5-b04882068bdc.png" 
+              alt="CBARRGS Logo" 
+              className="w-auto max-w-full h-24 md:h-32 lg:h-40 object-contain"
+            />
+          </motion.div>
           
           <motion.p 
             className="text-xl md:text-2xl max-w-2xl mx-auto text-white/80"
