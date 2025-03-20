@@ -1,3 +1,4 @@
+
 export const SPOTIFY_URL = "https://open.spotify.com/artist/4qRI7BqjuKH3ulYQrEYnLa";
 export const YOUTUBE_CHANNEL = "https://www.youtube.com/@cbarrgs";
 export const INSTAGRAM_URL = "https://www.instagram.com/cbarrgs";
@@ -19,7 +20,7 @@ export const VIDEOS = [
   {
     id: "3",
     title: "CBARRGS - Midnight Hour",
-    thumbnail: "https://img.youtube.com/vi/lJllyb9Cw7E/hqdefault.jpg",
+    thumbnail: "https://i.ytimg.com/vi/lJllyb9Cw7E/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/lJllyb9Cw7E",
   },
   {
