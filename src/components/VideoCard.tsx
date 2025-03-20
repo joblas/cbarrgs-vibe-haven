@@ -1,5 +1,5 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 interface VideoCardProps {
@@ -11,7 +11,27 @@ interface VideoCardProps {
 
 const VideoCard: React.FC<VideoCardProps> = ({ title, thumbnail, embedUrl, index }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [thumbnailSrc, setThumbnailSrc] = useState(thumbnail);
+  const [thumbnailLoaded, setThumbnailLoaded] = useState(false);
   const videoRef = useRef<HTMLIFrameElement>(null);
+  
+  useEffect(() => {
+    // Try to load the high-quality thumbnail first
+    const highQualityThumbnail = thumbnail.replace('hqdefault.jpg', 'maxresdefault.jpg');
+    const img = new Image();
+    img.src = highQualityThumbnail;
+    
+    img.onload = () => {
+      setThumbnailSrc(highQualityThumbnail);
+      setThumbnailLoaded(true);
+    };
+    
+    img.onerror = () => {
+      // Fallback to the original hqdefault if maxresdefault fails
+      setThumbnailSrc(thumbnail);
+      setThumbnailLoaded(true);
+    };
+  }, [thumbnail]);
   
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -30,10 +50,29 @@ const VideoCard: React.FC<VideoCardProps> = ({ title, thumbnail, embedUrl, index
     }
   };
 
-  // Ensure we have a properly formatted high-quality thumbnail URL
-  const formattedThumbnail = thumbnail.includes('maxresdefault.jpg') 
-    ? thumbnail 
-    : thumbnail.replace('vi/', 'vi/').replace('/default.jpg', '/hqdefault.jpg');
+  const handleThumbnailError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const target = e.target as HTMLImageElement;
+    
+    // Try to fallback to hqdefault if maxresdefault fails
+    if (target.src.includes('maxresdefault.jpg')) {
+      target.src = target.src.replace('maxresdefault.jpg', 'hqdefault.jpg');
+      return;
+    }
+    
+    // Try to fallback to mqdefault if hqdefault fails
+    if (target.src.includes('hqdefault.jpg')) {
+      target.src = target.src.replace('hqdefault.jpg', 'mqdefault.jpg');
+      return;
+    }
+    
+    // Final fallback to sddefault if all else fails
+    if (target.src.includes('mqdefault.jpg')) {
+      target.src = target.src.replace('mqdefault.jpg', 'sddefault.jpg');
+    }
+  };
+
+  // Extract video ID for better fallback handling
+  const videoId = embedUrl.split('/').pop()?.split('?')[0] || '';
 
   return (
     <motion.div
@@ -57,20 +96,11 @@ const VideoCard: React.FC<VideoCardProps> = ({ title, thumbnail, embedUrl, index
         ) : (
           <>
             <img
-              src={formattedThumbnail}
+              src={thumbnailSrc}
               alt={title}
-              className="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+              className={`absolute top-0 left-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105 ${thumbnailLoaded ? 'opacity-100' : 'opacity-0'}`}
               loading="lazy"
-              onError={(e) => {
-                // Fallback to standard quality if high quality fails
-                const target = e.target as HTMLImageElement;
-                if (target.src.includes('maxresdefault.jpg')) {
-                  target.src = target.src.replace('maxresdefault.jpg', 'hqdefault.jpg');
-                }
-                if (target.src.includes('hqdefault.jpg')) {
-                  target.src = target.src.replace('hqdefault.jpg', 'mqdefault.jpg');
-                }
-              }}
+              onError={handleThumbnailError}
             />
             <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
               <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center transition-transform duration-300 hover:scale-110">
