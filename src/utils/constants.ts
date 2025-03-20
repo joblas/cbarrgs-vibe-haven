@@ -7,37 +7,38 @@ export const FACEBOOK_URL = "https://www.facebook.com/cbarrgs";
 export const VIDEOS = [
   {
     id: "1",
-    title: "CBARRGS - Fight",
+    title: "Fight",
     thumbnail: "https://img.youtube.com/vi/RYiWRG_CLq0/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/RYiWRG_CLq0",
   },
   {
     id: "2",
-    title: "CBARRGS - Bit",
+    title: "Bit",
     thumbnail: "https://img.youtube.com/vi/IQamxsBpzmw/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/IQamxsBpzmw",
   },
   {
     id: "3",
-    title: "CBARRGS - Fall",
-    thumbnail: "https://img.youtube.com/vi/lJllyb9Cw7E/hqdefault.jpg",
+    title: "Fall",
+    // Correcting the video ID for the Fall video
+    thumbnail: "https://img.youtube.com/vi/lJllyb9Cw7E/mqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/lJllyb9Cw7E",
   },
   {
     id: "4",
-    title: "CBARRGS - I'll Be There",
+    title: "I'll Be There",
     thumbnail: "https://img.youtube.com/vi/tyj65x3p_6g/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/tyj65x3p_6g",
   },
   {
     id: "5",
-    title: "CBARRGS - I'll Stay",
+    title: "I'll Stay",
     thumbnail: "https://img.youtube.com/vi/IK5I0fBvIdc/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/IK5I0fBvIdc",
   },
   {
     id: "6",
-    title: "CBARRGS - You Look Beautiful",
+    title: "You Look Beautiful",
     thumbnail: "https://img.youtube.com/vi/2JRLNmZ6-SI/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/2JRLNmZ6-SI",
   }
