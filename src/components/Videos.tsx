@@ -31,6 +31,38 @@ const Videos: React.FC = () => {
           </p>
         </motion.div>
 
+        <div className="flex flex-col md:flex-row gap-10 items-center mb-16">
+          <motion.div 
+            initial="initial" 
+            animate={controls} 
+            variants={fadeIn(0.3)} 
+            className="md:w-1/3"
+          >
+            <img 
+              src="/lovable-uploads/d23ed09a-92fd-4d5e-8583-8f03d75f6ff2.png" 
+              alt="CBARRGS Character" 
+              className="w-full max-w-[300px] mx-auto md:mx-0"
+            />
+          </motion.div>
+          
+          <motion.div 
+            initial="initial" 
+            animate={controls} 
+            variants={slideUp(0.4)} 
+            className="md:w-2/3 text-left"
+          >
+            <h3 className="text-2xl font-medium mb-4">Artist's Vision</h3>
+            <p className="text-white/80 mb-6">
+              Every visual piece in CBARRGS' work is carefully crafted to complement the musical experience. 
+              The visuals aim to create a complete artistic expression that resonates with listeners and viewers alike.
+            </p>
+            <p className="text-white/80">
+              From concept to execution, each video tells a story that extends beyond the music, 
+              offering a glimpse into the creative universe that inspires CBARRGS.
+            </p>
+          </motion.div>
+        </div>
+
         <motion.div initial="initial" animate={controls} variants={slideUp(0.3)} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {VIDEOS.map((video, index) => (
             <VideoCard 

@@ -31,8 +31,8 @@ const About: React.FC = () => {
           >
             <div className="absolute inset-0 bg-gradient-to-tr from-black/60 via-black/30 to-transparent z-10"></div>
             <img 
-              src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=2070" 
-              alt="CBARRGS" 
+              src="/lovable-uploads/c9d748bd-f6ea-4f2d-9dab-4b37fb0b3826.png" 
+              alt="CBARRGS with dog" 
               className="absolute inset-0 w-full h-full object-cover transform hover:scale-105 transition-transform duration-2000"
             />
             <div className="absolute bottom-6 left-6 right-6 z-20">

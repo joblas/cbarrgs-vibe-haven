@@ -36,7 +36,7 @@ const Hero: React.FC = () => {
       <motion.div
         className="absolute inset-0 z-0 bg-black bg-opacity-40"
         style={{ 
-          backgroundImage: `url('/lovable-uploads/0b2b91ea-d9db-4753-a991-d65f15e8435a.png')`,
+          backgroundImage: `url('/lovable-uploads/fc2b859b-5207-4b51-94e1-a70230cc8871.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           scale
@@ -65,7 +65,7 @@ const Hero: React.FC = () => {
             className="flex justify-center items-center"
           >
             <img 
-              src="/lovable-uploads/69bf9097-f272-4081-92a5-b04882068bdc.png" 
+              src="/lovable-uploads/cd8acf90-a91b-4be7-9cb7-6da83aa5731c.png" 
               alt="CBARRGS Logo" 
               className="w-auto max-w-full h-24 md:h-32 lg:h-40 object-contain"
             />
