@@ -1,9 +1,9 @@
 
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useScroll, useTransform } from 'framer-motion';
-import { ArrowDown, Instagram, Youtube, Music, Link2, Apple } from 'lucide-react';
+import { ArrowDown, Instagram, Youtube, Music, Link2, Apple, AudioLines } from 'lucide-react';
 import { fadeIn, slideUp } from '@/utils/transitions';
-import { INSTAGRAM_URL, YOUTUBE_CHANNEL, SPOTIFY_URL, LINKTREE_URL, APPLE_MUSIC_URL } from '@/utils/constants';
+import { INSTAGRAM_URL, YOUTUBE_CHANNEL, SPOTIFY_URL, LINKTREE_URL, APPLE_MUSIC_URL, SOUNDCLOUD_URL } from '@/utils/constants';
 
 const Hero: React.FC = () => {
   const controls = useAnimation();
@@ -31,6 +31,7 @@ const Hero: React.FC = () => {
     { name: 'YouTube', icon: <Youtube size={20} />, url: YOUTUBE_CHANNEL },
     { name: 'Spotify', icon: <Music size={20} />, url: SPOTIFY_URL },
     { name: 'Apple Music', icon: <Apple size={20} />, url: APPLE_MUSIC_URL },
+    { name: 'SoundCloud', icon: <AudioLines size={20} />, url: SOUNDCLOUD_URL },
     { name: 'Linktree', icon: <Link2 size={20} />, url: LINKTREE_URL },
   ];
 
