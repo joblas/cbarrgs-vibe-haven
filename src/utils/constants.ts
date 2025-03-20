@@ -13,31 +13,31 @@ export const VIDEOS = [
   },
   {
     id: "2",
-    title: "CBARRGS - Endless Dreams",
+    title: "CBARRGS - Bit",
     thumbnail: "https://img.youtube.com/vi/IQamxsBpzmw/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/IQamxsBpzmw",
   },
   {
     id: "3",
-    title: "CBARRGS - Midnight Hour",
-    thumbnail: "https://i.ytimg.com/vi/lJllyb9Cw7E/hqdefault.jpg",
+    title: "CBARRGS - Fall",
+    thumbnail: "https://i3.ytimg.com/vi/lJllyb9Cw7E/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/lJllyb9Cw7E",
   },
   {
     id: "4",
-    title: "CBARRGS - Lost in Shadows",
+    title: "CBARRGS - I'll Be There",
     thumbnail: "https://img.youtube.com/vi/tyj65x3p_6g/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/tyj65x3p_6g",
   },
   {
     id: "5",
-    title: "CBARRGS - Echoes of Yesterday",
+    title: "CBARRGS - I'll Stay",
     thumbnail: "https://img.youtube.com/vi/IK5I0fBvIdc/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/IK5I0fBvIdc",
   },
   {
     id: "6",
-    title: "CBARRGS - Remember When",
+    title: "CBARRGS - You Look Beautiful",
     thumbnail: "https://img.youtube.com/vi/2JRLNmZ6-SI/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/2JRLNmZ6-SI",
   }
