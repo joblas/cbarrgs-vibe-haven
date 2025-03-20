@@ -8,38 +8,38 @@ export const VIDEOS = [
   {
     id: "1",
     title: "CBARRGS - Flagship Video",
-    thumbnail: "https://i.ytimg.com/vi/SAMPLE1/maxresdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/SAMPLE1",
+    thumbnail: "https://img.youtube.com/vi/VRV83z0EjTs/maxresdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/VRV83z0EjTs?si=3exNNPVy0xBdNvoZ",
   },
   {
     id: "2",
     title: "CBARRGS - Live at Concert",
-    thumbnail: "https://i.ytimg.com/vi/SAMPLE2/maxresdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/SAMPLE2",
+    thumbnail: "https://img.youtube.com/vi/VRV83z0EjTs/maxresdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/VRV83z0EjTs?si=3exNNPVy0xBdNvoZ",
   },
   {
     id: "3",
     title: "CBARRGS - Studio Session",
-    thumbnail: "https://i.ytimg.com/vi/SAMPLE3/maxresdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/SAMPLE3",
+    thumbnail: "https://img.youtube.com/vi/VRV83z0EjTs/maxresdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/VRV83z0EjTs?si=3exNNPVy0xBdNvoZ",
   },
   {
     id: "4",
     title: "CBARRGS - Music Video",
-    thumbnail: "https://i.ytimg.com/vi/SAMPLE4/maxresdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/SAMPLE4",
+    thumbnail: "https://img.youtube.com/vi/VRV83z0EjTs/maxresdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/VRV83z0EjTs?si=3exNNPVy0xBdNvoZ",
   },
   {
     id: "5",
     title: "CBARRGS - Interview",
-    thumbnail: "https://i.ytimg.com/vi/SAMPLE5/maxresdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/SAMPLE5",
+    thumbnail: "https://img.youtube.com/vi/VRV83z0EjTs/maxresdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/VRV83z0EjTs?si=3exNNPVy0xBdNvoZ",
   },
   {
     id: "6",
     title: "CBARRGS - Behind the Scenes",
-    thumbnail: "https://i.ytimg.com/vi/SAMPLE6/maxresdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/SAMPLE6",
+    thumbnail: "https://img.youtube.com/vi/VRV83z0EjTs/maxresdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/VRV83z0EjTs?si=3exNNPVy0xBdNvoZ",
   }
 ];
 

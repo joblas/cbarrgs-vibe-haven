@@ -18,7 +18,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ title, thumbnail, embedUrl, index
     // Add a small delay to prevent accidental triggering
     setTimeout(() => {
       if (videoRef.current) {
-        videoRef.current.src = `${embedUrl}?autoplay=1&mute=1`;
+        videoRef.current.src = `${embedUrl}&autoplay=1&mute=1`;
       }
     }, 300);
   };
@@ -30,19 +30,9 @@ const VideoCard: React.FC<VideoCardProps> = ({ title, thumbnail, embedUrl, index
     }
   };
 
-  // Random sizes for desktop
-  const getRandomSize = () => {
-    const sizes = [
-      'col-span-1 row-span-1',
-      'col-span-1 row-span-2',
-      'col-span-2 row-span-1',
-    ];
-    return sizes[index % sizes.length];
-  };
-
   return (
     <motion.div
-      className={`relative overflow-hidden rounded-sm ${window.innerWidth >= 768 ? getRandomSize() : ''}`}
+      className="relative overflow-hidden rounded-sm"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -55,7 +45,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ title, thumbnail, embedUrl, index
             ref={videoRef}
             src={embedUrl}
             title={title}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
             className="absolute top-0 left-0 w-full h-full"
           ></iframe>
