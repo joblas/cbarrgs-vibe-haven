@@ -1,39 +1,15 @@
-import React, { useEffect, useRef } from 'react';
-import { motion, useAnimation, useScroll, useTransform } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
-import { fadeIn, slideUp } from '@/utils/transitions';
-import { HeroBackground } from './three';
 
-const Hero: React.FC = () => {
-  const controls = useAnimation();
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  });
-  
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
-  const y = useTransform(scrollYProgress, [0, 1], [0, 100]);
-  
-  useEffect(() => {
-    const sequence = async () => {
-      await controls.start({ opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.45, 0, 0.55, 1] } });
-    };
-    
-    sequence();
-  }, [controls]);
-
+const SimpleHero: React.FC = () => {
   return (
-    <motion.section 
+    <section 
       id="hero" 
-      ref={containerRef}
       className="relative h-screen flex items-center justify-center overflow-hidden"
-      style={{ opacity }}
     >
-      {/* 3D Background */}
-      <HeroBackground />
+      {/* Simplified Background - just a gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-900/20 to-black"></div>
       
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black/60 z-10"></div>
@@ -43,21 +19,23 @@ const Hero: React.FC = () => {
         <motion.div
           className="space-y-6"
           initial={{ opacity: 0, y: 20 }}
-          animate={controls}
+          animate={{ opacity: 1, y: 0, transition: { duration: 0.8 } }}
         >
           <motion.div
             className="inline-block mb-4 px-3 py-1 border border-white/20 rounded-full text-sm font-medium backdrop-blur-sm bg-black/30"
-            {...fadeIn(0.2)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { delay: 0.2 } }}
           >
             Artist • Musician • Creator
           </motion.div>
           
           <motion.div 
-            {...fadeIn(0.4)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { delay: 0.4 } }}
             className="flex justify-center items-center"
           >
             <img 
-              src="/lovable-uploads/9743b13a-5af9-480b-ba25-91a45011e839.jpg" 
+              src="/lovable-uploads/cd8acf90-a91b-4be7-9cb7-6da83aa5731c.png" 
               alt="CBARRGS Logo" 
               className="w-auto max-w-full h-32 md:h-40 lg:h-48 object-contain"
             />
@@ -65,14 +43,16 @@ const Hero: React.FC = () => {
           
           <motion.p 
             className="text-xl md:text-2xl max-w-2xl mx-auto text-white/80"
-            {...fadeIn(0.6)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { delay: 0.6 } }}
           >
             Crafting musical experiences that push boundaries and resonate with souls
           </motion.p>
           
           <motion.div 
             className="flex justify-center space-x-4 pt-6"
-            {...fadeIn(0.8)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { delay: 0.8 } }}
           >
             <a href="#music" className="btn-primary">
               Listen Now
@@ -93,8 +73,7 @@ const Hero: React.FC = () => {
           y: 0,
           transition: { 
             delay: 1.2,
-            duration: 0.8,
-            ease: [0.45, 0, 0.55, 1]
+            duration: 0.8
           }
         }}
       >
@@ -117,8 +96,8 @@ const Hero: React.FC = () => {
           <ArrowDown className="animate-pulse-subtle" size={20} />
         </motion.div>
       </motion.div>
-    </motion.section>
+    </section>
   );
 };
 
-export default Hero;
+export default SimpleHero;

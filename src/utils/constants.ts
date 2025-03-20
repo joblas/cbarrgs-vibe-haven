@@ -1,4 +1,3 @@
-
 export const SPOTIFY_URL = "https://open.spotify.com/artist/4qRI7BqjuKH3ulYQrEYnLa";
 export const YOUTUBE_CHANNEL = "https://www.youtube.com/@cbarrgs";
 export const INSTAGRAM_URL = "https://www.instagram.com/cbarrgs";
@@ -20,7 +19,6 @@ export const VIDEOS = [
   {
     id: "3",
     title: "Fall",
-    // Correcting the video ID for the Fall video
     thumbnail: "https://img.youtube.com/vi/lJllyb9Cw7E/mqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/lJllyb9Cw7E",
   },
@@ -41,6 +39,37 @@ export const VIDEOS = [
     title: "You Look Beautiful",
     thumbnail: "https://img.youtube.com/vi/2JRLNmZ6-SI/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/2JRLNmZ6-SI",
+  }
+];
+
+export const ALBUMS = [
+  {
+    id: "album1",
+    title: "Heartbeats",
+    year: "2023",
+    cover: "/assets/album1.jpg",
+    spotifyLink: `${SPOTIFY_URL}/album/1`
+  },
+  {
+    id: "album2",
+    title: "Digital Dreams",
+    year: "2022",
+    cover: "/assets/album2.jpg",
+    spotifyLink: `${SPOTIFY_URL}/album/2`
+  },
+  {
+    id: "album3",
+    title: "Neon Nights",
+    year: "2021",
+    cover: "/assets/album3.jpg",
+    spotifyLink: `${SPOTIFY_URL}/album/3`
+  },
+  {
+    id: "album4",
+    title: "Synth Symphony",
+    year: "2020",
+    cover: "/assets/album4.jpg",
+    spotifyLink: `${SPOTIFY_URL}/album/4`
   }
 ];
 

@@ -1,8 +1,7 @@
-
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navigation from '@/components/Navigation';
-import Hero from '@/components/Hero';
+import SimpleHero from '@/components/SimpleHero'; 
 import About from '@/components/About';
 import Music from '@/components/Music';
 import Videos from '@/components/Videos';
@@ -79,7 +78,7 @@ const Index: React.FC = () => {
       >
         <Navigation />
         <main>
-          <Hero />
+          <SimpleHero />
           <About />
           <Music />
           <Videos />
