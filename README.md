@@ -1,9 +1,6 @@
 # CBARRGS Official Website
 
-<video width="100%" controls>
-  <source src="cbarrgs-website.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+![Website Demo](cbarrgs-website.mp4)
 
 A clean, minimalist website for the music artist CBARRGS. Designed locally with Windsurf and pushed to Lovable for deployment.
 
