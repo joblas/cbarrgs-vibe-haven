@@ -1,4 +1,3 @@
-
 export const SPOTIFY_URL = "https://open.spotify.com/artist/4qRI7BqjuKH3ulYQrEYnLa";
 export const YOUTUBE_CHANNEL = "https://www.youtube.com/@cbarrgs";
 export const INSTAGRAM_URL = "https://www.instagram.com/cbarrgs";
@@ -41,6 +40,12 @@ export const VIDEOS = [
     title: "You Look Beautiful",
     thumbnail: "https://img.youtube.com/vi/2JRLNmZ6-SI/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/2JRLNmZ6-SI",
+  },
+  {
+    id: "7",
+    title: "Loving You",
+    thumbnail: "https://img.youtube.com/vi/2ZTi_tawp2A/hqdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/2ZTi_tawp2A",
   }
 ];
 
