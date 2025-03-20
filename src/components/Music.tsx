@@ -17,10 +17,12 @@ const Music: React.FC = () => {
   }, [controls, isInView]);
 
   const music = [
-    { title: "Album Name", year: "2023", type: "Album", link: `${SPOTIFY_URL}/album/1` },
-    { title: "Single Title", year: "2022", type: "Single", link: `${SPOTIFY_URL}/album/2` },
-    { title: "EP Title", year: "2021", type: "EP", link: `${SPOTIFY_URL}/album/3` },
-    { title: "Another Album", year: "2020", type: "Album", link: `${SPOTIFY_URL}/album/4` },
+    { title: "I'll Be There", year: "2022", type: "Single", link: `${SPOTIFY_URL}/track/6yXsHqcFYn4oXSL8ZlrKBl` },
+    { title: "Bit", year: "2022", type: "Single", link: `${SPOTIFY_URL}/track/1Mj7TvOQGT3FDpGj2q2KPR` },
+    { title: "Fight", year: "2020", type: "Single", link: `${SPOTIFY_URL}/track/5ZtKUFkEnyURlxP9FSAQNZ` },
+    { title: "I'll Stay", year: "2019", type: "Single", link: `${SPOTIFY_URL}/track/1FxoM9gT9bz91GRDZmIGV3` },
+    { title: "Fall", year: "2019", type: "Single", link: `${SPOTIFY_URL}/track/3DXRqPY3rPhb9JfzdtDmJt` },
+    { title: "You Look Beautiful", year: "2018", type: "Single", link: `${SPOTIFY_URL}/track/1zZHT7WTNkqMHNMhTgPCW5` },
   ];
 
   return (
@@ -56,10 +58,10 @@ const Music: React.FC = () => {
             />
             <div className="absolute bottom-0 left-0 p-6 z-20">
               <span className="text-sm font-medium text-white/70 block mb-2">Latest Release</span>
-              <h3 className="text-2xl md:text-3xl font-display font-bold mb-2">Featured Album Title</h3>
-              <p className="text-white/80 mb-4 max-w-md">The latest masterpiece from CBARRGS, exploring new sonic territories and pushing boundaries.</p>
+              <h3 className="text-2xl md:text-3xl font-display font-bold mb-2">I'll Be There</h3>
+              <p className="text-white/80 mb-4 max-w-md">The latest single from CBARRGS, exploring emotional depth with powerful vocals and captivating instrumentals.</p>
               <a 
-                href={SPOTIFY_URL} 
+                href={`${SPOTIFY_URL}/track/6yXsHqcFYn4oXSL8ZlrKBl`} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center"
