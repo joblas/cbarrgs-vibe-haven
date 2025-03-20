@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useScroll, useTransform } from 'framer-motion';
 import { ArrowDown, Instagram, Youtube, Music, Link2, Apple, AudioLines } from 'lucide-react';
 import { fadeIn, slideUp } from '@/utils/transitions';
-
+import { INSTAGRAM_URL, YOUTUBE_CHANNEL, SPOTIFY_URL, LINKTREE_URL, APPLE_MUSIC_URL, SOUNDCLOUD_URL } from '@/utils/constants';
 const Hero: React.FC = () => {
   const controls = useAnimation();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -28,27 +28,44 @@ const Hero: React.FC = () => {
     };
     sequence();
   }, [controls]);
-
-  return (
-    <motion.section 
-      id="hero" 
-      ref={containerRef}
-      className="relative h-screen flex items-center justify-center overflow-hidden"
-      style={{ opacity }}
-    >
+  const socialLinks = [{
+    name: 'Instagram',
+    icon: <Instagram size={20} />,
+    url: INSTAGRAM_URL
+  }, {
+    name: 'YouTube',
+    icon: <Youtube size={20} />,
+    url: YOUTUBE_CHANNEL
+  }, {
+    name: 'Spotify',
+    icon: <Music size={20} />,
+    url: SPOTIFY_URL
+  }, {
+    name: 'Apple Music',
+    icon: <Apple size={20} />,
+    url: APPLE_MUSIC_URL
+  }, {
+    name: 'SoundCloud',
+    icon: <AudioLines size={20} />,
+    url: SOUNDCLOUD_URL
+  }, {
+    name: 'Linktree',
+    icon: <Link2 size={20} />,
+    url: LINKTREE_URL
+  }];
+  return <motion.section id="hero" ref={containerRef} className="relative h-screen flex items-center justify-center overflow-hidden" style={{
+    opacity
+  }}>
       {/* Background Image with Parallax */}
-      <motion.div
-        className="absolute inset-0 z-0 bg-black bg-opacity-40"
-        style={{ 
-          backgroundImage: `url('/lovable-uploads/fc2b859b-5207-4b51-94e1-a70230cc8871.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          scale
-        }}
-      />
+      <motion.div className="absolute inset-0 z-0 bg-black bg-opacity-40" style={{
+      backgroundImage: `url('/lovable-uploads/fc2b859b-5207-4b51-94e1-a70230cc8871.png')`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      scale
+    }} />
       
       {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/60 z-10"></div>
+      <div className="absolute inset-0 bg-black/50 z-10"></div>
       
       {/* Content */}
       <div className="relative z-20 text-center px-6 max-w-screen-xl mx-auto">
@@ -60,15 +77,8 @@ const Hero: React.FC = () => {
             Artist • Musician • Creator
           </motion.div>
           
-          <motion.div 
-            {...fadeIn(0.4)}
-            className="flex justify-center items-center"
-          >
-            <img 
-              src="/lovable-uploads/cd8acf90-a91b-4be7-9cb7-6da83aa5731c.png" 
-              alt="CBARRGS Logo" 
-              className="w-auto max-w-full h-24 md:h-32 lg:h-40 object-contain"
-            />
+          <motion.div {...fadeIn(0.4)} className="flex justify-center items-center">
+            <img alt="CBARRGS Logo" className="w-auto max-w-full h-24 md:h-32 lg:h-40 object-contain" src="/lovable-uploads/9743b13a-5af9-480b-ba25-91a45011e839.jpg" />
           </motion.div>
           
           <motion.p className="text-xl md:text-2xl max-w-2xl mx-auto text-white/80" {...fadeIn(0.6)}>
