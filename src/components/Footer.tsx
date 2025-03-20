@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Instagram, Youtube, Music } from 'lucide-react';
-import { INSTAGRAM_URL, YOUTUBE_CHANNEL, SPOTIFY_URL } from '@/utils/constants';
+import { Instagram, Youtube, Music, ExternalLink } from 'lucide-react';
+import { INSTAGRAM_URL, YOUTUBE_CHANNEL, SPOTIFY_URL, LINKTREE_URL } from '@/utils/constants';
 import { fadeIn, slideUp } from '@/utils/transitions';
 
 const Footer: React.FC = () => {
@@ -11,6 +12,7 @@ const Footer: React.FC = () => {
     { name: 'Instagram', icon: <Instagram size={20} />, url: INSTAGRAM_URL },
     { name: 'YouTube', icon: <Youtube size={20} />, url: YOUTUBE_CHANNEL },
     { name: 'Spotify', icon: <Music size={20} />, url: SPOTIFY_URL },
+    { name: 'Linktree', icon: <ExternalLink size={20} />, url: LINKTREE_URL },
   ];
 
   const footerLinks = [

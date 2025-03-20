@@ -1,6 +1,8 @@
+
 export const SPOTIFY_URL = "https://open.spotify.com/artist/4qRI7BqjuKH3ulYQrEYnLa";
 export const YOUTUBE_CHANNEL = "https://www.youtube.com/@cbarrgs";
 export const INSTAGRAM_URL = "https://www.instagram.com/cbarrgs";
+export const LINKTREE_URL = "https://linktr.ee/cbarrgs";
 
 export const VIDEOS = [
   {
