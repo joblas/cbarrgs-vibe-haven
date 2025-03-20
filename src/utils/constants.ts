@@ -1,4 +1,3 @@
-
 export const SPOTIFY_URL = "https://open.spotify.com/artist/4qRI7BqjuKH3ulYQrEYnLa";
 export const YOUTUBE_CHANNEL = "https://www.youtube.com/@cbarrgs";
 export const INSTAGRAM_URL = "https://www.instagram.com/cbarrgs";
@@ -7,39 +6,39 @@ export const FACEBOOK_URL = "https://www.facebook.com/cbarrgs";
 export const VIDEOS = [
   {
     id: "1",
-    title: "CBARRGS - Flagship Video",
-    thumbnail: "https://img.youtube.com/vi/VRV83z0EjTs/maxresdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/VRV83z0EjTs?si=3exNNPVy0xBdNvoZ",
+    title: "CBARRGS - MY OBSESSION ft. MARGA GROVE",
+    thumbnail: "https://img.youtube.com/vi/7G4v6nIhQkU/maxresdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/7G4v6nIhQkU",
   },
   {
     id: "2",
-    title: "CBARRGS - Live at Concert",
-    thumbnail: "https://img.youtube.com/vi/VRV83z0EjTs/maxresdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/VRV83z0EjTs?si=3exNNPVy0xBdNvoZ",
+    title: "CBARRGS - PERFECT DREAM",
+    thumbnail: "https://img.youtube.com/vi/lqU-2sUAo1c/maxresdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/lqU-2sUAo1c",
   },
   {
     id: "3",
-    title: "CBARRGS - Studio Session",
-    thumbnail: "https://img.youtube.com/vi/VRV83z0EjTs/maxresdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/VRV83z0EjTs?si=3exNNPVy0xBdNvoZ",
+    title: "CBARRGS - THE FEAR (Visualiser)",
+    thumbnail: "https://img.youtube.com/vi/3ukrx-jLPBc/maxresdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/3ukrx-jLPBc",
   },
   {
     id: "4",
-    title: "CBARRGS - Music Video",
-    thumbnail: "https://img.youtube.com/vi/VRV83z0EjTs/maxresdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/VRV83z0EjTs?si=3exNNPVy0xBdNvoZ",
+    title: "CBARRGS - STRANGERS ft. MARGA GROVE",
+    thumbnail: "https://img.youtube.com/vi/4IWI2ew5V-A/maxresdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/4IWI2ew5V-A",
   },
   {
     id: "5",
-    title: "CBARRGS - Interview",
-    thumbnail: "https://img.youtube.com/vi/VRV83z0EjTs/maxresdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/VRV83z0EjTs?si=3exNNPVy0xBdNvoZ",
+    title: "CBARRGS - ALWAYS RUNNING (Visualiser)",
+    thumbnail: "https://img.youtube.com/vi/KGgr5xWcpTg/maxresdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/KGgr5xWcpTg",
   },
   {
     id: "6",
-    title: "CBARRGS - Behind the Scenes",
-    thumbnail: "https://img.youtube.com/vi/VRV83z0EjTs/maxresdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/VRV83z0EjTs?si=3exNNPVy0xBdNvoZ",
+    title: "CBARRGS - OPEN UP YOUR EYES (Visualiser)",
+    thumbnail: "https://img.youtube.com/vi/gEOQshYf5EM/maxresdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/gEOQshYf5EM",
   }
 ];
 
