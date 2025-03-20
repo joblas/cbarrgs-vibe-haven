@@ -17,10 +17,12 @@ const Music: React.FC = () => {
   }, [controls, isInView]);
 
   const music = [
-    { title: "Album Name", year: "2023", type: "Album", link: `${SPOTIFY_URL}/album/1` },
-    { title: "Single Title", year: "2022", type: "Single", link: `${SPOTIFY_URL}/album/2` },
-    { title: "EP Title", year: "2021", type: "EP", link: `${SPOTIFY_URL}/album/3` },
-    { title: "Another Album", year: "2020", type: "Album", link: `${SPOTIFY_URL}/album/4` },
+    { title: "I'll Be There", year: "2022", type: "Single", link: `${SPOTIFY_URL}/track/6yXsHqcFYn4oXSL8ZlrKBl` },
+    { title: "Bit", year: "2022", type: "Single", link: `${SPOTIFY_URL}/track/1Mj7TvOQGT3FDpGj2q2KPR` },
+    { title: "Fight", year: "2020", type: "Single", link: `${SPOTIFY_URL}/track/5ZtKUFkEnyURlxP9FSAQNZ` },
+    { title: "I'll Stay", year: "2019", type: "Single", link: `${SPOTIFY_URL}/track/1FxoM9gT9bz91GRDZmIGV3` },
+    { title: "Fall", year: "2019", type: "Single", link: `${SPOTIFY_URL}/track/3DXRqPY3rPhb9JfzdtDmJt` },
+    { title: "You Look Beautiful", year: "2018", type: "Single", link: `${SPOTIFY_URL}/track/1zZHT7WTNkqMHNMhTgPCW5` },
   ];
 
   return (
@@ -50,14 +52,14 @@ const Music: React.FC = () => {
           >
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-10 transition-opacity duration-500"></div>
             <img
-              src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=2070"
+              src="/lovable-uploads/e4194e9c-a20d-4d43-8fe6-8fcccf5f3185.png"
               alt="CBARRGS Album Cover"
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute bottom-0 left-0 p-6 z-20">
               <span className="text-sm font-medium text-white/70 block mb-2">Latest Release</span>
-              <h3 className="text-2xl md:text-3xl font-display font-bold mb-2">Featured Album Title</h3>
-              <p className="text-white/80 mb-4 max-w-md">The latest masterpiece from CBARRGS, exploring new sonic territories and pushing boundaries.</p>
+              <h3 className="text-2xl md:text-3xl font-display font-bold mb-2">I'll Be There</h3>
+              <p className="text-white/80 mb-4 max-w-md">The latest single from CBARRGS, exploring emotional depth with powerful vocals and captivating instrumentals.</p>
               <a 
                 href={SPOTIFY_URL} 
                 target="_blank" 
@@ -65,7 +67,7 @@ const Music: React.FC = () => {
                 className="btn-primary inline-flex items-center"
               >
                 <MusicIcon size={18} className="mr-2" />
-                Stream Now
+                Stream Now on Spotify
               </a>
             </div>
           </motion.div>
