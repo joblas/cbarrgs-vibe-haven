@@ -30,16 +30,21 @@ const VideoCard: React.FC<VideoCardProps> = ({ title, thumbnail, embedUrl, index
     }
   };
 
+  // Ensure we have a properly formatted high-quality thumbnail URL
+  const formattedThumbnail = thumbnail.includes('maxresdefault.jpg') 
+    ? thumbnail 
+    : thumbnail.replace('vi/', 'vi/').replace('/default.jpg', '/hqdefault.jpg');
+
   return (
     <motion.div
-      className="relative overflow-hidden rounded-sm"
+      className="relative overflow-hidden rounded-sm shadow-md"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="relative w-full h-0 pb-[56.25%]">
+      <div className="relative w-full h-0 pb-[56.25%] bg-zinc-800">
         {isHovered ? (
           <iframe
             ref={videoRef}
@@ -52,9 +57,20 @@ const VideoCard: React.FC<VideoCardProps> = ({ title, thumbnail, embedUrl, index
         ) : (
           <>
             <img
-              src={thumbnail}
+              src={formattedThumbnail}
               alt={title}
               className="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+              loading="lazy"
+              onError={(e) => {
+                // Fallback to standard quality if high quality fails
+                const target = e.target as HTMLImageElement;
+                if (target.src.includes('maxresdefault.jpg')) {
+                  target.src = target.src.replace('maxresdefault.jpg', 'hqdefault.jpg');
+                }
+                if (target.src.includes('hqdefault.jpg')) {
+                  target.src = target.src.replace('hqdefault.jpg', 'mqdefault.jpg');
+                }
+              }}
             />
             <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
               <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center transition-transform duration-300 hover:scale-110">
@@ -73,7 +89,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ title, thumbnail, embedUrl, index
         )}
       </div>
       <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black/70 to-transparent">
-        <h3 className="text-lg font-medium">{title}</h3>
+        <h3 className="text-lg font-medium line-clamp-2">{title}</h3>
       </div>
     </motion.div>
   );
