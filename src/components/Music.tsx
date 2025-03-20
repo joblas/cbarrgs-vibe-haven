@@ -61,13 +61,13 @@ const Music: React.FC = () => {
               <h3 className="text-2xl md:text-3xl font-display font-bold mb-2">I'll Be There</h3>
               <p className="text-white/80 mb-4 max-w-md">The latest single from CBARRGS, exploring emotional depth with powerful vocals and captivating instrumentals.</p>
               <a 
-                href={`${SPOTIFY_URL}/track/6yXsHqcFYn4oXSL8ZlrKBl`} 
+                href={SPOTIFY_URL} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center"
               >
                 <MusicIcon size={18} className="mr-2" />
-                Stream Now
+                Stream Now on Spotify
               </a>
             </div>
           </motion.div>
