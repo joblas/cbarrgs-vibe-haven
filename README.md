@@ -1,69 +1,73 @@
-# Welcome to your Lovable project
+# CBARRGS Official Website
 
-## Project info
+<video width="100%" controls>
+  <source src="cbarrgs-website.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+A clean, minimalist website for the music artist CBARRGS. Designed locally with Windsurf and pushed to Lovable for deployment.
+
+## Features
+
+- Minimalist design inspired by homeshake.net
+- Responsive layout for all devices
+- YouTube video integration with hover-to-play functionality
+- Custom guitar cursor
+- Animated UI elements
+- Spotify and store links
+- Simple, clean UI with Tailwind CSS styling
+
+## Tech Stack
+
+- React + Vite
+- TypeScript
+- Tailwind CSS
+- Framer Motion for animations
+- Lucide Icons
+
+## Recent Updates
+
+- Simplified implementation focusing on core functionality
+- Improved performance and stability
+- Resolved rendering issues for better cross-browser compatibility
+- Modern, accessible UI design
+
+## Development
+
+```sh
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+## Design Principles
+
+- Clean, minimalist aesthetic
+- Black background with white text
+- Focus on content with minimal distractions
+- Smooth animations and transitions
+- Mobile-first responsive design
+
+## Components
+
+- Navigation: Clean, minimal navigation with essential links
+- Hero: Main landing section with artist branding
+- About: Artist information and bio
+- Music: Showcases music with links to streaming platforms
+- VideoSection: YouTube videos that only play when hovered
+- SocialLinks: Links to social media platforms
+- Footer: Simple footer with navigation and copyright
+- CustomCursor: Custom guitar-shaped cursor
+
+## Project Info
 
 **URL**: https://lovable.dev/projects/bd2ed203-bec5-49e8-9ae1-430b058370a6
 
-## How can I edit this code?
+## License
 
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/bd2ed203-bec5-49e8-9ae1-430b058370a6) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/bd2ed203-bec5-49e8-9ae1-430b058370a6) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+All rights reserved.
