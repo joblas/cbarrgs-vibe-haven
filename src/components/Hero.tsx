@@ -36,9 +36,10 @@ const Hero: React.FC = () => {
       <motion.div
         className="absolute inset-0 z-0"
         style={{ 
-          backgroundImage: `url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=2070')`, 
-          backgroundSize: 'cover',
+          backgroundImage: `url('/lovable-uploads/b0b9136b-bf41-4d77-bc70-a06cc0c82910.png')`, 
+          backgroundSize: 'contain',
           backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
           scale,
         }}
       />

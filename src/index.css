@@ -52,7 +52,6 @@
 
   body {
     @apply bg-background text-foreground font-sans;
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18.5a.5.5 0 0 1-1 0V18h1v.5Z"/><path d="M10 18.5a.5.5 0 0 1-1 0V18h1v.5Z"/><path d="M4.5 17V3a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v14"/><path d="M16.5 13V3a1 1 0 0 1 1-1h.5"/><path d="M3 17h14v3a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-3Z"/><path d="m2 5 18-3"/><path d="M22 21V8"/><path d="M22 12h-5"/><path d="M17 8v4"/></svg>'), auto;
   }
 
   ::-webkit-scrollbar {
