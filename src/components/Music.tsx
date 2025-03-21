@@ -16,13 +16,15 @@ const Music: React.FC = () => {
     }
   }, [controls, isInView]);
 
+  const SPOTIFY_URL = "https://open.spotify.com";
+
   const music = [
-    { title: "I'll Be There", year: "2022", type: "Single", link: `${SPOTIFY_URL}/track/6yXsHqcFYn4oXSL8ZlrKBl` },
-    { title: "Bit", year: "2022", type: "Single", link: `${SPOTIFY_URL}/track/1Mj7TvOQGT3FDpGj2q2KPR` },
-    { title: "Fight", year: "2020", type: "Single", link: `${SPOTIFY_URL}/track/5ZtKUFkEnyURlxP9FSAQNZ` },
-    { title: "I'll Stay", year: "2019", type: "Single", link: `${SPOTIFY_URL}/track/1FxoM9gT9bz91GRDZmIGV3` },
-    { title: "Fall", year: "2019", type: "Single", link: `${SPOTIFY_URL}/track/3DXRqPY3rPhb9JfzdtDmJt` },
-    { title: "You Look Beautiful", year: "2018", type: "Single", link: `${SPOTIFY_URL}/track/1zZHT7WTNkqMHNMhTgPCW5` },
+      { title: "I'll Be There", year: "2022", type: "Single", link: `${SPOTIFY_URL}/album/5ncXtue3RWjtHPDgS1tEIV?nd=1&dlsi=7a26220c7ba24edd` },
+      { title: "Bit", year: "2022", type: "Single", link: `${SPOTIFY_URL}/album/59gXFIz9bdQPxzewVKUYHM?si=40Iax9xKRPetDR225A_wbQ` },
+      { title: "Fight", year: "2020", type: "Single", link: `${SPOTIFY_URL}/track/3xT7tYjeVOx5SflV1Cm17v?nd=1&dlsi=df5b20110da94a92` },
+      { title: "I'll Stay", year: "2019", type: "Single", link: `${SPOTIFY_URL}/album/1vlCQku0AwgLeWGQ2gtWgi?nd=1&dlsi=2dcb281cfe474c47` },
+      { title: "Fall", year: "2019", type: "Single", link: `${SPOTIFY_URL}/album/0A8DPvH2xVYbPNH8VK6klG?nd=1&dlsi=d27212fd96714f60` },
+      { title: "You Look Beautiful", year: "2018", type: "Single", link: `${SPOTIFY_URL}/track/5cs2nvgUZdmqNbcobNZvMD?nd=1&dlsi=5f200b64a0304af7` },
   ];
 
   return (
@@ -61,7 +63,7 @@ const Music: React.FC = () => {
               <h3 className="text-2xl md:text-3xl font-display font-bold mb-2">I'll Be There</h3>
               <p className="text-white/80 mb-4 max-w-md">The latest single from CBARRGS, exploring emotional depth with powerful vocals and captivating instrumentals.</p>
               <a 
-                href={SPOTIFY_URL} 
+                href="https://open.spotify.com/artist/4qRI7BqjuKH3ulYQrEYnLa" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center"
@@ -108,7 +110,7 @@ const Music: React.FC = () => {
             </div>
             <div className="mt-8 text-center">
               <a 
-                href={SPOTIFY_URL} 
+                href="https://open.spotify.com/artist/4qRI7BqjuKH3ulYQrEYnLa" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center text-white/80 hover:text-white transition-colors duration-300"
