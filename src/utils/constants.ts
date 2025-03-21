@@ -1,53 +1,31 @@
 export const SPOTIFY_URL = "https://open.spotify.com/artist/4qRI7BqjuKH3ulYQrEYnLa";
 export const YOUTUBE_CHANNEL = "https://www.youtube.com/@cbarrgs";
-export const INSTAGRAM_URL = "https://www.instagram.com/cbarrgs";
+export const INSTAGRAM_URL = "https://www.instagram.com/cbarrgs/";
 export const LINKTREE_URL = "https://linktr.ee/cbarrgs";
 export const APPLE_MUSIC_URL = "https://music.apple.com/us/artist/cbarrgs/1448293718";
 export const SOUNDCLOUD_URL = "https://soundcloud.com/cbarrgs?ref=clipboard&p=i&c=1&si=06DEC2F9F22F4B25A6D1AF2E306A3032";
 
 export const VIDEOS = [
   {
-    id: "1",
-    title: "Fight",
-    thumbnail: "https://img.youtube.com/vi/RYiWRG_CLq0/hqdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/RYiWRG_CLq0",
-  },
-  {
-    id: "2",
-    title: "Bit",
-    thumbnail: "https://img.youtube.com/vi/IQamxsBpzmw/hqdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/IQamxsBpzmw",
-  },
-  {
-    id: "3",
-    title: "Fall",
-    // Correcting the video ID for the Fall video
-    thumbnail: "https://img.youtube.com/vi/lJllyb9Cw7E/mqdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/lJllyb9Cw7E",
-  },
-  {
-    id: "4",
+    id: "video1",
     title: "I'll Be There",
-    thumbnail: "https://img.youtube.com/vi/tyj65x3p_6g/hqdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/tyj65x3p_6g",
+    thumbnail: "/lovable-uploads/music/cover1.jpg",
+    embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    description: "Official music video for \"I'll Be There\""
   },
   {
-    id: "5",
-    title: "I'll Stay",
-    thumbnail: "https://img.youtube.com/vi/IK5I0fBvIdc/hqdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/IK5I0fBvIdc",
+    id: "video2",
+    title: "Bit",
+    thumbnail: "/lovable-uploads/music/cover2.jpg",
+    embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    description: "Official music video for \"Bit\""
   },
   {
-    id: "6",
-    title: "You Look Beautiful",
-    thumbnail: "https://img.youtube.com/vi/2JRLNmZ6-SI/hqdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/2JRLNmZ6-SI",
-  },
-  {
-    id: "7",
-    title: "Loving You",
-    thumbnail: "https://img.youtube.com/vi/2ZTi_tawp2A/hqdefault.jpg",
-    embedUrl: "https://www.youtube.com/embed/2ZTi_tawp2A",
+    id: "video3",
+    title: "Fight",
+    thumbnail: "/lovable-uploads/music/cover3.jpg",
+    embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    description: "Official music video for \"Fight\""
   }
 ];
 

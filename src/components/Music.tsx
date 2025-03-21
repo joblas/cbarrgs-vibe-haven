@@ -1,9 +1,9 @@
-
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useInView } from 'framer-motion';
-import { Music as MusicIcon, ExternalLink } from 'lucide-react';
-import { SPOTIFY_URL } from '@/utils/constants';
 import { fadeIn, slideUp, staggerContainer, staggerItems } from '@/utils/transitions';
+import { ExternalLink } from 'lucide-react';
+import Spotify from './icons/Spotify';
+import { SPOTIFY_URL } from '@/utils/constants';
 
 const Music: React.FC = () => {
   const ref = useRef(null);
@@ -66,7 +66,7 @@ const Music: React.FC = () => {
                 rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center"
               >
-                <MusicIcon size={18} className="mr-2" />
+                <Spotify size={18} className="mr-2" />
                 Stream Now on Spotify
               </a>
             </div>

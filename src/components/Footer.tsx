@@ -1,20 +1,26 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Instagram, Youtube, Music, Link2, Apple, AudioLines } from 'lucide-react';
-import { INSTAGRAM_URL, YOUTUBE_CHANNEL, SPOTIFY_URL, LINKTREE_URL, APPLE_MUSIC_URL, SOUNDCLOUD_URL } from '@/utils/constants';
 import { fadeIn, slideUp } from '@/utils/transitions';
+import { INSTAGRAM_URL, YOUTUBE_CHANNEL, SPOTIFY_URL, LINKTREE_URL, APPLE_MUSIC_URL, SOUNDCLOUD_URL } from '@/utils/constants';
+
+// Import icons directly instead of using the barrel file
+import AppleMusic from './icons/AppleMusic';
+import Spotify from './icons/Spotify';
+import Instagram from './icons/Instagram';
+import YouTube from './icons/YouTube';
+import SoundCloud from './icons/SoundCloud';
+import Linktree from './icons/Linktree';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   
   const socialLinks = [
-    { name: 'Instagram', icon: <Instagram size={20} />, url: INSTAGRAM_URL },
-    { name: 'YouTube', icon: <Youtube size={20} />, url: YOUTUBE_CHANNEL },
-    { name: 'Spotify', icon: <Music size={20} />, url: SPOTIFY_URL },
-    { name: 'Apple Music', icon: <Apple size={20} />, url: APPLE_MUSIC_URL },
-    { name: 'SoundCloud', icon: <AudioLines size={20} />, url: SOUNDCLOUD_URL },
-    { name: 'Linktree', icon: <Link2 size={20} />, url: LINKTREE_URL },
+    { name: 'Instagram', icon: <Instagram size={24} />, url: INSTAGRAM_URL },
+    { name: 'YouTube', icon: <YouTube size={24} />, url: YOUTUBE_CHANNEL },
+    { name: 'Spotify', icon: <Spotify size={24} />, url: SPOTIFY_URL },
+    { name: 'Apple Music', icon: <AppleMusic size={24} />, url: APPLE_MUSIC_URL },
+    { name: 'SoundCloud', icon: <SoundCloud size={24} />, url: SOUNDCLOUD_URL },
+    { name: 'Linktree', icon: <Linktree size={24} />, url: LINKTREE_URL },
   ];
 
   const footerLinks = [
@@ -47,7 +53,7 @@ const Footer: React.FC = () => {
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-300 flex items-center justify-center text-white/90"
+                  className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 transition-colors duration-300 flex items-center justify-center text-white"
                   whileHover={{ y: -3 }}
                   whileTap={{ scale: 0.95 }}
                   title={social.name}
