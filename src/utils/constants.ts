@@ -7,25 +7,46 @@ export const SOUNDCLOUD_URL = "https://soundcloud.com/cbarrgs?ref=clipboard&p=i&
 
 export const VIDEOS = [
   {
-    id: "video1",
-    title: "I'll Be There",
-    thumbnail: "/lovable-uploads/music/cover1.jpg",
-    embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    description: "Official music video for \"I'll Be There\""
-  },
-  {
-    id: "video2",
-    title: "Bit",
-    thumbnail: "/lovable-uploads/music/cover2.jpg",
-    embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    description: "Official music video for \"Bit\""
-  },
-  {
-    id: "video3",
+    id: "1",
     title: "Fight",
-    thumbnail: "/lovable-uploads/music/cover3.jpg",
-    embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    description: "Official music video for \"Fight\""
+    thumbnail: "https://img.youtube.com/vi/RYiWRG_CLq0/hqdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/RYiWRG_CLq0",
+  },
+  {
+    id: "2",
+    title: "Bit",
+    thumbnail: "https://img.youtube.com/vi/IQamxsBpzmw/hqdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/IQamxsBpzmw",
+  },
+  {
+    id: "3",
+    title: "Fall",
+    thumbnail: "https://img.youtube.com/vi/lJllyb9Cw7E/mqdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/lJllyb9Cw7E",
+  },
+  {
+    id: "4",
+    title: "I'll Be There",
+    thumbnail: "https://img.youtube.com/vi/tyj65x3p_6g/hqdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/tyj65x3p_6g",
+  },
+  {
+    id: "5",
+    title: "I'll Stay",
+    thumbnail: "https://img.youtube.com/vi/IK5I0fBvIdc/hqdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/IK5I0fBvIdc",
+  },
+  {
+    id: "6",
+    title: "You Look Beautiful",
+    thumbnail: "https://i.ytimg.com/vi/2JRLNmZ6-SI/hqdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/2JRLNmZ6-SI?list=OLAK5uy_m1fbc0ULhzGl2wFipVy-ZsVFU5nbh81pg",
+  },
+  {
+    id: "7",
+    title: "Loving You",
+    thumbnail: "https://img.youtube.com/vi/2ZTi_tawp2A/hqdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/2ZTi_tawp2A",
   }
 ];
 
