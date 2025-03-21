@@ -113,38 +113,49 @@ const Hero: React.FC = () => {
                 {social.icon}
               </motion.a>)}
           </motion.div>
+          
+          {/* Scroll Indicator - Now positioned directly below social icons */}
+          <motion.div 
+            className="mt-12"
+            initial={{
+              opacity: 0,
+              y: -20
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              transition: {
+                delay: 1.2,
+                duration: 0.8,
+                ease: [0.45, 0, 0.55, 1]
+              }
+            }}
+          >
+            <motion.div 
+              animate={{
+                y: [0, 8, 0]
+              }} 
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatType: "loop",
+                ease: "easeInOut"
+              }} 
+              className="flex flex-col items-center justify-center cursor-pointer hover:text-white transition-colors duration-300" 
+              onClick={() => {
+                document.getElementById('about')?.scrollIntoView({
+                  behavior: 'smooth'
+                });
+              }}
+            >
+              <span className="text-sm font-medium mb-2 text-white/70 hover:text-white/100 transition-colors duration-300">Scroll Down</span>
+              <div className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300">
+                <ArrowDown className="text-white" size={20} />
+              </div>
+            </motion.div>
+          </motion.div>
         </motion.div>
       </div>
-      
-      {/* Scroll Indicator - Adjusted position */}
-      <motion.div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20" initial={{
-      opacity: 0,
-      y: -20
-    }} animate={{
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: 1.2,
-        duration: 0.8,
-        ease: [0.45, 0, 0.55, 1]
-      }
-    }}>
-        <motion.div animate={{
-        y: [0, 8, 0]
-      }} transition={{
-        duration: 2,
-        repeat: Infinity,
-        repeatType: "loop",
-        ease: "easeInOut"
-      }} className="flex flex-col items-center cursor-pointer" onClick={() => {
-        document.getElementById('about')?.scrollIntoView({
-          behavior: 'smooth'
-        });
-      }}>
-          <span className="text-sm font-medium mb-2 text-white/70">Scroll Down</span>
-          <ArrowDown className="animate-pulse-subtle" size={20} />
-        </motion.div>
-      </motion.div>
     </motion.section>;
 };
 export default Hero;
