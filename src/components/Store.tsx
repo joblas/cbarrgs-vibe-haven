@@ -3,6 +3,7 @@ import { motion, useAnimation, useInView } from 'framer-motion';
 import { MERCHANDISE, SHOPIFY_STORE } from '@/utils/constants';
 import { ShoppingBag, ExternalLink } from 'lucide-react';
 import { fadeIn, slideUp, staggerContainer, staggerItems } from '@/utils/transitions';
+import Image from './Image';
 
 const Store: React.FC = () => {
   const ref = useRef(null);
@@ -36,7 +37,7 @@ const Store: React.FC = () => {
           initial="initial"
           animate={controls}
           variants={staggerContainer}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
         >
           {MERCHANDISE.map((item, i) => (
             <motion.div
@@ -44,11 +45,11 @@ const Store: React.FC = () => {
               variants={staggerItems}
               className="glass-panel rounded-sm overflow-hidden group hover-grow"
             >
-              <div className="aspect-square overflow-hidden">
-                <img 
+              <div className="aspect-square overflow-hidden bg-zinc-900 flex items-center justify-center">
+                <Image 
                   src={item.image}
                   alt={item.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
                 />
               </div>
               <div className="p-4">

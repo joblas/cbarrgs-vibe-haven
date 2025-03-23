@@ -73,30 +73,26 @@ export const MERCHANDISE = [
   {
     id: "merch1",
     name: "CBARRGS Signature T-Shirt",
-    price: 29.99,
-    image: "https://example.com/tshirt.jpg",
-    url: "https://shop.cbarrgs.com/product/tshirt"
+    price: 25,
+    // Using direct Shopify CDN URL for actual product image
+    image: "https://cbarrgs.myshopify.com/cdn/shop/files/IMG_0660.jpg?v=1742587324&width=990",
+    url: "https://cbarrgs.myshopify.com/products/short-sleeve-tshirt"
   },
   {
     id: "merch2",
-    name: "CBARRGS Hoodie",
-    price: 49.99,
-    image: "https://example.com/hoodie.jpg",
-    url: "https://shop.cbarrgs.com/product/hoodie"
+    name: "CBARRGS Stickers",
+    price: 3,
+    // Using direct Shopify CDN URL for actual product image
+    image: "https://cbarrgs.myshopify.com/cdn/shop/files/stickers.jpg?v=1742590522&width=990",
+    url: "https://cbarrgs.myshopify.com/products/cbarrgs-chain-sticker"
   },
   {
     id: "merch3",
-    name: "Vinyl Record",
-    price: 24.99,
-    image: "https://example.com/vinyl.jpg",
-    url: "https://shop.cbarrgs.com/product/vinyl"
-  },
-  {
-    id: "merch4",
-    name: "Guitar Pick Set",
-    price: 9.99,
-    image: "https://example.com/picks.jpg",
-    url: "https://shop.cbarrgs.com/product/picks"
+    name: "CBARRGS Pin",
+    price: 3,
+    // Using direct Shopify CDN URL for actual product image
+    image: "https://cbarrgs.myshopify.com/cdn/shop/files/Pin.jpg?v=1742588496&width=990",
+    url: "https://cbarrgs.myshopify.com/products/pin"
   }
 ];
 

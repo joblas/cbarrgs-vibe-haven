@@ -8,10 +8,10 @@ export default defineConfig(({ mode }) => ({
   base: '/',
   server: {
     host: '0.0.0.0',
-    port: 8080,
+    port: 4000,
     strictPort: true,
     hmr: {
-      clientPort: 8080
+      clientPort: 4000
     }
   },
   plugins: [
