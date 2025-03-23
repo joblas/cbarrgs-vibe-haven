@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useAnimation, useInView } from 'framer-motion';
 import { VIDEOS, YOUTUBE_CHANNEL } from '@/utils/constants';
@@ -68,13 +67,8 @@ const Videos: React.FC = () => {
             className="md:w-2/3 text-left"
           >
             <h3 className="text-2xl font-medium mb-4">Artist's Vision</h3>
-            <p className="text-white/80 mb-6">
-              Every visual piece in CBARRGS' work is carefully crafted to complement the musical experience. 
-              The visuals aim to create a complete artistic expression that resonates with listeners and viewers alike.
-            </p>
             <p className="text-white/80">
-              From concept to execution, each video tells a story that extends beyond the music, 
-              offering a glimpse into the creative universe that inspires CBARRGS.
+              I try to make videos that add something extra to the music. It's all about telling a story and giving you a glimpse into what the song means to me. Even if it's just a simple video, I want it to help you connect with the music on a deeper level.
             </p>
           </motion.div>
         </div>

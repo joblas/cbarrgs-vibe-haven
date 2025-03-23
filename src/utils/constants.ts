@@ -97,9 +97,9 @@ export const MERCHANDISE = [
 ];
 
 export const ARTIST_BIO = `
+Carlos Barragan, known professionally as Cbarrgs, is a Mexican vocalist, writer, multi-instrumentalist, and producer, born on August 19, 2000, in Mexico City. Since releasing his first EP, 'Let Me Know,' in 2018, under the stage name 'Cbarrgs,' Carlos has released three projects. Carlos hopes to continue pursuing his passion in music, with the hope that his identity as a Mexican-American will transcend to his musical career.
+
 CBARRGS is an innovative musician known for blending alternative rock with electronic elements, creating a unique sound that resonates with listeners worldwide. With multiple successful releases and a growing fanbase, CBARRGS continues to push the boundaries of modern music.
 
-The artist draws inspiration from diverse musical influences, from classic rock to contemporary electronic music, always exploring new sonic territories and experimenting with different production techniques.
-
-CBARRGS has toured extensively, performing at numerous venues and festivals, and has collaborated with various artists across different genres, further expanding their musical horizons.
+The artist draws inspiration from diverse musical influences, from classic rock to contemporary electronic music, always exploring new sonic territories and experimenting with different production techniques. CBARRGS has toured extensively, performing at numerous venues and festivals, and has collaborated with various artists across different genres, further expanding their musical horizons.
 `;
