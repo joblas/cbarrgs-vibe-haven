@@ -4,14 +4,6 @@ import { ArrowDown } from 'lucide-react';
 import { fadeIn, slideUp } from '@/utils/transitions';
 import { SPOTIFY_URL, YOUTUBE_CHANNEL, INSTAGRAM_URL, LINKTREE_URL, APPLE_MUSIC_URL, SOUNDCLOUD_URL } from '@/utils/constants';
 
-// Import icons directly instead of using the barrel file
-import AppleMusic from './icons/AppleMusic';
-import Spotify from './icons/Spotify';
-import Instagram from './icons/Instagram';
-import YouTube from './icons/YouTube';
-import SoundCloud from './icons/SoundCloud';
-import Linktree from './icons/Linktree';
-
 const Hero: React.FC = () => {
   const controls = useAnimation();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -40,27 +32,27 @@ const Hero: React.FC = () => {
   const socialLinks = [{
     name: 'Instagram',
     url: INSTAGRAM_URL,
-    icon: <Instagram size={24} />
+    icon: <i className="fab fa-instagram"></i>
   }, {
     name: 'YouTube',
     url: YOUTUBE_CHANNEL,
-    icon: <YouTube size={24} />
+    icon: <i className="fab fa-youtube"></i>
   }, {
     name: 'Apple Music',
     url: APPLE_MUSIC_URL,
-    icon: <AppleMusic size={24} />
+    icon: <i className="fab fa-apple"></i>
   }, {
     name: 'Spotify',
     url: SPOTIFY_URL,
-    icon: <Spotify size={24} />
+    icon: <i className="fab fa-spotify"></i>
   }, {
     name: 'SoundCloud',
     url: SOUNDCLOUD_URL,
-    icon: <SoundCloud size={24} />
+    icon: <i className="fab fa-soundcloud"></i>
   }, {
     name: 'Linktree',
     url: LINKTREE_URL,
-    icon: <Linktree size={24} />
+    icon: <i className="fas fa-link"></i>
   }];
   return <motion.section id="hero" ref={containerRef} className="relative h-screen flex items-center justify-center overflow-hidden" style={{
     opacity
@@ -104,12 +96,8 @@ const Hero: React.FC = () => {
           </motion.div>
           
           {/* Social Media Icons */}
-          <motion.div className="flex justify-center space-x-4 mt-6" {...fadeIn(1.0)}>
-            {socialLinks.map((social, i) => <motion.a key={i} href={social.url} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 transition-colors duration-300 flex items-center justify-center text-white" whileHover={{
-            y: -3
-          }} whileTap={{
-            scale: 0.95
-          }} title={social.name}>
+          <motion.div className="social-icons" {...fadeIn(1.0)}>
+            {socialLinks.map((social, i) => <motion.a key={i} href={social.url} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 transition-colors duration-300 flex items-center justify-center text-white" whileHover={{ y: -3 }} whileTap={{ scale: 0.95 }} title={social.name}>
                 {social.icon}
               </motion.a>)}
           </motion.div>

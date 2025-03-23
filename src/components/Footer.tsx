@@ -2,25 +2,20 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { fadeIn, slideUp } from '@/utils/transitions';
 import { INSTAGRAM_URL, YOUTUBE_CHANNEL, SPOTIFY_URL, LINKTREE_URL, APPLE_MUSIC_URL, SOUNDCLOUD_URL } from '@/utils/constants';
-
-// Import icons directly instead of using the barrel file
-import AppleMusic from './icons/AppleMusic';
-import Spotify from './icons/Spotify';
-import Instagram from './icons/Instagram';
-import YouTube from './icons/YouTube';
-import SoundCloud from './icons/SoundCloud';
-import Linktree from './icons/Linktree';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInstagram, faSpotify, faYoutube, faApple, faSoundcloud } from '@fortawesome/free-brands-svg-icons';
+import { faLink } from '@fortawesome/free-solid-svg-icons';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   
   const socialLinks = [
-    { name: 'Instagram', icon: <Instagram size={24} />, url: INSTAGRAM_URL },
-    { name: 'YouTube', icon: <YouTube size={24} />, url: YOUTUBE_CHANNEL },
-    { name: 'Spotify', icon: <Spotify size={24} />, url: SPOTIFY_URL },
-    { name: 'Apple Music', icon: <AppleMusic size={24} />, url: APPLE_MUSIC_URL },
-    { name: 'SoundCloud', icon: <SoundCloud size={24} />, url: SOUNDCLOUD_URL },
-    { name: 'Linktree', icon: <Linktree size={24} />, url: LINKTREE_URL },
+    { name: 'Instagram', icon: faInstagram, url: INSTAGRAM_URL },
+    { name: 'Spotify', icon: faSpotify, url: SPOTIFY_URL },
+    { name: 'YouTube', icon: faYoutube, url: YOUTUBE_CHANNEL },
+    { name: 'Apple Music', icon: faApple, url: APPLE_MUSIC_URL },
+    { name: 'SoundCloud', icon: faSoundcloud, url: SOUNDCLOUD_URL },
+    { name: 'Linktree', icon: faLink, url: LINKTREE_URL },
   ];
 
   const footerLinks = [
@@ -46,21 +41,13 @@ const Footer: React.FC = () => {
               Crafting musical experiences that push boundaries and resonate with souls.
             </p>
             
-            <div className="flex space-x-4 mt-6">
-              {socialLinks.map((social, i) => (
-                <motion.a
-                  key={i}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 transition-colors duration-300 flex items-center justify-center text-white"
-                  whileHover={{ y: -3 }}
-                  whileTap={{ scale: 0.95 }}
-                  title={social.name}
-                >
-                  {social.icon}
-                </motion.a>
-              ))}
+            <div className="social-icons">
+                <a href="https://www.instagram.com/cbarrgs/" target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram"></i></a>
+                <a href="https://open.spotify.com/artist/4qRI7BqjuKH3ulYQrEYnLa" target="_blank" rel="noopener noreferrer"><i className="fab fa-spotify"></i></a>
+                <a href="https://www.youtube.com/@cbarrgs" target="_blank" rel="noopener noreferrer"><i className="fab fa-youtube"></i></a>
+                <a href="https://music.apple.com/us/artist/cbarrgs/1448293718" target="_blank" rel="noopener noreferrer"><i className="fab fa-apple"></i></a>
+                <a href="https://soundcloud.com/cbarrgs?ref=clipboard&p=i&c=1&si=06DEC2F9F22F4B25A6D1AF2E306A3032" target="_blank" rel="noopener noreferrer"><i className="fab fa-soundcloud"></i></a>
+                <a href="https://linktr.ee/cbarrgs" target="_blank" rel="noopener noreferrer"><i className="fas fa-link"></i></a>
             </div>
           </motion.div>
           
