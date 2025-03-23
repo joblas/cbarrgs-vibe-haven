@@ -4,46 +4,65 @@ export const INSTAGRAM_URL = "https://www.instagram.com/cbarrgs/";
 export const LINKTREE_URL = "https://linktr.ee/cbarrgs";
 export const APPLE_MUSIC_URL = "https://music.apple.com/us/artist/cbarrgs/1448293718";
 export const SOUNDCLOUD_URL = "https://soundcloud.com/cbarrgs?ref=clipboard&p=i&c=1&si=06DEC2F9F22F4B25A6D1AF2E306A3032";
+export const SHOPIFY_STORE = "https://cbarrgs.myshopify.com";
 
 export const VIDEOS = [
   {
     id: "1",
+    title: "Let Me Know",
+    thumbnail: "https://img.youtube.com/vi/ZfK89aQXnkQ/hqdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/ZfK89aQXnkQ",
+  },
+  {
+    id: "2",
+    title: "After Party",
+    thumbnail: "https://img.youtube.com/vi/3FezXnlER6M/hqdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/3FezXnlER6M",
+  },
+  {
+    id: "3",
+    title: "Cadena",
+    thumbnail: "https://img.youtube.com/vi/r96QKogRCjo/hqdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/r96QKogRCjo",
+  },
+  {
+    id: "4",
     title: "Fight",
     thumbnail: "https://img.youtube.com/vi/RYiWRG_CLq0/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/RYiWRG_CLq0",
   },
   {
-    id: "2",
+    id: "5",
     title: "Bit",
     thumbnail: "https://img.youtube.com/vi/IQamxsBpzmw/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/IQamxsBpzmw",
   },
   {
-    id: "3",
+    id: "6",
     title: "Fall",
     thumbnail: "https://img.youtube.com/vi/lJllyb9Cw7E/mqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/lJllyb9Cw7E",
   },
   {
-    id: "4",
+    id: "7",
     title: "I'll Be There",
     thumbnail: "https://img.youtube.com/vi/tyj65x3p_6g/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/tyj65x3p_6g",
   },
   {
-    id: "5",
+    id: "8",
     title: "I'll Stay",
     thumbnail: "https://img.youtube.com/vi/IK5I0fBvIdc/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/IK5I0fBvIdc",
   },
   {
-    id: "6",
+    id: "9",
     title: "You Look Beautiful",
     thumbnail: "https://i.ytimg.com/vi/2JRLNmZ6-SI/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/2JRLNmZ6-SI?list=OLAK5uy_m1fbc0ULhzGl2wFipVy-ZsVFU5nbh81pg",
   },
   {
-    id: "7",
+    id: "10",
     title: "Loving You",
     thumbnail: "https://img.youtube.com/vi/2ZTi_tawp2A/hqdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/2ZTi_tawp2A",

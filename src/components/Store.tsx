@@ -1,7 +1,6 @@
-
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useInView } from 'framer-motion';
-import { MERCHANDISE } from '@/utils/constants';
+import { MERCHANDISE, SHOPIFY_STORE } from '@/utils/constants';
 import { ShoppingBag, ExternalLink } from 'lucide-react';
 import { fadeIn, slideUp, staggerContainer, staggerItems } from '@/utils/transitions';
 
@@ -75,7 +74,7 @@ const Store: React.FC = () => {
           variants={slideUp(0.6)}
           className="mt-16 text-center"
         >
-          <a href="https://shop.cbarrgs.com" target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex items-center">
+          <a href={SHOPIFY_STORE} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex items-center">
             Visit Full Store
             <ExternalLink size={18} className="ml-2" />
           </a>
