@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
@@ -89,7 +88,7 @@ const Navigation: React.FC = () => {
         <div className="max-w-screen-xl mx-auto px-6 md:px-8 flex justify-between items-center">
           <motion.a 
             href="#hero"
-            className="text-2xl old-english-font font-bold tracking-tight"
+            className="text-2xl md:text-3xl old-english-font font-bold"
             {...fadeIn()}
           >
             CBARRGS

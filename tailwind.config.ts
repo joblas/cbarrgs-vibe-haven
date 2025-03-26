@@ -67,7 +67,7 @@ export default {
 				sans: ['Inter', 'sans-serif'],
 				display: ['SF Pro Display', 'Inter', 'sans-serif'],
 				mono: ['SF Mono', 'monospace'],
-				medieval: ['Canterbury', 'cursive'],
+				medieval: ['Old English Five', 'Canterbury', 'cursive'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
