@@ -3,10 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { fadeIn, slideDown } from '@/utils/transitions';
+import { Link, useLocation } from 'react-router-dom';
 
 const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -69,11 +72,11 @@ const Navigation: React.FC = () => {
   };
 
   const navItems = [
-    { name: "Home", href: "#hero" },
-    { name: "About", href: "#about" },
-    { name: "Music", href: "#music" },
-    { name: "Videos", href: "#videos" },
-    { name: "Store", href: "#store" }
+    { name: "Home", href: isHomePage ? "#hero" : "/#hero" },
+    { name: "About", href: isHomePage ? "#about" : "/#about" },
+    { name: "Music", href: isHomePage ? "#music" : "/#music" },
+    { name: "Videos", href: isHomePage ? "#videos" : "/#videos" },
+    { name: "Store", href: isHomePage ? "#store" : "/#store" }
   ];
 
   return (
@@ -89,14 +92,25 @@ const Navigation: React.FC = () => {
         aria-label="Main Navigation"
       >
         <div className="max-w-screen-xl mx-auto px-6 md:px-8 flex justify-between items-center">
-          <motion.a 
-            href="#hero"
-            className="text-2xl md:text-3xl old-english-font font-bold"
-            {...fadeIn()}
-            aria-label="CBARRGS - Back to Home"
-          >
-            CBARRGS
-          </motion.a>
+          <motion.div {...fadeIn()}>
+            {isHomePage ? (
+              <a 
+                href="#hero"
+                className="text-2xl md:text-3xl old-english-font font-bold"
+                aria-label="CBARRGS - Back to Home"
+              >
+                CBARRGS
+              </a>
+            ) : (
+              <Link 
+                to="/"
+                className="text-2xl md:text-3xl old-english-font font-bold"
+                aria-label="CBARRGS - Back to Home"
+              >
+                CBARRGS
+              </Link>
+            )}
+          </motion.div>
 
           {/* Desktop Menu */}
           <motion.div 
@@ -111,6 +125,13 @@ const Navigation: React.FC = () => {
                 href={item.href} 
                 className="nav-link"
                 role="menuitem"
+                onClick={() => {
+                  if (!isHomePage && !item.href.startsWith('/')) {
+                    // This ensures smooth scrolling works when returning to homepage
+                    const targetId = item.href.replace('/#', '');
+                    localStorage.setItem('scrollTarget', targetId);
+                  }
+                }}
               >
                 {item.name}
               </a>
@@ -148,7 +169,13 @@ const Navigation: React.FC = () => {
               key={i}
               href={item.href}
               className="text-2xl font-medium nav-link"
-              onClick={() => setIsOpen(false)}
+              onClick={() => {
+                setIsOpen(false);
+                if (!isHomePage && !item.href.startsWith('/')) {
+                  const targetId = item.href.replace('/#', '');
+                  localStorage.setItem('scrollTarget', targetId);
+                }
+              }}
               custom={i}
               variants={menuItemVariants}
               role="menuitem"

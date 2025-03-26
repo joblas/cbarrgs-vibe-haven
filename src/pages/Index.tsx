@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navigation from '@/components/Navigation';
 import Hero from '@/components/Hero';
 import About from '@/components/About';
@@ -10,6 +10,23 @@ import Footer from '@/components/Footer';
 import SkipToContent from '@/components/SkipToContent';
 
 const Index: React.FC = () => {
+  useEffect(() => {
+    // Check if there's a scroll target in localStorage
+    const scrollTarget = localStorage.getItem('scrollTarget');
+    if (scrollTarget) {
+      // Clear it immediately to prevent future unwanted scrolls
+      localStorage.removeItem('scrollTarget');
+      
+      // Give the page a moment to render before scrolling
+      setTimeout(() => {
+        const element = document.getElementById(scrollTarget);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-black text-white">
       <SkipToContent />

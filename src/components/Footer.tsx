@@ -6,10 +6,12 @@ import { INSTAGRAM_URL, YOUTUBE_CHANNEL, SPOTIFY_URL, LINKTREE_URL, APPLE_MUSIC_
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faSpotify, faYoutube, faApple, faSoundcloud } from '@fortawesome/free-brands-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
   
   const socialLinks = [
     { name: 'Instagram', icon: faInstagram, url: INSTAGRAM_URL },
@@ -21,11 +23,11 @@ const Footer: React.FC = () => {
   ];
 
   const footerLinks = [
-    { name: 'Home', url: '#hero' },
-    { name: 'About', url: '#about' },
-    { name: 'Music', url: '#music' },
-    { name: 'Videos', url: '#videos' },
-    { name: 'Store', url: '#store' },
+    { name: 'Home', href: isHomePage ? '#hero' : '/#hero' },
+    { name: 'About', href: isHomePage ? '#about' : '/#about' },
+    { name: 'Music', href: isHomePage ? '#music' : '/#music' },
+    { name: 'Videos', href: isHomePage ? '#videos' : '/#videos' },
+    { name: 'Store', href: isHomePage ? '#store' : '/#store' },
   ];
 
   return (
@@ -36,13 +38,23 @@ const Footer: React.FC = () => {
             className="col-span-full md:col-span-1"
             {...fadeIn()}
           >
-            <a 
-              href="#hero" 
-              className="text-3xl md:text-4xl old-english-font font-bold inline-block mb-4"
-              aria-label="CBARRGS - Back to top"
-            >
-              CBARRGS
-            </a>
+            {isHomePage ? (
+              <a 
+                href="#hero" 
+                className="text-3xl md:text-4xl old-english-font font-bold inline-block mb-4"
+                aria-label="CBARRGS - Back to top"
+              >
+                CBARRGS
+              </a>
+            ) : (
+              <Link 
+                to="/" 
+                className="text-3xl md:text-4xl old-english-font font-bold inline-block mb-4"
+                aria-label="CBARRGS - Back to Home"
+              >
+                CBARRGS
+              </Link>
+            )}
             <p className="text-white/70 max-w-md">
               Crafting musical experiences that push boundaries and resonate with souls.
             </p>
@@ -71,7 +83,16 @@ const Footer: React.FC = () => {
             <ul className="space-y-3" aria-labelledby="footer-navigation">
               {footerLinks.map((link, i) => (
                 <li key={i}>
-                  <a href={link.url} className="nav-link">
+                  <a 
+                    href={link.href} 
+                    className="nav-link"
+                    onClick={() => {
+                      if (!isHomePage && !link.href.startsWith('/')) {
+                        const targetId = link.href.replace('/#', '');
+                        localStorage.setItem('scrollTarget', targetId);
+                      }
+                    }}
+                  >
                     {link.name}
                   </a>
                 </li>
