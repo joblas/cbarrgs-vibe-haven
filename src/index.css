@@ -57,6 +57,35 @@
     @apply bg-background text-foreground font-sans;
   }
 
+  /* Improve focus styles for accessibility */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-white/70 ring-offset-1 ring-offset-black;
+  }
+
+  /* Skip link styling */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  
+  .sr-only.focus-visible {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;

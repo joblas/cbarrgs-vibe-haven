@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Navigation from '@/components/Navigation';
 import Hero from '@/components/Hero';
@@ -6,12 +7,14 @@ import Music from '@/components/Music';
 import Videos from '@/components/Videos';
 import Store from '@/components/Store';
 import Footer from '@/components/Footer';
+import SkipToContent from '@/components/SkipToContent';
 
 const Index: React.FC = () => {
   return (
     <div className="min-h-screen bg-black text-white">
+      <SkipToContent />
       <Navigation />
-      <main>
+      <main id="main-content">
         <Hero />
         <About />
         <Music />

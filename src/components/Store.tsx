@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useInView } from 'framer-motion';
 import { MERCHANDISE, SHOPIFY_STORE } from '@/utils/constants';
@@ -17,7 +18,7 @@ const Store: React.FC = () => {
   }, [controls, isInView]);
 
   return (
-    <section id="store" className="relative py-24 md:py-32 bg-gradient-to-b from-zinc-900 to-black">
+    <section id="store" className="relative py-24 md:py-32 bg-gradient-to-b from-zinc-900 to-black" aria-labelledby="store-heading">
       <div className="section-container">
         <motion.div 
           ref={ref}
@@ -27,7 +28,7 @@ const Store: React.FC = () => {
           className="text-center max-w-3xl mx-auto mb-16"
         >
           <span className="inline-block text-sm font-medium text-white/60 uppercase tracking-wider mb-4">Merchandise</span>
-          <h2 className="section-title">Official Merch</h2>
+          <h2 id="store-heading" className="section-title">Official Merch</h2>
           <p className="text-white/70 max-w-2xl mx-auto">
             Show your support with official CBARRGS merchandise. From apparel to collectibles, find something that resonates with you.
           </p>
@@ -48,7 +49,7 @@ const Store: React.FC = () => {
               <div className="aspect-square overflow-hidden bg-zinc-900 flex items-center justify-center">
                 <Image 
                   src={item.image}
-                  alt={item.name}
+                  alt={`${item.name} merchandise item`}
                   className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
                 />
               </div>
@@ -60,8 +61,9 @@ const Store: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-secondary text-sm w-full flex items-center justify-center"
+                  aria-label={`Shop now: ${item.name} - $${item.price.toFixed(2)}`}
                 >
-                  <ShoppingBag size={16} className="mr-2" />
+                  <ShoppingBag size={16} className="mr-2" aria-hidden="true" />
                   Shop Now
                 </a>
               </div>
@@ -75,9 +77,15 @@ const Store: React.FC = () => {
           variants={slideUp(0.6)}
           className="mt-16 text-center"
         >
-          <a href={SHOPIFY_STORE} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex items-center">
+          <a 
+            href={SHOPIFY_STORE} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="btn-primary inline-flex items-center"
+            aria-label="Visit the full merchandise store"
+          >
             Visit Full Store
-            <ExternalLink size={18} className="ml-2" />
+            <ExternalLink size={18} className="ml-2" aria-hidden="true" />
           </a>
         </motion.div>
       </div>

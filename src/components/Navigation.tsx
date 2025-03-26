@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
@@ -84,12 +85,15 @@ const Navigation: React.FC = () => {
         variants={navVariants}
         initial="hidden"
         animate="visible"
+        role="navigation"
+        aria-label="Main Navigation"
       >
         <div className="max-w-screen-xl mx-auto px-6 md:px-8 flex justify-between items-center">
           <motion.a 
             href="#hero"
             className="text-2xl md:text-3xl old-english-font font-bold"
             {...fadeIn()}
+            aria-label="CBARRGS - Back to Home"
           >
             CBARRGS
           </motion.a>
@@ -98,9 +102,16 @@ const Navigation: React.FC = () => {
           <motion.div 
             className="hidden md:flex space-x-8 items-center"
             {...slideDown(0.2)}
+            role="menubar"
+            aria-label="Desktop menu"
           >
             {navItems.map((item, i) => (
-              <a key={i} href={item.href} className="nav-link">
+              <a 
+                key={i} 
+                href={item.href} 
+                className="nav-link"
+                role="menuitem"
+              >
                 {item.name}
               </a>
             ))}
@@ -108,21 +119,28 @@ const Navigation: React.FC = () => {
 
           {/* Mobile Menu Button */}
           <motion.button
-            className="md:hidden text-white focus:outline-none"
+            className="md:hidden text-white focus:outline-none focus:ring-2 focus:ring-white/50 p-2 rounded-sm"
             onClick={toggleMenu}
             {...fadeIn(0.4)}
+            aria-expanded={isOpen}
+            aria-controls="mobile-menu"
+            aria-label={isOpen ? "Close menu" : "Open menu"}
           >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+            {isOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
           </motion.button>
         </div>
       </motion.nav>
 
       {/* Mobile Menu */}
       <motion.div
+        id="mobile-menu"
         className="fixed inset-0 bg-black z-40 flex flex-col md:hidden pt-24 px-6"
         initial="closed"
         animate={isOpen ? "open" : "closed"}
         variants={menuVariants}
+        role="menu"
+        aria-label="Mobile menu"
+        aria-hidden={!isOpen}
       >
         <div className="flex flex-col space-y-8 items-center">
           {navItems.map((item, i) => (
@@ -133,6 +151,7 @@ const Navigation: React.FC = () => {
               onClick={() => setIsOpen(false)}
               custom={i}
               variants={menuItemVariants}
+              role="menuitem"
             >
               {item.name}
             </motion.a>

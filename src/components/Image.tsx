@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 
 interface ImageProps {
@@ -15,7 +16,7 @@ const Image: React.FC<ImageProps> = ({ src, alt, className = '' }) => {
   return (
     <img
       src={hasError ? placeholder : src}
-      alt={alt}
+      alt={alt} // Ensure alt text is always used
       className={className}
       onError={() => setHasError(true)}
     />
