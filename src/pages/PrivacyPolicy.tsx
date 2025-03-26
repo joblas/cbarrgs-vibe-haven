@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { fadeIn, slideUp } from '@/utils/transitions';
 import Navigation from '@/components/Navigation';
@@ -12,6 +12,11 @@ const PrivacyPolicy: React.FC = () => {
   const [isOptedOut, setIsOptedOut] = useState(false);
   const [shareAccountData, setShareAccountData] = useState(false);
   const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleOptOut = () => {
     setIsOptedOut(true);
