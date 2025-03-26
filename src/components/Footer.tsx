@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { fadeIn, slideUp } from '@/utils/transitions';
@@ -135,7 +134,7 @@ const Footer: React.FC = () => {
           <p>&copy; {currentYear} CBARRGS. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link to="/privacy-policy" className="hover:text-white transition-colors duration-300">Privacy Policy</Link>
-            <a href="#" className="hover:text-white transition-colors duration-300">Terms of Service</a>
+            <Link to="/terms-of-service" className="hover:text-white transition-colors duration-300">Terms of Service</Link>
           </div>
         </motion.div>
       </div>
