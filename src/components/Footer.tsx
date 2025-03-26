@@ -6,6 +6,7 @@ import { INSTAGRAM_URL, YOUTUBE_CHANNEL, SPOTIFY_URL, LINKTREE_URL, APPLE_MUSIC_
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faSpotify, faYoutube, faApple, faSoundcloud } from '@fortawesome/free-brands-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -112,7 +113,7 @@ const Footer: React.FC = () => {
         >
           <p>&copy; {currentYear} CBARRGS. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="hover:text-white transition-colors duration-300">Privacy Policy</a>
+            <Link to="/privacy-policy" className="hover:text-white transition-colors duration-300">Privacy Policy</Link>
             <a href="#" className="hover:text-white transition-colors duration-300">Terms of Service</a>
           </div>
         </motion.div>
