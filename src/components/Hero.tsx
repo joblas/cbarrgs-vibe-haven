@@ -1,8 +1,12 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useAnimation, useScroll, useTransform } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
 import { fadeIn, slideUp } from '@/utils/transitions';
 import { SPOTIFY_URL, YOUTUBE_CHANNEL, INSTAGRAM_URL, LINKTREE_URL, APPLE_MUSIC_URL, SOUNDCLOUD_URL } from '@/utils/constants';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInstagram, faYoutube, faApple, faSpotify, faSoundcloud } from '@fortawesome/free-brands-svg-icons';
+import { faLink } from '@fortawesome/free-solid-svg-icons';
 
 const Hero: React.FC = () => {
   const controls = useAnimation();
@@ -32,27 +36,27 @@ const Hero: React.FC = () => {
   const socialLinks = [{
     name: 'Instagram',
     url: INSTAGRAM_URL,
-    icon: <i className="fab fa-instagram"></i>
+    icon: <FontAwesomeIcon icon={faInstagram} />
   }, {
     name: 'YouTube',
     url: YOUTUBE_CHANNEL,
-    icon: <i className="fab fa-youtube"></i>
+    icon: <FontAwesomeIcon icon={faYoutube} />
   }, {
     name: 'Apple Music',
     url: APPLE_MUSIC_URL,
-    icon: <i className="fab fa-apple"></i>
+    icon: <FontAwesomeIcon icon={faApple} />
   }, {
     name: 'Spotify',
     url: SPOTIFY_URL,
-    icon: <i className="fab fa-spotify"></i>
+    icon: <FontAwesomeIcon icon={faSpotify} />
   }, {
     name: 'SoundCloud',
     url: SOUNDCLOUD_URL,
-    icon: <i className="fab fa-soundcloud"></i>
+    icon: <FontAwesomeIcon icon={faSoundcloud} />
   }, {
     name: 'Linktree',
     url: LINKTREE_URL,
-    icon: <i className="fas fa-link"></i>
+    icon: <FontAwesomeIcon icon={faLink} />
   }];
   return <motion.section id="hero" ref={containerRef} className="relative h-screen flex items-center justify-center overflow-hidden" style={{
     opacity
@@ -76,10 +80,6 @@ const Hero: React.FC = () => {
       }} animate={controls}>
           <motion.div className="inline-block mb-4 px-3 py-1 border border-white/20 rounded-full text-sm font-medium backdrop-blur-sm bg-black/30" {...fadeIn(0.2)}>
             Artist • Musician • Creator
-          </motion.div>
-          
-          <motion.div {...fadeIn(0.4)} className="flex justify-center items-center">
-            <img alt="CBARRGS Logo" className="w-auto max-w-full h-24 md:h-32 lg:h-40 object-contain" src="/lovable-uploads/c2c36249-43cd-4c2a-8813-24814c373b2b.jpg" />
           </motion.div>
           
           <motion.p className="text-xl md:text-2xl max-w-2xl mx-auto text-white/80" {...fadeIn(0.6)}>
