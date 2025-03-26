@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { fadeIn, slideUp } from '@/utils/transitions';
@@ -35,7 +34,7 @@ const Footer: React.FC = () => {
             className="col-span-full md:col-span-1"
             {...fadeIn()}
           >
-            <a href="#hero" className="text-3xl font-display font-bold tracking-tight inline-block mb-4">
+            <a href="#hero" className="text-3xl old-english-font font-bold tracking-tight inline-block mb-4">
               CBARRGS
             </a>
             <p className="text-white/70 max-w-md">
