@@ -89,7 +89,7 @@ const Navigation: React.FC = () => {
         <div className="max-w-screen-xl mx-auto px-6 md:px-8 flex justify-between items-center">
           <motion.a 
             href="#hero"
-            className="text-2xl font-display font-bold tracking-tight old-english-font"
+            className="text-2xl old-english-font font-bold tracking-tight"
             {...fadeIn()}
           >
             CBARRGS

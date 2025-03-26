@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -68,7 +67,7 @@ export default {
 				sans: ['Inter', 'sans-serif'],
 				display: ['SF Pro Display', 'Inter', 'sans-serif'],
 				mono: ['SF Mono', 'monospace'],
-				medieval: ['MedievalSharp', 'cursive'],
+				medieval: ['Canterbury', 'cursive'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
