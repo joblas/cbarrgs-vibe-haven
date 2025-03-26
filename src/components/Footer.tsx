@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { fadeIn, slideUp } from '@/utils/transitions';
@@ -41,13 +42,19 @@ const Footer: React.FC = () => {
               Crafting musical experiences that push boundaries and resonate with souls.
             </p>
             
-            <div className="social-icons">
-                <a href="https://www.instagram.com/cbarrgs/" target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram"></i></a>
-                <a href="https://open.spotify.com/artist/4qRI7BqjuKH3ulYQrEYnLa" target="_blank" rel="noopener noreferrer"><i className="fab fa-spotify"></i></a>
-                <a href="https://www.youtube.com/@cbarrgs" target="_blank" rel="noopener noreferrer"><i className="fab fa-youtube"></i></a>
-                <a href="https://music.apple.com/us/artist/cbarrgs/1448293718" target="_blank" rel="noopener noreferrer"><i className="fab fa-apple"></i></a>
-                <a href="https://soundcloud.com/cbarrgs?ref=clipboard&p=i&c=1&si=06DEC2F9F22F4B25A6D1AF2E306A3032" target="_blank" rel="noopener noreferrer"><i className="fab fa-soundcloud"></i></a>
-                <a href="https://linktr.ee/cbarrgs" target="_blank" rel="noopener noreferrer"><i className="fas fa-link"></i></a>
+            <div className="mt-6 flex space-x-4">
+              {socialLinks.map((link, index) => (
+                <a 
+                  key={index}
+                  href={link.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors duration-300"
+                  title={link.name}
+                >
+                  <FontAwesomeIcon icon={link.icon} />
+                </a>
+              ))}
             </div>
           </motion.div>
           
