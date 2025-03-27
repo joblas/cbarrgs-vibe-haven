@@ -28,7 +28,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   optimizeDeps: {
-    include: ['nanoid'],
+    include: ['nanoid', '@babel/runtime'],
     force: true,
   },
 }));
