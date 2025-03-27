@@ -1,3 +1,4 @@
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
@@ -8,10 +9,10 @@ export default defineConfig(({ mode }) => ({
   base: '/',
   server: {
     host: '0.0.0.0',
-    port: 4000,
+    port: 8080,
     strictPort: true,
     hmr: {
-      clientPort: 4000
+      clientPort: 8080
     }
   },
   plugins: [
@@ -25,5 +26,9 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  optimizeDeps: {
+    include: ['nanoid'],
+    force: true,
   },
 }));
