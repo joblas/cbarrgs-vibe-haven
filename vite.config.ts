@@ -13,6 +13,21 @@ export default defineConfig(({ mode }) => ({
     strictPort: true,
     hmr: {
       clientPort: 8080
+    },
+    // Add security headers to mitigate the CORS vulnerability in esbuild
+    cors: {
+      // Restrict CORS to only allow requests from the same origin in development
+      origin: mode === 'development' ? 'same-origin' : true,
+    },
+    headers: {
+      // Add security headers
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+      'Referrer-Policy': 'same-origin',
+      // These headers help mitigate the vulnerability by preventing cross-origin requests
+      'Cross-Origin-Embedder-Policy': 'require-corp',
+      'Cross-Origin-Opener-Policy': 'same-origin',
+      'Cross-Origin-Resource-Policy': 'same-origin'
     }
   },
   plugins: [
