@@ -16,15 +16,49 @@ const Music: React.FC = () => {
     }
   }, [controls, isInView]);
 
-  const SPOTIFY_URL = "https://open.spotify.com";
-
   const music = [
-      { title: "I'll Be There", year: "2022", type: "Single", link: `${SPOTIFY_URL}/album/5ncXtue3RWjtHPDgS1tEIV?nd=1&dlsi=7a26220c7ba24edd` },
-      { title: "Bit", year: "2022", type: "Single", link: `${SPOTIFY_URL}/album/59gXFIz9bdQPxzewVKUYHM?si=40Iax9xKRPetDR225A_wbQ` },
-      { title: "Fight", year: "2020", type: "Single", link: `${SPOTIFY_URL}/track/3xT7tYjeVOx5SflV1Cm17v?nd=1&dlsi=df5b20110da94a92` },
-      { title: "I'll Stay", year: "2019", type: "Single", link: `${SPOTIFY_URL}/album/1vlCQku0AwgLeWGQ2gtWgi?nd=1&dlsi=2dcb281cfe474c47` },
-      { title: "Fall", year: "2019", type: "Single", link: `${SPOTIFY_URL}/album/0A8DPvH2xVYbPNH8VK6klG?nd=1&dlsi=d27212fd96714f60` },
-      { title: "You Look Beautiful", year: "2018", type: "Single", link: `${SPOTIFY_URL}/track/5cs2nvgUZdmqNbcobNZvMD?nd=1&dlsi=5f200b64a0304af7` },
+      { 
+        title: "I'll Be There", 
+        year: "2022", 
+        type: "Single", 
+        link: `${SPOTIFY_URL}/track/1cXUTrCJkQQ7kGnlGW5WVL`,
+        embedId: "track/1cXUTrCJkQQ7kGnlGW5WVL"
+      },
+      { 
+        title: "Bit", 
+        year: "2022", 
+        type: "Single", 
+        link: `${SPOTIFY_URL}/track/0Wd0ZVtRFSLwOEVkpxYQkp`,
+        embedId: "track/0Wd0ZVtRFSLwOEVkpxYQkp"
+      },
+      { 
+        title: "Fight", 
+        year: "2020", 
+        type: "Single", 
+        link: `${SPOTIFY_URL}/track/3xT7tYjeVOx5SflV1Cm17v`,
+        embedId: "track/3xT7tYjeVOx5SflV1Cm17v"
+      },
+      { 
+        title: "I'll Stay", 
+        year: "2019", 
+        type: "Single", 
+        link: `${SPOTIFY_URL}/track/3eFsLqXQMBieuBPCDQlmrC`,
+        embedId: "track/3eFsLqXQMBieuBPCDQlmrC"
+      },
+      { 
+        title: "Fall", 
+        year: "2019", 
+        type: "Single", 
+        link: `${SPOTIFY_URL}/track/6Gg7qEhbZFTQQEQBhCt7BX`,
+        embedId: "track/6Gg7qEhbZFTQQEQBhCt7BX"
+      },
+      { 
+        title: "You Look Beautiful", 
+        year: "2018", 
+        type: "Single", 
+        link: `${SPOTIFY_URL}/track/5cs2nvgUZdmqNbcobNZvMD`,
+        embedId: "track/5cs2nvgUZdmqNbcobNZvMD"
+      },
   ];
 
   return (
@@ -81,30 +115,47 @@ const Music: React.FC = () => {
             className="col-span-full lg:col-span-1 glass-panel rounded-sm p-6 md:p-8"
           >
             <h3 className="text-xl font-display font-bold mb-6">Catalog</h3>
+            
+            <div className="mb-6 rounded-sm overflow-hidden">
+              <iframe
+                src="https://open.spotify.com/embed/artist/4qRI7BqjuKH3ulYQrEYnLa?utm_source=generator"
+                width="100%"
+                height="352"
+                frameBorder="0"
+                allowFullScreen
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"
+                title="CBARRGS on Spotify"
+              ></iframe>
+            </div>
+            
             <div className="space-y-4">
               {music.map((item, i) => (
                 <motion.div
                   key={i}
                   variants={staggerItems}
                   custom={i}
-                  className="flex items-center justify-between py-3 border-b border-white/10 group hover-grow"
+                  className="py-3 border-b border-white/10 hover-grow"
                 >
-                  <div>
-                    <h4 className="font-medium">{item.title}</h4>
-                    <div className="flex items-center text-sm text-white/60">
-                      <span>{item.year}</span>
-                      <span className="mx-2">•</span>
-                      <span>{item.type}</span>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium">{item.title}</h4>
+                      <div className="flex items-center text-sm text-white/60">
+                        <span>{item.year}</span>
+                        <span className="mx-2">•</span>
+                        <span>{item.type}</span>
+                      </div>
                     </div>
+                    <a 
+                      href={item.link} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-white/70 hover:text-white transition-colors"
+                      aria-label={`Open ${item.title} on Spotify`}
+                    >
+                      <ExternalLink size={18} />
+                    </a>
                   </div>
-                  <a 
-                    href={item.link} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  >
-                    <ExternalLink size={18} />
-                  </a>
                 </motion.div>
               ))}
             </div>
@@ -121,24 +172,6 @@ const Music: React.FC = () => {
             </div>
           </motion.div>
         </div>
-
-        <motion.div 
-          initial="initial"
-          animate={controls}
-          variants={fadeIn(0.6)}
-          className="mt-20 aspect-[21/9] w-full rounded-sm overflow-hidden"
-        >
-          <iframe
-            src={`https://open.spotify.com/embed/artist/4qRI7BqjuKH3ulYQrEYnLa?utm_source=generator&theme=0`}
-            width="100%"
-            height="100%"
-            frameBorder="0"
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-            loading="lazy"
-            title="Spotify Player"
-            className="bg-transparent"
-          ></iframe>
-        </motion.div>
       </div>
     </section>
   );

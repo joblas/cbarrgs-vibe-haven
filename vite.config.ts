@@ -1,4 +1,3 @@
-
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
@@ -16,18 +15,20 @@ export default defineConfig(({ mode }) => ({
     },
     // Add security headers to mitigate the CORS vulnerability in esbuild
     cors: {
-      // Restrict CORS to only allow requests from the same origin in development
-      origin: mode === 'development' ? 'same-origin' : true,
+      // Allow Spotify domains for embedding
+      origin: mode === 'development' ? ['https://open.spotify.com', 'http://localhost:4000'] : true,
     },
     headers: {
       // Add security headers
       'X-Content-Type-Options': 'nosniff',
-      'X-Frame-Options': 'DENY',
+      'X-Frame-Options': 'SAMEORIGIN',
       'Referrer-Policy': 'same-origin',
-      // These headers help mitigate the vulnerability by preventing cross-origin requests
-      'Cross-Origin-Embedder-Policy': 'require-corp',
+      // These headers help mitigate the vulnerability by allowing Spotify embeds
+      'Cross-Origin-Embedder-Policy': 'credentialless',
       'Cross-Origin-Opener-Policy': 'same-origin',
-      'Cross-Origin-Resource-Policy': 'same-origin'
+      'Cross-Origin-Resource-Policy': 'cross-origin',
+      // Add Content-Security-Policy to allow Spotify embeds
+      'Content-Security-Policy': "default-src 'self'; frame-src 'self' https://open.spotify.com https://*.spotify.com; img-src 'self' data: https://*.spotify.com; connect-src 'self' https://*.spotify.com;"
     }
   },
   plugins: [
@@ -43,7 +44,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   optimizeDeps: {
-    include: ['nanoid', '@babel/runtime'],
+    include: ['nanoid'],
     force: true,
   },
 }));
