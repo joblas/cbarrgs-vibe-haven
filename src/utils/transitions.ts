@@ -1,5 +1,6 @@
 
 
+
 export const fadeIn = (delay = 0) => ({
   initial: { opacity: 0, y: 20 },
   animate: { 
@@ -53,15 +54,13 @@ export const slideDown = (delay = 0) => ({
   }
 });
 
-// Fixed staggerContainer with proper types for Framer Motion
+// Fixed staggerContainer for Framer Motion Variants
 export const staggerContainer = {
-  variants: {
-    initial: {},
-    animate: {
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
+  initial: {},
+  animate: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2
     }
   }
 };
