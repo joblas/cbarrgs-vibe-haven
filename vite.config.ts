@@ -45,11 +45,6 @@ export default defineConfig(({ mode }) => ({
     },
   },
   optimizeDeps: {
-    include: ['nanoid'],
-    force: true,
-  },
-  // Add direct dependency overrides to fix security vulnerabilities
-  optimizeDeps: {
     esbuildOptions: {
       // This doesn't actually fix the vulnerability but helps reduce its impact
       // by limiting what can be accessed
