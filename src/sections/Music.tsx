@@ -103,13 +103,6 @@ const Music: React.FC<MusicProps> = ({ onSectionVisible }) => {
           whileInView="visible"
           viewport={{ once: false, amount: 0.3 }}
         >
-          <motion.span 
-            className="inline-block text-sm font-medium text-white/60 uppercase tracking-wider mb-4"
-            variants={itemVariants}
-          >
-            Discography
-          </motion.span>
-          
           <motion.h2 
             className="section-title"
             variants={itemVariants}

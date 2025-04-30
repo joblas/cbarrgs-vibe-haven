@@ -71,7 +71,6 @@ const Music: React.FC = () => {
           variants={fadeIn()}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <span className="inline-block text-sm font-medium text-white/60 uppercase tracking-wider mb-4">Discography</span>
           <h2 className="section-title">Listen to the Music</h2>
           <p className="text-white/70 max-w-2xl mx-auto">
             Explore CBARRGS's discography — a journey through sound, emotion, and artistic expression. 

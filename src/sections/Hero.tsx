@@ -120,13 +120,6 @@ const Hero: React.FC<HeroProps> = ({ onSectionVisible }) => {
             Artist • Musician • Creator
           </motion.div>
           
-          <motion.p 
-            className="text-xl md:text-2xl max-w-2xl mx-auto text-white/80" 
-            variants={itemVariants}
-          >
-            Crafting musical experiences that push boundaries and resonate with souls
-          </motion.p>
-          
           <motion.div 
             className="flex justify-center space-x-4 pt-6" 
             variants={itemVariants}

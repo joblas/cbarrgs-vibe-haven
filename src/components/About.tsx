@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { motion, useAnimation, useInView } from 'framer-motion';
 import { useRef } from 'react';
@@ -55,7 +54,6 @@ const About: React.FC = () => {
             variants={slideUp(0.3)}
             className="space-y-6"
           >
-            <span className="inline-block text-sm font-medium text-white/60 uppercase tracking-wider">About the Artist</span>
             <h2 className="section-title">The Story<br />Behind the Music</h2>
             
             <div className="space-y-6">

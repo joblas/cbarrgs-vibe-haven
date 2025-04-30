@@ -54,9 +54,6 @@ const Footer: React.FC = () => {
                 CBARRGS
               </Link>
             )}
-            <p className="text-white/70 max-w-md">
-              Crafting musical experiences that push boundaries and resonate with souls.
-            </p>
             
             <div className="mt-6 flex space-x-4" aria-label="Social media links">
               {socialLinks.map((link, index) => (

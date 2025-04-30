@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useAnimation, useScroll, useTransform } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
@@ -81,10 +80,6 @@ const Hero: React.FC = () => {
           <motion.div className="inline-block mb-4 px-3 py-1 border border-white/20 rounded-full text-sm font-medium backdrop-blur-sm bg-black/30" {...fadeIn(0.2)}>
             Artist • Musician • Creator
           </motion.div>
-          
-          <motion.p className="text-xl md:text-2xl max-w-2xl mx-auto text-white/80" {...fadeIn(0.6)}>
-            Crafting musical experiences that push boundaries and resonate with souls
-          </motion.p>
           
           <motion.div className="flex justify-center space-x-4 pt-6" {...fadeIn(0.8)}>
             <a href="#music" className="btn-primary">
