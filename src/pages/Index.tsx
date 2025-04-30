@@ -11,6 +11,8 @@ import Videos from '@/components/Videos';
 import Store from '@/components/Store';
 
 const Index: React.FC = () => {
+  console.log("Index component rendering");
+  
   useEffect(() => {
     // Check if there's a scroll target in localStorage
     const scrollTarget = localStorage.getItem('scrollTarget');

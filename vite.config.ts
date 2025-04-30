@@ -33,11 +33,8 @@ export default defineConfig(({ mode }) => ({
     }
   },
   plugins: [
-    react({
-      jsxImportSource: "react"
-    }),
-    mode === 'development' &&
-    componentTagger(),
+    react(),
+    mode === 'development' && componentTagger(),
   ].filter(Boolean),
   resolve: {
     alias: {
