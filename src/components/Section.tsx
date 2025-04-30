@@ -1,8 +1,12 @@
+
 import React, { useRef, useCallback, forwardRef, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useIntersectionObserver } from '@/hooks/intersection/useIntersectionObserver';
 
-interface SectionProps extends React.HTMLAttributes<HTMLElement> {
+// Create a type that avoids the conflicting onAnimationStart prop
+type MotionProps = Omit<React.ComponentProps<typeof motion.section>, "onAnimationStart">;
+
+interface SectionProps extends MotionProps {
   id: string;
   fullScreen?: boolean;
   className?: string;
