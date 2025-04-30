@@ -39,7 +39,6 @@ const Videos: React.FC = () => {
     <section id="videos" className="relative py-24 md:py-32 bg-zinc-900">
       <div className="section-container">
         <motion.div ref={ref} initial="initial" animate={controls} variants={fadeIn()} className="text-center max-w-3xl mx-auto mb-16">
-          <span className="inline-block text-sm font-medium text-white/60 uppercase tracking-wider mb-4">Visual Experience</span>
           <h2 className="section-title">Music Videos</h2>
           <p className="text-white/70 max-w-2xl mx-auto">
             Explore CBARRGS's visual journey through music videos, live performances, and behind-the-scenes content.

@@ -1,4 +1,3 @@
-
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
@@ -39,6 +38,7 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      '@babel/runtime': path.resolve(__dirname, 'node_modules/@babel/runtime'),
     },
   },
   optimizeDeps: {
@@ -51,5 +51,16 @@ export default defineConfig(({ mode }) => ({
     },
     include: ['nanoid', '@babel/runtime'],
     force: true,
+  },
+  build: {
+    // Prevent breaking the build on warnings
+    chunkSizeWarningLimit: 1600,
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
+    rollupOptions: {
+      // Make sure to externalize deps that shouldn't be bundled
+      external: [],
+    },
   },
 }));

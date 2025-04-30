@@ -1,12 +1,11 @@
-
 import React, { useEffect } from 'react';
 import Navigation from '@/components/Navigation';
 import Section from '@/components/Section';
 import Footer from '@/components/Footer';
 import SkipToContent from '@/components/SkipToContent';
-import Hero from '@/sections/Hero';
-import About from '@/sections/About';
-import Music from '@/sections/Music';
+import Hero from '@/components/Hero';
+import About from '@/components/About';
+import Music from '@/components/Music';
 import Videos from '@/components/Videos';
 import Store from '@/components/Store';
 

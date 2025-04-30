@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useInView } from 'framer-motion';
 import { MERCHANDISE, SHOPIFY_STORE } from '@/utils/constants';
@@ -27,7 +26,6 @@ const Store: React.FC = () => {
           variants={fadeIn()}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <span className="inline-block text-sm font-medium text-white/60 uppercase tracking-wider mb-4">Merchandise</span>
           <h2 id="store-heading" className="section-title">Official Merch</h2>
           <p className="text-white/70 max-w-2xl mx-auto">
             Show your support with official CBARRGS merchandise. From apparel to collectibles, find something that resonates with you.

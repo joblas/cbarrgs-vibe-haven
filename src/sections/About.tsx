@@ -72,7 +72,6 @@ const About: React.FC<AboutProps> = ({ onSectionVisible }) => {
           viewport={{ once: false, amount: 0.4 }}
         >
           <motion.div variants={itemVariants}>
-            <span className="inline-block text-sm font-medium text-white/60 uppercase tracking-wider mb-3">About The Artist</span>
             <h2 className="section-title mb-6">Behind The Music</h2>
           </motion.div>
 
