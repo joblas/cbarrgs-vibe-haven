@@ -39,7 +39,7 @@ export const scaleIn = (delay = 0) => ({
   }
 });
 
-// Add the missing slideDown animation
+// Fixed slideDown animation
 export const slideDown = (delay = 0) => ({
   initial: { opacity: 0, y: -20 },
   animate: {
@@ -53,10 +53,8 @@ export const slideDown = (delay = 0) => ({
   }
 });
 
-// Add staggerContainer for parent elements
+// Fixed staggerContainer with proper types for Framer Motion
 export const staggerContainer = {
-  initial: "initial",
-  animate: "animate",
   variants: {
     initial: {},
     animate: {
@@ -68,8 +66,21 @@ export const staggerContainer = {
   }
 };
 
-// Add staggerItems for child elements
-export const staggerItems = (i = 0) => ({
+// Fixed staggerItems with proper types
+export const staggerItems = {
+  initial: { opacity: 0, y: 20 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1]
+    }
+  }
+};
+
+// Custom staggerItem with delay based on index
+export const staggerItemWithDelay = (i = 0) => ({
   initial: { opacity: 0, y: 20 },
   animate: {
     opacity: 1,

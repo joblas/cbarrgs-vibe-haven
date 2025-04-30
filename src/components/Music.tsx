@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useInView } from 'framer-motion';
 import { fadeIn, slideUp, staggerContainer, staggerItems } from '@/utils/transitions';
@@ -134,7 +135,6 @@ const Music: React.FC = () => {
                 <motion.div
                   key={i}
                   variants={staggerItems}
-                  custom={i}
                   className="py-3 border-b border-white/10 hover-grow"
                 >
                   <div className="flex items-center justify-between">
