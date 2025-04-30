@@ -91,6 +91,33 @@ export const initSpotifyEmbed = async (): Promise<void> => {
 
 // Intersection Observer for lazy loading images on demand
 export const createLazyLoadObserver = (): IntersectionObserver => {
+  // Helper function to sanitize URLs against XSS
+  const sanitizeUrl = (url: string): string | null => {
+    try {
+      // First, basic validation for common secure protocols and patterns
+      if (!/^(https?:\/\/|\/|\.\/|\.\.\/)/i.test(url) || /^javascript:/i.test(url)) {
+        console.error('Invalid image URL detected:', url);
+        return null;
+      }
+
+      // Create URL object to further validate - this will throw for malformed URLs
+      const urlObj = new URL(url, window.location.origin);
+      
+      // Only allow specific protocols
+      if (urlObj.protocol !== 'http:' && urlObj.protocol !== 'https:') {
+        console.error('Invalid protocol in URL:', url);
+        return null;
+      }
+      
+      // Return the sanitized URL string
+      return urlObj.toString();
+    } catch (error) {
+      // If URL parsing fails or any other error occurs
+      console.error('URL sanitization failed:', error);
+      return null;
+    }
+  };
+
   return new IntersectionObserver(
     (entries, observer) => {
       entries.forEach(entry => {
@@ -99,29 +126,29 @@ export const createLazyLoadObserver = (): IntersectionObserver => {
           const dataSrc = img.getAttribute('data-src');
           
           if (dataSrc) {
-            // Validate URL to prevent DOM-based XSS
-            // Only allow http://, https:// and relative URLs, reject javascript: URLs
-            if (!/^(https?:\/\/|\/|\.\/|\.\.\/)/i.test(dataSrc) || /^javascript:/i.test(dataSrc)) {
-              console.error('Invalid image URL detected:', dataSrc);
-              return;
+            // Sanitize the URL to prevent XSS attacks
+            const sanitizedUrl = sanitizeUrl(dataSrc);
+            
+            // Only proceed if URL was successfully sanitized
+            if (sanitizedUrl) {
+              // Create new image to preload
+              const newImg = new Image();
+              // Set crossOrigin if it's a remote URL
+              if (/^https?:\/\//i.test(sanitizedUrl) && !sanitizedUrl.startsWith(window.location.origin)) {
+                newImg.crossOrigin = 'anonymous';
+              }
+              
+              // Use the sanitized URL
+              newImg.src = sanitizedUrl;
+              
+              newImg.onload = () => {
+                // Set the sanitized URL to the image
+                img.src = sanitizedUrl;
+                img.removeAttribute('data-src');
+                img.classList.add('loaded');
+                observer.unobserve(img);
+              };
             }
-            
-            // Create new image to preload
-            const newImg = new Image();
-            // Set crossOrigin if it's a remote URL
-            if (/^https?:\/\//i.test(dataSrc) && !dataSrc.startsWith(window.location.origin)) {
-              newImg.crossOrigin = 'anonymous';
-            }
-            
-            newImg.src = dataSrc;
-            
-            newImg.onload = () => {
-              // Set the validated src to the image
-              img.src = dataSrc;
-              img.removeAttribute('data-src');
-              img.classList.add('loaded');
-              observer.unobserve(img);
-            };
           }
         }
       });
