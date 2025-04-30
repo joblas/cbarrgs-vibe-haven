@@ -99,11 +99,24 @@ export const createLazyLoadObserver = (): IntersectionObserver => {
           const dataSrc = img.getAttribute('data-src');
           
           if (dataSrc) {
+            // Validate URL to prevent DOM-based XSS
+            // Only allow http://, https:// and relative URLs, reject javascript: URLs
+            if (!/^(https?:\/\/|\/|\.\/|\.\.\/)/i.test(dataSrc) || /^javascript:/i.test(dataSrc)) {
+              console.error('Invalid image URL detected:', dataSrc);
+              return;
+            }
+            
             // Create new image to preload
             const newImg = new Image();
+            // Set crossOrigin if it's a remote URL
+            if (/^https?:\/\//i.test(dataSrc) && !dataSrc.startsWith(window.location.origin)) {
+              newImg.crossOrigin = 'anonymous';
+            }
+            
             newImg.src = dataSrc;
             
             newImg.onload = () => {
+              // Set the validated src to the image
               img.src = dataSrc;
               img.removeAttribute('data-src');
               img.classList.add('loaded');
