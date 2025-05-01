@@ -105,13 +105,6 @@ const Hero: React.FC = () => {
           </motion.h1>
           
           <motion.div 
-            className="inline-block mb-8 px-4 py-2 border border-white/20 rounded-sm text-sm font-light backdrop-blur-sm bg-black/10" 
-            {...fadeIn(0.2)}
-          >
-            Artist • Musician • Creator
-          </motion.div>
-          
-          <motion.div 
             className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-6 pt-6" 
             {...fadeIn(0.4)}
           >
