@@ -121,7 +121,7 @@ const Hero: React.FC = () => {
                 href={social.url} 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="w-12 h-12 rounded-sm bg-white/10 hover:bg-white/20 transition-colors duration-500 flex items-center justify-center text-white/80 hover:text-white" 
+                className="w-12 h-12 flex items-center justify-center text-white hover:text-white/80 transition-colors duration-300" 
                 whileHover={{ y: -3 }} 
                 whileTap={{ scale: 0.95 }} 
                 title={social.name}
