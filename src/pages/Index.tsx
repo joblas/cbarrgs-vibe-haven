@@ -1,13 +1,10 @@
 import React, { useEffect } from 'react';
 import Navigation from '@/components/Navigation';
-import Section from '@/components/Section';
 import Footer from '@/components/Footer';
 import SkipToContent from '@/components/SkipToContent';
 import Hero from '@/components/Hero';
 import About from '@/components/About';
-import Music from '@/components/Music';
-import Videos from '@/components/Videos';
-import Store from '@/components/Store';
+import ShopComingSoon from '@/components/ShopComingSoon';
 
 const Index: React.FC = () => {
   console.log("Index component rendering");
@@ -31,14 +28,15 @@ const Index: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-black text-white">
+      {/* Add grain overlay for texture */}
+      <div className="grain-overlay"></div>
+      
       <SkipToContent />
       <Navigation />
       <main id="main-content">
         <Hero />
         <About />
-        <Music />
-        <Videos />
-        <Store />
+        <ShopComingSoon />
       </main>
       <Footer />
     </div>

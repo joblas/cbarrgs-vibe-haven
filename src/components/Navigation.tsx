@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
@@ -71,12 +70,11 @@ const Navigation: React.FC = () => {
     })
   };
 
+  // Simplified navigation items as requested
   const navItems = [
     { name: "Home", href: isHomePage ? "#hero" : "/#hero" },
     { name: "About", href: isHomePage ? "#about" : "/#about" },
-    { name: "Music", href: isHomePage ? "#music" : "/#music" },
-    { name: "Videos", href: isHomePage ? "#videos" : "/#videos" },
-    { name: "Store", href: isHomePage ? "#store" : "/#store" }
+    { name: "Shop", href: isHomePage ? "#shop-coming-soon" : "/#shop-coming-soon" }
   ];
 
   return (
@@ -96,7 +94,7 @@ const Navigation: React.FC = () => {
             {isHomePage ? (
               <a 
                 href="#hero"
-                className="text-2xl md:text-3xl old-english-font font-bold"
+                className="text-2xl md:text-3xl old-english-font font-light"
                 aria-label="CBARRGS - Back to Home"
               >
                 CBARRGS
@@ -104,7 +102,7 @@ const Navigation: React.FC = () => {
             ) : (
               <Link 
                 to="/"
-                className="text-2xl md:text-3xl old-english-font font-bold"
+                className="text-2xl md:text-3xl old-english-font font-light"
                 aria-label="CBARRGS - Back to Home"
               >
                 CBARRGS
@@ -123,7 +121,7 @@ const Navigation: React.FC = () => {
               <a 
                 key={i} 
                 href={item.href} 
-                className="nav-link"
+                className="nav-link font-light tracking-wider"
                 role="menuitem"
                 onClick={() => {
                   if (!isHomePage && !item.href.startsWith('/')) {
@@ -168,7 +166,7 @@ const Navigation: React.FC = () => {
             <motion.a
               key={i}
               href={item.href}
-              className="text-2xl font-medium nav-link"
+              className="text-2xl font-light tracking-wide nav-link"
               onClick={() => {
                 setIsOpen(false);
                 if (!isHomePage && !item.href.startsWith('/')) {

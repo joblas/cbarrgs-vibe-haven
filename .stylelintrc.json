@@ -1,5 +1,8 @@
 {
-  "extends": ["stylelint-config-standard"],
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-tailwindcss"
+  ],
   "rules": {
     "at-rule-no-unknown": [
       true,
@@ -10,9 +13,19 @@
           "variants",
           "responsive",
           "screen",
-          "layer"
+          "layer",
+          "import"
         ]
       }
-    ]
+    ],
+    "no-duplicate-selectors": null,
+    "function-no-unknown": null,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["global"]
+      }
+    ],
+    "selector-class-pattern": null
   }
 }
