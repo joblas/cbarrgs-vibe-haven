@@ -12,7 +12,7 @@ CBARRGS (see-bargs) blends electronic textures with ambient soundscapes and alte
 
 Through carefully crafted layers and emotional depth, CBARRGS creates immersive spaces where listeners can explore themes of connection, digital solitude, and meaning-making in our complex reality.
 
-Each track balances technical precision with raw feeling — inviting you to get lost between the waves and whispers.
+Each track balances technical precision with raw feeling — inviting you to get lost between the waves and signals.
 `;
 
 // Contact information - adjust these as needed
