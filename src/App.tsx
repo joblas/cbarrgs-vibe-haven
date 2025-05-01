@@ -14,7 +14,6 @@ import { LazyMotion, domAnimation } from "framer-motion";
 const queryClient = new QueryClient();
 
 const App = () => {
-  console.log("App component rendering");
   return (
     <QueryClientProvider client={queryClient}>
       <LazyMotion features={domAnimation}>

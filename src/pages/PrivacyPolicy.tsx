@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { fadeIn, slideUp } from '@/utils/transitions';
@@ -7,21 +6,27 @@ import Footer from '@/components/Footer';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Switch } from '@/components/ui/switch';
 import SkipToContent from '@/components/SkipToContent';
+import { useToast } from '@/components/ui/use-toast';
 
 const PrivacyPolicy: React.FC = () => {
   const [isOptedOut, setIsOptedOut] = useState(false);
   const [shareAccountData, setShareAccountData] = useState(false);
   const [email, setEmail] = useState('');
+  const toast = useToast();
 
   useEffect(() => {
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
   }, []);
 
-  const handleOptOut = () => {
+  const handleOptOut = (e: React.FormEvent) => {
+    e.preventDefault();
     setIsOptedOut(true);
     // In a real app, this would send the opt-out preference to a server
-    console.log('User opted out', { shareAccountData, email });
+    toast.toast({
+      title: "Opt-out request received",
+      description: "We've received your request to opt out of data collection.",
+    });
   };
 
   return (

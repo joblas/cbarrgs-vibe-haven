@@ -7,7 +7,6 @@ import About from '@/components/About';
 import ShopComingSoon from '@/components/ShopComingSoon';
 
 const Index: React.FC = () => {
-  console.log("Index component rendering");
   
   useEffect(() => {
     // Check if there's a scroll target in localStorage
