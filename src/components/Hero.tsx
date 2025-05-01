@@ -137,42 +137,6 @@ const Hero: React.FC = () => {
               </motion.a>
             ))}
           </motion.div>
-          
-          {/* Scroll Indicator */}
-          <motion.div 
-            className="mt-12"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{
-              opacity: 1,
-              y: 0,
-              transition: {
-                delay: 1.2,
-                duration: 0.8,
-                ease: [0.45, 0, 0.55, 1]
-              }
-            }}
-          >
-            <motion.div 
-              animate={{ y: [0, 8, 0] }} 
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                repeatType: "loop",
-                ease: "easeInOut"
-              }} 
-              className="flex flex-col items-center justify-center cursor-pointer hover:text-white transition-colors duration-300" 
-              onClick={() => {
-                document.getElementById('about')?.scrollIntoView({
-                  behavior: 'smooth'
-                });
-              }}
-            >
-              <span className="text-sm font-light mb-2 text-white/70 hover:text-white/100 transition-colors duration-300">Scroll</span>
-              <div className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300">
-                <ArrowDown className="text-white" size={20} />
-              </div>
-            </motion.div>
-          </motion.div>
         </motion.div>
       </div>
     </motion.section>
