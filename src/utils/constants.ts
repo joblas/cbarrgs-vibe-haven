@@ -8,11 +8,11 @@ export const LINKTREE_URL = "https://linktr.ee/CBARRGS";
 
 // Artist bio text
 export const ARTIST_BIO = `
-CBARRGS (pronounced "see-bargs") is a multi-faceted musician and producer whose work transcends traditional genre boundaries. With roots in both classical training and experimental production, his sound has evolved into a unique fusion of electronic, ambient, and alternative elements.
+CBARRGS (see-bargs) blends electronic textures with ambient soundscapes and alternative sensibilities. Their sonic world has been expanding since 2015.
 
-Beginning his journey in 2015, CBARRGS has consistently pushed the boundaries of his craft, creating immersive sonic landscapes that invite listeners into carefully constructed emotional spaces.
+Through carefully crafted layers and emotional depth, CBARRGS creates immersive spaces where listeners can explore themes of connection, digital solitude, and meaning-making in our complex reality.
 
-His most recent works explore themes of human connection, digital isolation, and the search for meaning in an increasingly complex world — all delivered through meticulously produced tracks that balance technical precision with raw emotional authenticity.
+Each track balances technical precision with raw feeling — inviting you to get lost between the waves and whispers.
 `;
 
 // Contact information - adjust these as needed

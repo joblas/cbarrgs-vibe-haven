@@ -71,7 +71,7 @@ const About: React.FC = () => {
             variants={slideUp(0.3)}
             className="space-y-8"
           >
-            <h2 className="section-title font-light">The Story<br />Behind the Music</h2>
+            <h2 className="section-title font-light">bedroom transmissions:<br />between waves & whispers</h2>
             
             <div className="space-y-6">
               {paragraphs.map((paragraph, index) => (
