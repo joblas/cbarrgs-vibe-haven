@@ -3,3 +3,4 @@ project_id = "pcodmzyfcndyiwixjkst"
 
 [functions.notify-new-subscriber]
 verify_jwt = false
+
