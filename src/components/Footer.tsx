@@ -58,7 +58,7 @@ const Footer: React.FC = () => {
                 className="text-3xl md:text-4xl old-english-font font-light inline-block mb-4"
                 aria-label="CBARRGS - Back to Home"
               >
-                CBARRGS
+                Cbarrgs
               </Link>
             )}
             
@@ -135,7 +135,7 @@ const Footer: React.FC = () => {
           className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between text-white/60 text-sm font-light"
           {...fadeIn(0.6)}
         >
-          <p>&copy; {currentYear} CBARRGS. All rights reserved.</p>
+          <p>&copy; {currentYear} Cbarrgs. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link to="/privacy-policy" className="hover:text-white transition-colors duration-300">Privacy Policy</Link>
             <Link to="/terms-of-service" className="hover:text-white transition-colors duration-300">Terms of Service</Link>
