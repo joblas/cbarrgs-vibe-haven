@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useScroll, useTransform } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
@@ -110,6 +111,9 @@ const Hero: React.FC = () => {
           >
             <a href="#about" className="btn-secondary">
               Discover
+            </a>
+            <a href="#shop-coming-soon" className="btn-secondary">
+              Store Coming Soon
             </a>
           </motion.div>
           
