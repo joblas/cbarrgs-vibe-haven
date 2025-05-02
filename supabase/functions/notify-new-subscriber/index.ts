@@ -1,5 +1,8 @@
+// @ts-ignore: Deno-specific imports
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+// @ts-ignore: Deno-specific imports
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+// @ts-ignore: Deno-specific imports
 import { Resend } from "https://esm.sh/resend@2.0.0";
 
 const corsHeaders = {
@@ -8,6 +11,7 @@ const corsHeaders = {
 };
 
 // Get the Resend API key from environment variables
+// @ts-ignore: Deno global
 const resendApiKey = Deno.env.get("RESEND_API_KEY");
 
 // More detailed logging about the API key
@@ -40,6 +44,14 @@ serve(async (req) => {
     if (resend) {
       try {
         console.log("Attempting to send email notification...");
+        
+        // Use a verified sender domain or the default Resend domain
+        // IMPORTANT: Make sure you've verified cbarrgs.com in your Resend dashboard
+        // or use the default onboarding@resend.dev address until verification is complete
+        const from = "Cbarrgs Music <onboarding@resend.dev>";
+        const to = ["cbarrgs@cbarrgs.com", "cbarrgs@gmail.com"];
+        
+        console.log(`Sending email from: ${from} to: ${to.join(", ")}`);
         
         const notification = await resend.emails.send({
           from,
