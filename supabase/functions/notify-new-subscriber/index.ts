@@ -129,12 +129,8 @@ serve(async (req) => {
           JSON.stringify({ 
             success: false, 
             emailSent: false, 
-            error: emailError.message,
-            errorName: emailError.constructor.name,
-            timestamp: new Date().toISOString(),
-            stack: emailError.stack,
-            cause: emailError.cause,
-            response: emailError.response
+            error: "An internal error occurred. Please try again later.",
+            timestamp: new Date().toISOString()
           }),
           {
             status: 500,
