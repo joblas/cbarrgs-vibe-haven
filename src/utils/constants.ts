@@ -8,9 +8,9 @@ export const LINKTREE_URL = "https://linktr.ee/CBARRGS";
 
 // Artist bio text
 export const ARTIST_BIO = `
-CBARRGS (see-bargs) blends electronic textures with ambient soundscapes and alternative sensibilities. His sonic world has been expanding since 2015.
+Cbarrgs (see-bargs) blends electronic textures with ambient soundscapes and alternative sensibilities. His sonic world has been expanding since 2015.
 
-Through carefully crafted layers and emotional depth, CBARRGS creates immersive spaces where listeners can explore themes of connection, digital solitude, and meaning-making in our complex reality.
+Through carefully crafted layers and emotional depth, Cbarrgs creates immersive spaces where listeners can explore themes of connection, digital solitude, and meaning-making in our complex reality.
 
 Each track balances technical precision with raw feeling — inviting you to get lost between the waves and signals.
 `;
