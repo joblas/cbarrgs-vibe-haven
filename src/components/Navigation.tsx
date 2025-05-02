@@ -74,6 +74,7 @@ const Navigation: React.FC = () => {
   const navItems = [
     { name: "Home", href: isHomePage ? "#hero" : "/#hero" },
     { name: "About", href: isHomePage ? "#about" : "/#about" },
+    { name: "Listen", href: isHomePage ? "#listen" : "/#listen" },
     { name: "Shop", href: isHomePage ? "#shop-coming-soon" : "/#shop-coming-soon" }
   ];
 
