@@ -34,20 +34,12 @@ serve(async (req) => {
 
     // Log the new subscription
     console.log(`New subscriber: ${subscriber.email}`);
-    console.log(`Resend API Key configured: ${resendApiKey ? "Yes" : "No"}`);
+    console.log(`Resend API Key configured: ${resendApiKey ? "Yes (masked for security)" : "No"}`);
 
     // Send email notification to the specified email addresses if Resend is configured
     if (resend) {
       try {
         console.log("Attempting to send email notification...");
-        
-        // Use a verified sender domain or the default Resend domain
-        // IMPORTANT: Make sure you've verified cbarrgs.com in your Resend dashboard
-        // or use the default onboarding@resend.dev address until verification is complete
-        const from = "Cbarrgs Music <onboarding@resend.dev>";
-        const to = ["cbarrgs@cbarrgs.com", "cbarrgs@gmail.com"];
-        
-        console.log(`Sending email from: ${from} to: ${to.join(", ")}`);
         
         const notification = await resend.emails.send({
           from,
@@ -63,7 +55,7 @@ serve(async (req) => {
           `,
         });
         
-        console.log("Email notification sent successfully:", JSON.stringify(notification));
+        console.log("Email notification sent successfully:", notification);
         
         return new Response(
           JSON.stringify({ success: true, emailSent: true, notification }),
@@ -74,12 +66,6 @@ serve(async (req) => {
         );
       } catch (emailError) {
         console.error("Error sending email notification:", emailError);
-        console.error("Error details:", {
-          message: emailError.message,
-          stack: emailError.stack,
-          name: emailError.name,
-          cause: emailError.cause
-        });
         
         // Return detailed error information for debugging
         return new Response(
@@ -103,7 +89,13 @@ serve(async (req) => {
       
       // Return a response indicating the API key issue
       return new Response(
-        JSON.stringify({ success: true, emailSent: false, reason: "Resend API key not configured" }),
+        JSON.stringify({ 
+          success: true, 
+          emailSent: false, 
+          reason: "Resend API key not configured",
+          apiKeyPresent: !!resendApiKey,
+          apiKeyLength: resendApiKey ? resendApiKey.length : 0
+        }),
         {
           status: 200,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -114,9 +106,13 @@ serve(async (req) => {
   } catch (error) {
     // Log and return error
     console.error("Error processing new subscriber notification:", error);
+    console.error("Error details:", {
+      message: error.message,
+      stack: error.stack
+    });
     
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: error.message, stack: error.stack }),
       {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
