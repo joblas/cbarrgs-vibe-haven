@@ -97,7 +97,7 @@ const Navigation: React.FC = () => {
                 className="text-2xl md:text-3xl old-english-font font-light"
                 aria-label="CBARRGS - Back to Home"
               >
-                CBARRGS
+                Cbarrgs
               </a>
             ) : (
               <Link 
@@ -105,7 +105,7 @@ const Navigation: React.FC = () => {
                 className="text-2xl md:text-3xl old-english-font font-light"
                 aria-label="CBARRGS - Back to Home"
               >
-                CBARRGS
+                Cbarrgs
               </Link>
             )}
           </motion.div>
