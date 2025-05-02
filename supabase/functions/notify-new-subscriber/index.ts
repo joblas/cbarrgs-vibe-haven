@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { Resend } from "https://esm.sh/resend@2.0.0";
@@ -10,6 +9,9 @@ const corsHeaders = {
 
 // Get the Resend API key from environment variables
 const resendApiKey = Deno.env.get("RESEND_API_KEY");
+
+// More detailed logging about the API key
+console.log(`Initializing with Resend API key: ${resendApiKey ? "Found (length: " + resendApiKey.length + ")" : "Not found or empty"}`);
 
 // Initialize Resend if API key is available
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
@@ -39,9 +41,17 @@ serve(async (req) => {
       try {
         console.log("Attempting to send email notification...");
         
+        // Use a verified sender domain or the default Resend domain
+        // IMPORTANT: Make sure you've verified cbarrgs.com in your Resend dashboard
+        // or use the default onboarding@resend.dev address until verification is complete
+        const from = "Cbarrgs Music <onboarding@resend.dev>";
+        const to = ["cbarrgs@cbarrgs.com", "cbarrgs@gmail.com"];
+        
+        console.log(`Sending email from: ${from} to: ${to.join(", ")}`);
+        
         const notification = await resend.emails.send({
-          from: "CBARRGS Site <onboarding@resend.dev>",
-          to: ["cbarrgs@cbarrgs.com", "cbarrgs@gmail.com"],
+          from,
+          to,
           subject: "New Subscriber Alert",
           html: `
             <h1>New Subscriber Alert</h1>
@@ -53,7 +63,7 @@ serve(async (req) => {
           `,
         });
         
-        console.log("Email notification sent successfully:", notification);
+        console.log("Email notification sent successfully:", JSON.stringify(notification));
         
         return new Response(
           JSON.stringify({ success: true, emailSent: true, notification }),
@@ -64,6 +74,12 @@ serve(async (req) => {
         );
       } catch (emailError) {
         console.error("Error sending email notification:", emailError);
+        console.error("Error details:", {
+          message: emailError.message,
+          stack: emailError.stack,
+          name: emailError.name,
+          cause: emailError.cause
+        });
         
         // Return detailed error information for debugging
         return new Response(
@@ -71,6 +87,7 @@ serve(async (req) => {
             success: true, 
             emailSent: false, 
             error: emailError.message,
+            errorName: emailError.name,
             stack: emailError.stack,
             cause: emailError.cause
           }),
