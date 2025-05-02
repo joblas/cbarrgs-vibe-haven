@@ -8,7 +8,10 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Get the Resend API key from environment variables
 const resendApiKey = Deno.env.get("RESEND_API_KEY");
+
+// Initialize Resend if API key is available
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 // This function will be triggered by a database webhook when a new subscriber is added
@@ -29,10 +32,13 @@ serve(async (req) => {
 
     // Log the new subscription
     console.log(`New subscriber: ${subscriber.email}`);
+    console.log(`Resend API Key configured: ${resendApiKey ? "Yes" : "No"}`);
 
     // Send email notification to the specified email addresses if Resend is configured
     if (resend) {
       try {
+        console.log("Attempting to send email notification...");
+        
         const notification = await resend.emails.send({
           from: "CBARRGS Site <onboarding@resend.dev>",
           to: ["cbarrgs@cbarrgs.com", "cbarrgs@gmail.com"],
@@ -48,24 +54,45 @@ serve(async (req) => {
         });
         
         console.log("Email notification sent successfully:", notification);
+        
+        return new Response(
+          JSON.stringify({ success: true, emailSent: true, notification }),
+          {
+            status: 200,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          }
+        );
       } catch (emailError) {
         console.error("Error sending email notification:", emailError);
-        // Don't throw the error here, as we still want to return a successful response
-        // for the webhook even if email sending fails
+        
+        // Return detailed error information for debugging
+        return new Response(
+          JSON.stringify({ 
+            success: true, 
+            emailSent: false, 
+            error: emailError.message,
+            stack: emailError.stack,
+            cause: emailError.cause
+          }),
+          {
+            status: 200, // Still return 200 to acknowledge the webhook
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          }
+        );
       }
     } else {
-      console.log("Resend API key not configured. Email notification not sent.");
+      console.log("Resend API key not configured or invalid. Email notification not sent.");
       console.log(`Would send notification to cbarrgs@cbarrgs.com and cbarrgs@gmail.com about new subscriber: ${subscriber.email}`);
+      
+      // Return a response indicating the API key issue
+      return new Response(
+        JSON.stringify({ success: true, emailSent: false, reason: "Resend API key not configured" }),
+        {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
     }
-
-    // Return success response
-    return new Response(
-      JSON.stringify({ success: true }),
-      {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
-    );
 
   } catch (error) {
     // Log and return error
