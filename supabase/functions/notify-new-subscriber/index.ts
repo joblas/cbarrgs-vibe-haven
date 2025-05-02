@@ -76,7 +76,7 @@ serve(async (req) => {
         console.log("=================== SENDING EMAIL ===================");
         console.log(`Attempting to send email notification at: ${new Date().toISOString()}`);
         
-        const from = "Cbarrgs Music <onboarding@resend.dev>";
+        const from = "Cbarrgs Music <updates@cbarrgs.com>";
         const to = ["cbarrgs@cbarrgs.com", "cbarrgs@gmail.com"];
         const subject = "New Subscriber Alert";
         
