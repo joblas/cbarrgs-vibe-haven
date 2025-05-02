@@ -50,7 +50,7 @@ const Footer: React.FC = () => {
                 className="text-3xl md:text-4xl old-english-font font-light inline-block mb-4"
                 aria-label="CBARRGS - Back to top"
               >
-                CBARRGS
+                Cbarrgs
               </a>
             ) : (
               <Link 
