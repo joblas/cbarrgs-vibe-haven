@@ -1,3 +1,4 @@
+
 // @ts-ignore: Deno-specific imports
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 // @ts-ignore: Deno-specific imports
@@ -14,8 +15,14 @@ const corsHeaders = {
 // @ts-ignore: Deno global
 const resendApiKey = Deno.env.get("RESEND_API_KEY");
 
-// More detailed logging about the API key
-console.log(`Initializing with Resend API key: ${resendApiKey ? "Found (length: " + resendApiKey.length + ")" : "Not found or empty"}`);
+// More detailed logging about configuration
+console.log("=================== FUNCTION INVOCATION ===================");
+console.log(`Function invoked at: ${new Date().toISOString()}`);
+console.log(`Resend API key present: ${resendApiKey ? "Yes (masked)" : "No"}`);
+if (resendApiKey) {
+  console.log(`API Key length: ${resendApiKey.length}`);
+  console.log(`API Key first/last chars: ${resendApiKey.substring(0, 2)}...${resendApiKey.substring(resendApiKey.length - 2)}`);
+}
 
 // Initialize Resend if API key is available
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
@@ -28,16 +35,25 @@ serve(async (req) => {
   }
 
   try {
+    console.log("Request received by notify-new-subscriber function");
+    console.log("Request method:", req.method);
+    console.log("Request headers:", JSON.stringify(Object.fromEntries(req.headers.entries())));
+    
     // Parse the request body
     const body = await req.json();
+    console.log("Request body:", JSON.stringify(body));
+    
     const subscriber = body.record;
     
     if (!subscriber || !subscriber.email) {
-      throw new Error("Invalid request payload");
+      const errorMsg = "Invalid request payload: missing subscriber or email";
+      console.error(errorMsg);
+      throw new Error(errorMsg);
     }
 
     // Log the new subscription
-    console.log(`New subscriber: ${subscriber.email}`);
+    console.log(`New subscriber received: ${subscriber.email}`);
+    console.log(`Subscription date: ${new Date(subscriber.created_at).toISOString()}`);
     console.log(`Resend API Key configured: ${resendApiKey ? "Yes (masked for security)" : "No"}`);
 
     // Send email notification to the specified email addresses if Resend is configured
@@ -46,17 +62,18 @@ serve(async (req) => {
         console.log("Attempting to send email notification...");
         
         // Use a verified sender domain or the default Resend domain
-        // IMPORTANT: Make sure you've verified cbarrgs.com in your Resend dashboard
-        // or use the default onboarding@resend.dev address until verification is complete
         const from = "Cbarrgs Music <onboarding@resend.dev>";
         const to = ["cbarrgs@cbarrgs.com", "cbarrgs@gmail.com"];
+        const subject = "New Subscriber Alert";
         
-        console.log(`Sending email from: ${from} to: ${to.join(", ")}`);
+        console.log(`Sending email from: ${from}`);
+        console.log(`Sending email to: ${to.join(", ")}`);
+        console.log(`Email subject: ${subject}`);
         
         const notification = await resend.emails.send({
           from,
           to,
-          subject: "New Subscriber Alert",
+          subject,
           html: `
             <h1>New Subscriber Alert</h1>
             <p>A new user has subscribed to your newsletter:</p>
@@ -67,7 +84,7 @@ serve(async (req) => {
           `,
         });
         
-        console.log("Email notification sent successfully:", notification);
+        console.log("Resend API response:", JSON.stringify(notification));
         
         return new Response(
           JSON.stringify({ success: true, emailSent: true, notification }),
@@ -77,56 +94,68 @@ serve(async (req) => {
           }
         );
       } catch (emailError) {
-        console.error("Error sending email notification:", emailError);
+        console.error("========== EMAIL SENDING ERROR ==========");
+        console.error(`Error type: ${emailError.constructor.name}`);
+        console.error(`Error message: ${emailError.message}`);
+        console.error(`Error stack: ${emailError.stack}`);
+        
+        if (emailError.response) {
+          console.error("Response error:", JSON.stringify(emailError.response));
+        }
         
         // Return detailed error information for debugging
         return new Response(
           JSON.stringify({ 
-            success: true, 
+            success: false, 
             emailSent: false, 
             error: emailError.message,
-            errorName: emailError.name,
+            errorName: emailError.constructor.name,
             stack: emailError.stack,
-            cause: emailError.cause
+            cause: emailError.cause,
+            response: emailError.response
           }),
           {
-            status: 200, // Still return 200 to acknowledge the webhook
+            status: 500, // Return 500 to indicate the function failed
             headers: { ...corsHeaders, "Content-Type": "application/json" },
           }
         );
       }
     } else {
-      console.log("Resend API key not configured or invalid. Email notification not sent.");
-      console.log(`Would send notification to cbarrgs@cbarrgs.com and cbarrgs@gmail.com about new subscriber: ${subscriber.email}`);
+      console.error("========== CONFIGURATION ERROR ==========");
+      console.error("Resend API key not configured or invalid");
+      console.error(`Would send notification to cbarrgs@cbarrgs.com and cbarrgs@gmail.com about new subscriber: ${subscriber.email}`);
       
       // Return a response indicating the API key issue
       return new Response(
         JSON.stringify({ 
-          success: true, 
+          success: false, 
           emailSent: false, 
-          reason: "Resend API key not configured",
+          reason: "Resend API key not configured or invalid",
           apiKeyPresent: !!resendApiKey,
           apiKeyLength: resendApiKey ? resendApiKey.length : 0
         }),
         {
-          status: 200,
+          status: 500, // Return 500 to indicate the function failed
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         }
       );
     }
-
   } catch (error) {
     // Log and return error
-    console.error("Error processing new subscriber notification:", error);
-    console.error("Error details:", {
-      message: error.message,
-      stack: error.stack
-    });
+    console.error("========== GENERAL ERROR ==========");
+    console.error(`Error type: ${error.constructor.name}`);
+    console.error(`Error message: ${error.message}`);
+    console.error(`Error stack: ${error.stack}`);
     
     return new Response(
-      JSON.stringify({ error: error.message, stack: error.stack }),
+      JSON.stringify({ 
+        success: false, 
+        error: error.message, 
+        errorType: error.constructor.name,
+        stack: error.stack 
+      }),
       {
-        status: 400,
+        status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
     );
