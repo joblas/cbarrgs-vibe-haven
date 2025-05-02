@@ -175,8 +175,7 @@ serve(async (req) => {
         success: false, 
         error: error.message, 
         errorType: error.constructor.name,
-        timestamp: new Date().toISOString(),
-        stack: error.stack 
+        timestamp: new Date().toISOString()
       }),
       {
         status: 500,
