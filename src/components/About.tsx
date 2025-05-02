@@ -58,7 +58,7 @@ const About: React.FC = () => {
                 transition={{ delay: 0.3, duration: 0.8, ease: [0.45, 0, 0.55, 1] }}
                 className="glass-panel p-4 md:p-6 rounded-sm inline-block"
               >
-                <h3 className="text-lg font-serif font-light mb-1">CBARRGS</h3>
+                <h3 className="text-lg font-serif font-light mb-1">Cbarrgs</h3>
                 <p className="text-sm text-white/70 font-light">Artist • Musician • Creator</p>
               </motion.div>
             </div>
