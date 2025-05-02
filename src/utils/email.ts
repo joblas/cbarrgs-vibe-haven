@@ -1,3 +1,4 @@
+
 import { Resend } from 'resend';
 import { renderToString } from 'react-dom/server';
 import { EmailTemplate } from '../components/email-template';
