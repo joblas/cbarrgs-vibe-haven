@@ -45,10 +45,14 @@ const SubscribeForm = () => {
         return;
       }
       
+      console.log('Submitting subscription:', values.email);
+      
       // Real submission
-      const { error } = await supabase
+      const { error, data } = await supabase
         .from('subscribers')
         .insert([{ email: values.email }]);
+        
+      console.log('Supabase response:', error ? 'Error: ' + JSON.stringify(error) : 'Success', data);
         
       if (error) {
         if (error.code === '23505') { // Unique violation
@@ -58,6 +62,7 @@ const SubscribeForm = () => {
             variant: "default"
           });
         } else {
+          console.error('Subscription error details:', error);
           throw error;
         }
       } else {
