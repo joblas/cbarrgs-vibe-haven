@@ -20,4 +20,4 @@ export const CONTACT_EMAIL = "contact@cbarrgs.com";
 export const BOOKING_EMAIL = "booking@cbarrgs.com";
 
 // Store information
-export const SHOPIFY_STORE = "https://cbarrgs.myshopify.com";
+export const SHOPIFY_STORE = "https://shopify.cbarrgs.com/";
