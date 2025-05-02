@@ -61,10 +61,13 @@ const SubscribeForm = () => {
           throw error;
         }
       } else {
+        // Display a more prominent success toast
         toast({
-          title: "Thanks for subscribing!",
-          description: "You'll receive updates soon.",
+          title: "Successfully Subscribed!",
+          description: "Thanks for joining! You'll receive updates soon.",
           variant: "default",
+          duration: 5000,
+          icon: <Check className="h-5 w-5 text-green-500" />,
         });
         form.reset();
       }
@@ -74,6 +77,7 @@ const SubscribeForm = () => {
         title: "Something went wrong",
         description: "Please try again later.",
         variant: "destructive",
+        icon: <AlertCircle className="h-5 w-5" />,
       });
     } finally {
       setIsSubmitting(false);
