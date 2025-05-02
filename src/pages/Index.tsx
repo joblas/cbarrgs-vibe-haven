@@ -5,6 +5,7 @@ import SkipToContent from '@/components/SkipToContent';
 import Hero from '@/components/Hero';
 import About from '@/components/About';
 import ShopComingSoon from '@/components/ShopComingSoon';
+import Listen from '@/components/Listen';
 
 const Index: React.FC = () => {
   
@@ -35,6 +36,7 @@ const Index: React.FC = () => {
       <main id="main-content">
         <Hero />
         <About />
+        <Listen />
         <ShopComingSoon />
       </main>
       <Footer />
