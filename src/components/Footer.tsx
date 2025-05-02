@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { fadeIn, slideUp } from '@/utils/transitions';
@@ -6,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faSpotify, faYoutube, faApple, faSoundcloud } from '@fortawesome/free-brands-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { Link, useLocation } from 'react-router-dom';
+import SubscribeForm from './SubscribeForm';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -112,22 +114,7 @@ const Footer: React.FC = () => {
               Sign up for updates on music releases and more.
             </p>
             
-            <form className="flex flex-col space-y-3" aria-labelledby="subscribe-section">
-              <input
-                type="email"
-                placeholder="Your email"
-                className="px-4 py-2 bg-white/5 border border-white/10 rounded-sm focus:outline-none focus:ring-1 focus:ring-white/50 text-white placeholder:text-white/40 font-light"
-                required
-                aria-label="Email address"
-              />
-              <button
-                type="submit"
-                className="btn-secondary text-sm"
-                aria-label="Subscribe to newsletter"
-              >
-                Subscribe
-              </button>
-            </form>
+            <SubscribeForm />
           </motion.div>
         </div>
         
