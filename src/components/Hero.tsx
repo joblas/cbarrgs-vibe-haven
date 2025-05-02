@@ -102,7 +102,7 @@ const Hero: React.FC = () => {
             className="text-5xl md:text-7xl lg:text-8xl font-serif font-light tracking-wider mb-6"
             {...fadeIn(0.1)}
           >
-            CBARRGS
+            Cbarrgs
           </motion.h1>
           
           <motion.div 

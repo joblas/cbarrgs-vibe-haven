@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { motion, useAnimation, useInView } from 'framer-motion';
 import { useRef } from 'react';
@@ -46,7 +47,7 @@ const About: React.FC = () => {
             >
               <img 
                 src="/lovable-uploads/c9d748bd-f6ea-4f2d-9dab-4b37fb0b3826.png" 
-                alt="CBARRGS with dog" 
+                alt="Cbarrgs with dog" 
                 className="absolute inset-0 w-full h-full object-cover"
               />
             </motion.div>
