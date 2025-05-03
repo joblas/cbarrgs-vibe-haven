@@ -168,19 +168,19 @@ const Hero: React.FC = () => {
               </motion.a>
             ))}
           </motion.div>
-          
-          {/* Announcement Banner - placed below social icons */}
-          {showBanner && (
-            <motion.div 
-              className="w-full flex justify-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8, duration: 0.5 }}
-            >
-              <AnnouncementBanner onDismiss={() => setShowBanner(false)} />
-            </motion.div>
-          )}
         </motion.div>
+        
+        {/* Announcement Banner - placed at the bottom of the screen */}
+        {showBanner && (
+          <motion.div 
+            className="absolute bottom-5 left-0 right-0 mx-auto flex justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.5 }}
+          >
+            <AnnouncementBanner onDismiss={() => setShowBanner(false)} />
+          </motion.div>
+        )}
       </div>
     </motion.section>
   );
