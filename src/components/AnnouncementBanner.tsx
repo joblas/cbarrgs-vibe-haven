@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { X, MapPin, Music } from 'lucide-react';
@@ -90,7 +91,7 @@ const AnnouncementBanner: React.FC<AnnouncementBannerProps> = ({ onDismiss }) =>
             <div className="flex flex-col">
               <h3 className="text-sm font-medium text-white font-serif mb-0 leading-tight">
                 <Music className="inline-block mr-1 h-3 w-3 relative -top-[1px]" />
-                Tomorrow Night!
+                Live Show
               </h3>
               
               <p className="text-xs font-medium text-white mb-1 truncate">
