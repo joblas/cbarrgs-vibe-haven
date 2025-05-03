@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { X } from 'lucide-react';
@@ -6,12 +5,32 @@ import { X } from 'lucide-react';
 const ShowBanner: React.FC = () => {
   const [isVisible, setIsVisible] = React.useState(true);
   
-  // Concert ticket URL - updated with the new URL that includes UTM parameters
-  const ticketUrl = "https://dice.fm/event/pyqaqk-lucys-cbarrgs-boodahki-coyote-aguilar-3rd-may-location-tba-boyle-heights-los-angeles-los-angeles-tickets?utm_medium=partners_api&pid=63c43ba6";
+  // Concert ticket URL
+  const ticketUrl = "https://dice.fm/event/pyqaqk-lucys-cbarrgs-boodahki-coyote-aguilar-3rd-may-location-tba-boyle-heights-los-angeles-los-angeles-tickets";
 
   // Hide the banner when clicked
   const hideBanner = () => {
     setIsVisible(false);
+  };
+
+  // Better click handler that forces external navigation
+  const handleTicketClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Force external navigation with window.open as a backup
+    try {
+      // For mobile devices, directly open in the same tab for better compatibility
+      if (/Mobi|Android/i.test(navigator.userAgent)) {
+        window.location.assign(ticketUrl);
+      } else {
+        // On desktop, open in a new tab
+        window.open(ticketUrl, '_blank', 'noopener,noreferrer');
+      }
+    } catch (error) {
+      // Fallback if the preferred method fails
+      window.open(ticketUrl, '_blank', 'noopener,noreferrer');
+    }
   };
 
   if (!isVisible) return null;
@@ -44,16 +63,14 @@ const ShowBanner: React.FC = () => {
           <span className="ml-2 inline-block">🔥</span>
         </p>
         
+        {/* Using anchor tag for better accessibility but with enhanced click handling */}
         <a
           href={ticketUrl}
-          target="_blank"
+          target="_blank" 
           rel="noopener noreferrer"
+          onClick={handleTicketClick}
           className="text-center text-xs md:text-sm px-4 py-2 bg-white text-black rounded-sm hover:bg-purple-200 transition-colors duration-200 whitespace-nowrap font-medium mx-auto block w-full md:w-auto max-w-[200px] z-50 touch-manipulation"
-          onClick={(e) => {
-            // This prevents default behavior and forces opening in a new tab
-            e.preventDefault();
-            window.open(ticketUrl, '_blank', 'noopener,noreferrer');
-          }}
+          aria-label="Get tickets for the event at MakeOutMusic"
         >
           Get Tickets
         </a>
