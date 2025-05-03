@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
@@ -78,6 +79,14 @@ const Navigation: React.FC = () => {
     { name: "Shop", href: isHomePage ? "#shop-coming-soon" : "/#shop-coming-soon" }
   ];
 
+  const handleNavItemClick = (href: string) => {
+    setIsOpen(false);
+    if (!isHomePage && !href.startsWith('/')) {
+      const targetId = href.replace('/#', '');
+      localStorage.setItem('scrollTarget', targetId);
+    }
+  };
+
   return (
     <>
       <motion.nav
@@ -124,13 +133,7 @@ const Navigation: React.FC = () => {
                 href={item.href} 
                 className="nav-link font-light tracking-wider"
                 role="menuitem"
-                onClick={() => {
-                  if (!isHomePage && !item.href.startsWith('/')) {
-                    // This ensures smooth scrolling works when returning to homepage
-                    const targetId = item.href.replace('/#', '');
-                    localStorage.setItem('scrollTarget', targetId);
-                  }
-                }}
+                onClick={() => handleNavItemClick(item.href)}
               >
                 {item.name}
               </a>
@@ -168,13 +171,7 @@ const Navigation: React.FC = () => {
               key={i}
               href={item.href}
               className="text-2xl font-light tracking-wide nav-link"
-              onClick={() => {
-                setIsOpen(false);
-                if (!isHomePage && !item.href.startsWith('/')) {
-                  const targetId = item.href.replace('/#', '');
-                  localStorage.setItem('scrollTarget', targetId);
-                }
-              }}
+              onClick={() => handleNavItemClick(item.href)}
               custom={i}
               variants={menuItemVariants}
               role="menuitem"

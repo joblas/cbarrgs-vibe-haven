@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useScroll, useTransform } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
@@ -132,7 +133,7 @@ const Hero: React.FC = () => {
                 href={social.url} 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="w-14 h-14 flex items-center justify-center text-white hover:text-white/80 transition-colors duration-300 text-2xl" 
+                className="w-14 h-14 flex items-center justify-center text-white hover:text-white/80 transition-colors duration-300 text-2xl touch-manipulation" 
                 whileHover={{ y: -3 }} 
                 whileTap={{ scale: 0.95 }} 
                 title={social.name}
