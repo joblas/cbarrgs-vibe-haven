@@ -18,29 +18,13 @@ const ShowBanner: React.FC = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-purple-900/90 via-black/90 to-purple-900/90 backdrop-blur-md py-3 px-4 text-white border-b border-white/10 shadow-lg"
+      className="bg-gradient-to-r from-purple-900/90 via-black/90 to-purple-900/90 backdrop-blur-md py-3 px-4 rounded-md text-white border border-white/10 shadow-lg mb-8 max-w-lg mx-auto"
     >
-      <div className="max-w-screen-xl mx-auto flex items-center justify-between">
-        <div className="flex items-center space-x-2 flex-grow">
+      <div className="flex flex-col space-y-3">
+        <div className="flex items-center justify-between">
           <span className="inline-block py-1 px-2 bg-purple-500/30 text-xs uppercase tracking-wider rounded-sm border border-purple-500/50">
             Live Tomorrow
           </span>
-          <p className="text-sm md:text-base">
-            <span className="mr-2 hidden sm:inline-block">🔥</span>
-            CBARRGS performing at Lucy's w/ Boodahki, Coyote & Aguilar - May 3rd
-            <span className="ml-2 hidden sm:inline-block">🔥</span>
-          </p>
-        </div>
-        
-        <div className="flex items-center space-x-4">
-          <a
-            href="https://dice.fm/event/pyqaqk-lucys-cbarrgs-boodahki-coyote-aguilar-3rd-may-location-tba-boyle-heights-los-angeles-los-angeles-tickets"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs md:text-sm px-3 py-1 bg-white text-black rounded-sm hover:bg-purple-200 transition-colors duration-200 whitespace-nowrap font-medium"
-          >
-            Get Tickets
-          </a>
           <button
             onClick={hideBanner}
             className="text-white/70 hover:text-white transition-colors"
@@ -49,6 +33,21 @@ const ShowBanner: React.FC = () => {
             <X size={16} />
           </button>
         </div>
+        
+        <p className="text-sm md:text-base text-center">
+          <span className="mr-2 hidden sm:inline-block">🔥</span>
+          Performing at MakeOutMusic with Lucys, Cbarrgs, Boodahki, Coyote Aguilar
+          <span className="ml-2 hidden sm:inline-block">🔥</span>
+        </p>
+        
+        <a
+          href="https://dice.fm/event/pyqaqk-lucys-cbarrgs-boodahki-coyote-aguilar-3rd-may-location-tba-boyle-heights-los-angeles-los-angeles-tickets"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-center text-xs md:text-sm px-3 py-1 bg-white text-black rounded-sm hover:bg-purple-200 transition-colors duration-200 whitespace-nowrap font-medium mx-auto block"
+        >
+          Get Tickets
+        </a>
       </div>
     </motion.div>
   );

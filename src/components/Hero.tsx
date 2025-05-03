@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useScroll, useTransform } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
@@ -7,6 +6,7 @@ import { SPOTIFY_URL, YOUTUBE_CHANNEL, INSTAGRAM_URL, LINKTREE_URL, APPLE_MUSIC_
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faYoutube, faApple, faSpotify, faSoundcloud } from '@fortawesome/free-brands-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
+import ShowBanner from '@/components/ShowBanner';
 
 const Hero: React.FC = () => {
   const controls = useAnimation();
@@ -98,6 +98,11 @@ const Hero: React.FC = () => {
           initial={{ opacity: 0, y: 20 }} 
           animate={controls}
         >
+          {/* Show Banner above title */}
+          <motion.div {...fadeIn(0.05)} className="mb-6">
+            <ShowBanner />
+          </motion.div>
+          
           <motion.h1 
             className="text-5xl md:text-7xl lg:text-8xl font-serif font-light tracking-wider mb-6"
             {...fadeIn(0.1)}

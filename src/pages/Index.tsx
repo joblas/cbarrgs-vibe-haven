@@ -6,7 +6,6 @@ import Hero from '@/components/Hero';
 import About from '@/components/About';
 import ShopComingSoon from '@/components/ShopComingSoon';
 import Listen from '@/components/Listen';
-import ShowBanner from '@/components/ShowBanner';
 
 const Index: React.FC = () => {
   
@@ -32,7 +31,6 @@ const Index: React.FC = () => {
       {/* Add grain overlay for texture */}
       <div className="grain-overlay"></div>
       
-      <ShowBanner />
       <SkipToContent />
       <Navigation />
       <main id="main-content">
