@@ -1,9 +1,10 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 
 const Listen: React.FC = () => {
   return (
-    <section id="listen" className="py-24 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
+    <section id="listen-section" className="py-24 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

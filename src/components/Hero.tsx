@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useScroll, useTransform } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
