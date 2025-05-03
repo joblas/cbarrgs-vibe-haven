@@ -81,6 +81,8 @@ const Hero: React.FC = () => {
           scale,
           opacity: 0.8
         }} 
+        role="img"
+        aria-label="Cbarrgs artistic background image"
       />
       
       {/* Dark Overlay with Vignette */}
