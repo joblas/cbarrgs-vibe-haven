@@ -42,17 +42,13 @@ const AnnouncementBanner: React.FC<AnnouncementBannerProps> = ({ onDismiss }) =>
   };
 
   return (
-    <div className="relative w-full max-w-md mx-auto mt-8 mb-4 overflow-visible">
+    <div className="relative w-full max-w-sm mx-auto mt-6 mb-0">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1.0] }}
         className="relative bg-gradient-to-r from-purple-900/80 via-pink-800/80 to-purple-900/80 backdrop-blur-sm rounded-lg border border-white/20 shadow-xl overflow-hidden"
       >
-        {/* Decorative elements */}
-        <div className="absolute -top-6 -left-6 w-12 h-12 bg-pink-500/20 rounded-full blur-xl"></div>
-        <div className="absolute -bottom-6 -right-6 w-12 h-12 bg-purple-500/20 rounded-full blur-xl"></div>
-        
         {/* Dismiss button - positioned over everything */}
         <button 
           onClick={handleDismiss}
@@ -62,60 +58,57 @@ const AnnouncementBanner: React.FC<AnnouncementBannerProps> = ({ onDismiss }) =>
           <X size={16} />
         </button>
         
-        {/* Image section */}
-        <div className="w-full aspect-[4/3] relative">
-          <div className={`absolute inset-0 bg-gray-900 animate-pulse ${imageLoaded ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}></div>
-          <img 
-            src="/lovable-uploads/lucys-show-flyer.jpg" 
-            alt="Lucys, Cbarrgs, Coyote Aguilar show flyer" 
-            className="w-full h-full object-cover" 
-            onLoad={() => setImageLoaded(true)}
-          />
-          {/* Image overlay gradient */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/90"></div>
+        <div className="flex flex-col md:flex-row items-center">
+          {/* Image section - smaller for desktop */}
+          <div className="w-full md:w-1/3 aspect-square md:aspect-auto relative">
+            <div className={`absolute inset-0 bg-gray-800/90 ${imageLoaded ? 'opacity-0' : 'opacity-80'} transition-all duration-1000 ease-in-out`}></div>
+            <img 
+              src="/lovable-uploads/lucys-show-flyer.jpg.png" 
+              alt="Lucys, Cbarrgs, Coyote Aguilar show flyer" 
+              className={`w-full h-full object-cover transition-opacity duration-1000 ${imageLoaded ? 'opacity-100' : 'opacity-30'}`}
+              onLoad={() => setTimeout(() => setImageLoaded(true), 300)}
+            />
+          </div>
           
-          {/* Title overlaid on image */}
-          <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-            <h3 className="text-xl font-medium text-white font-serif tracking-wide">
-              <Music className="inline-block mr-2 h-4 w-4 mb-1" />
+          {/* Show details */}
+          <div className="p-3 text-white/90 space-y-1 w-full md:w-2/3">
+            <h3 className="text-base font-medium text-white font-serif tracking-wide">
+              <Music className="inline-block mr-2 h-3 w-3 mb-1" />
               Tomorrow Night!
             </h3>
-          </div>
-        </div>
-        
-        {/* Show details */}
-        <div className="p-4 text-white/90 space-y-2">          
-          <p className="font-medium text-center text-white">
-            Lucys, Cbarrgs, Boodahki, Coyote Aguilar
-          </p>
-          
-          <div className="flex flex-wrap justify-center gap-3 text-xs text-white/80 mb-3">
-            <div className="flex items-center">
-              <MapPin className="h-3 w-3 mr-1 inline-block" />
-              <span>MakeOutMusic, LA</span>
+            
+            <p className="text-sm font-medium text-white">
+              Lucys, Cbarrgs, Boodahki, Coyote Aguilar
+            </p>
+            
+            <div className="flex flex-wrap gap-2 text-xs text-white/80 mb-2">
+              <div className="flex items-center">
+                <MapPin className="h-3 w-3 mr-1 inline-block" />
+                <span>MakeOutMusic, LA</span>
+              </div>
+              
+              <div className="flex items-center">
+                <Calendar className="h-3 w-3 mr-1 inline-block" />
+                <span>Sat, May 3</span>
+              </div>
+              
+              <div className="flex items-center">
+                <Clock className="h-3 w-3 mr-1 inline-block" />
+                <span>7:00 PM</span>
+              </div>
             </div>
             
-            <div className="flex items-center">
-              <Calendar className="h-3 w-3 mr-1 inline-block" />
-              <span>Sat, May 3</span>
-            </div>
-            
-            <div className="flex items-center">
-              <Clock className="h-3 w-3 mr-1 inline-block" />
-              <span>7:00 PM</span>
-            </div>
+            {/* Get Tickets button */}
+            <a
+              href={ticketUrl}
+              onClick={handleTicketClick}
+              className="block w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white py-2 px-3 rounded-md text-center text-sm font-medium transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] touch-manipulation"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Get Tickets
+            </a>
           </div>
-          
-          {/* Get Tickets button */}
-          <a
-            href={ticketUrl}
-            onClick={handleTicketClick}
-            className="block w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white py-3 px-4 rounded-md text-center font-medium transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] touch-manipulation"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Get Tickets
-          </a>
         </div>
       </motion.div>
     </div>
