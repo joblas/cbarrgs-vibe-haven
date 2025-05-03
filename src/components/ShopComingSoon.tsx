@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, useAnimation, useInView } from 'framer-motion';
+import { motion, useAnimation, useInView, cubicBezier } from 'framer-motion';
 import { useRef, useEffect } from 'react';
 import { SHOPIFY_STORE } from '@/utils/constants';
 import { fadeIn } from '@/utils/transitions';
@@ -29,7 +29,7 @@ const ShopComingSoon: React.FC = () => {
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.8, ease: [0.45, 0, 0.55, 1] }}
+          transition={{ duration: 0.8, ease: cubicBezier(0.45, 0, 0.55, 1) }}
           className="max-w-md mx-auto text-center"
         >
           <motion.h2 
@@ -46,21 +46,30 @@ const ShopComingSoon: React.FC = () => {
             Exclusive merchandise will be available soon. Sign up for updates to be the first to know.
           </motion.p>
           
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          {/* Enhanced mobile-friendly button - using motion.a directly instead of nested elements */}
+          <motion.a
+            href={SHOPIFY_STORE} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="btn-secondary block w-full sm:inline-block sm:w-auto border border-white/30 backdrop-blur-sm bg-white/5 hover:bg-white/10 transition-all duration-300 text-white px-8 py-4 md:py-3 rounded-sm font-light"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
             {...fadeIn(0.3)}
-            className="inline-block"
+            style={{
+              touchAction: 'manipulation', // Optimize for touch
+              WebkitTapHighlightColor: 'transparent', // Remove highlight on iOS
+              userSelect: 'none', // Prevent text selection
+              cursor: 'pointer', // Show pointer cursor
+              transform: 'translateZ(0)', // Force GPU acceleration
+              willChange: 'transform', // Optimize animations
+              display: 'block', // Ensure full width is clickable
+              minHeight: '44px', // Minimum touch target height
+              textAlign: 'center', // Center text
+              lineHeight: '1.25', // Ensure consistent line height
+            }}
           >
-            <a 
-              href={SHOPIFY_STORE} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="btn-secondary border border-white/30 backdrop-blur-sm bg-white/5 hover:bg-white/10 transition-all duration-300 text-white px-8 py-3 rounded-sm font-light"
-            >
-              Visit Full Store
-            </a>
-          </motion.div>
+            Visit Store
+          </motion.a>
         </motion.div>
       </div>
     </section>
