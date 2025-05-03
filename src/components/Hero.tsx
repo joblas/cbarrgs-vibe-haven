@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useScroll, useTransform } from 'framer-motion';
-import { ArrowDown } from 'lucide-react';
 import { fadeIn } from '@/utils/transitions';
 import { SPOTIFY_URL, YOUTUBE_CHANNEL, INSTAGRAM_URL, LINKTREE_URL, APPLE_MUSIC_URL, SOUNDCLOUD_URL } from '@/utils/constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -166,40 +165,6 @@ const Hero: React.FC = () => {
                 {social.icon}
               </motion.a>
             ))}
-          </motion.div>
-          
-          {/* Scroll down indicator */}
-          <motion.div 
-            className="absolute bottom-8 left-0 right-0 flex justify-center"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.2, duration: 0.6 }}
-            style={{
-              transform: 'translateZ(0)', // Force GPU acceleration
-              willChange: 'transform, opacity' // Hint for browser optimization
-            }}
-          >
-            <motion.a 
-              href="#about"
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('about')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
-              className="flex flex-col items-center text-white/60 hover:text-white transition-colors duration-300"
-              aria-label="Scroll down to About section"
-              whileHover={{ y: 5 }}
-              animate={{ 
-                y: [0, 10, 0], 
-              }}
-              transition={{ 
-                repeat: Infinity, 
-                duration: 2,
-                ease: "easeInOut"
-              }}
-            >
-              <span className="text-sm font-light mb-2">Scroll</span>
-              <ArrowDown size={20} />
-            </motion.a>
           </motion.div>
         </motion.div>
       </div>
