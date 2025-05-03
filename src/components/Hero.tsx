@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useScroll, useTransform } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
@@ -7,7 +6,6 @@ import { SPOTIFY_URL, YOUTUBE_CHANNEL, INSTAGRAM_URL, LINKTREE_URL, APPLE_MUSIC_
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faYoutube, faApple, faSpotify, faSoundcloud } from '@fortawesome/free-brands-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
-import ShowBanner from '@/components/ShowBanner';
 
 const Hero: React.FC = () => {
   
@@ -69,11 +67,12 @@ const Hero: React.FC = () => {
       ref={containerRef} 
       className="relative h-screen flex items-center justify-center overflow-hidden" 
       style={{ opacity }}
+      aria-label="Hero section"
     >
       {/* Grain Overlay */}
-      <div className="grain-overlay"></div>
+      <div className="grain-overlay" aria-hidden="true"></div>
       
-      {/* Background Image with Parallax */}
+      {/* Background Image with Parallax - Preload this critical image */}
       <motion.div 
         className="absolute inset-0 z-0" 
         style={{
@@ -81,7 +80,9 @@ const Hero: React.FC = () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           scale,
-          opacity: 0.8
+          opacity: 0.8,
+          transform: 'translateZ(0)', // Force GPU acceleration
+          willChange: 'transform' // Hint for browser optimization
         }} 
         role="img"
         aria-label="Cbarrgs artistic background image"
@@ -91,8 +92,10 @@ const Hero: React.FC = () => {
       <div 
         className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/40 z-10"
         style={{
-          boxShadow: 'inset 0 0 100px rgba(0, 0, 0, 0.8)'
+          boxShadow: 'inset 0 0 100px rgba(0, 0, 0, 0.8)',
+          transform: 'translateZ(0)' // Force GPU acceleration
         }}
+        aria-hidden="true"
       ></div>
       
       {/* Content */}
@@ -101,12 +104,11 @@ const Hero: React.FC = () => {
           className="space-y-8" 
           initial={{ opacity: 0, y: 20 }} 
           animate={controls}
+          style={{
+            transform: 'translateZ(0)', // Force GPU acceleration
+            willChange: 'transform, opacity' // Hint for browser optimization
+          }}
         >
-          {/* Show Banner above title */}
-          <motion.div {...fadeIn(0.05)} className="mb-6">
-            <ShowBanner />
-          </motion.div>
-          
           <motion.h1 
             className="text-5xl md:text-7xl lg:text-8xl font-serif font-light tracking-wider mb-6"
             {...fadeIn(0.1)}
@@ -118,16 +120,33 @@ const Hero: React.FC = () => {
             className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-6 pt-6" 
             {...fadeIn(0.4)}
           >
-            <a href="#about" className="btn-secondary">
+            <a 
+              href="#about" 
+              className="btn-secondary"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('about')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+            >
               Discover
             </a>
-            <a href="#shop-coming-soon" className="btn-secondary">
+            <a 
+              href="#shop-coming-soon" 
+              className="btn-secondary"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('shop-coming-soon')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+            >
               Store Coming Soon
             </a>
           </motion.div>
           
           {/* Social Media Icons */}
-          <motion.div className="social-icons mt-8" {...fadeIn(0.6)}>
+          <motion.div 
+            className="social-icons mt-8 flex flex-wrap justify-center gap-2" 
+            {...fadeIn(0.6)}
+          >
             {socialLinks.map((social, i) => (
               <motion.a 
                 key={i} 
@@ -138,10 +157,49 @@ const Hero: React.FC = () => {
                 whileHover={{ y: -3 }} 
                 whileTap={{ scale: 0.95 }} 
                 title={social.name}
+                aria-label={`Visit Cbarrgs on ${social.name}`}
+                style={{
+                  transform: 'translateZ(0)', // Force GPU acceleration
+                  willChange: 'transform' // Hint for browser optimization
+                }}
               >
                 {social.icon}
               </motion.a>
             ))}
+          </motion.div>
+          
+          {/* Scroll down indicator */}
+          <motion.div 
+            className="absolute bottom-8 left-0 right-0 flex justify-center"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2, duration: 0.6 }}
+            style={{
+              transform: 'translateZ(0)', // Force GPU acceleration
+              willChange: 'transform, opacity' // Hint for browser optimization
+            }}
+          >
+            <motion.a 
+              href="#about"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('about')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="flex flex-col items-center text-white/60 hover:text-white transition-colors duration-300"
+              aria-label="Scroll down to About section"
+              whileHover={{ y: 5 }}
+              animate={{ 
+                y: [0, 10, 0], 
+              }}
+              transition={{ 
+                repeat: Infinity, 
+                duration: 2,
+                ease: "easeInOut"
+              }}
+            >
+              <span className="text-sm font-light mb-2">Scroll</span>
+              <ArrowDown size={20} />
+            </motion.a>
           </motion.div>
         </motion.div>
       </div>
