@@ -10,6 +10,12 @@ const ShowBanner: React.FC = () => {
     setIsVisible(false);
   };
 
+  // Handle ticket button click with explicit event handler
+  const handleTicketClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent event bubbling
+    window.open("https://dice.fm/event/pyqaqk-lucys-cbarrgs-boodahki-coyote-aguilar-3rd-may-location-tba-boyle-heights-los-angeles-los-angeles-tickets", "_blank", "noopener,noreferrer");
+  };
+
   if (!isVisible) return null;
 
   return (
@@ -40,14 +46,12 @@ const ShowBanner: React.FC = () => {
           <span className="ml-2 hidden sm:inline-block">🔥</span>
         </p>
         
-        <a
-          href="https://dice.fm/event/pyqaqk-lucys-cbarrgs-boodahki-coyote-aguilar-3rd-may-location-tba-boyle-heights-los-angeles-los-angeles-tickets"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-center text-xs md:text-sm px-3 py-1 bg-white text-black rounded-sm hover:bg-purple-200 transition-colors duration-200 whitespace-nowrap font-medium mx-auto block"
+        <button
+          onClick={handleTicketClick}
+          className="text-center text-xs md:text-sm px-4 py-2 bg-white text-black rounded-sm hover:bg-purple-200 transition-colors duration-200 whitespace-nowrap font-medium mx-auto block w-full md:w-auto max-w-[200px] z-50 touch-manipulation"
         >
           Get Tickets
-        </a>
+        </button>
       </div>
     </motion.div>
   );
