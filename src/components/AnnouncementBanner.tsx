@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { X, MapPin, Music } from 'lucide-react';
 
@@ -15,6 +15,17 @@ const AnnouncementBanner: React.FC<AnnouncementBannerProps> = ({ onDismiss }) =>
   
   // If dismissed, don't render the component
   if (isDismissed) return null;
+  
+  // Preload the concert flyer image
+  useEffect(() => {
+    const img = new Image();
+    img.src = "/lovable-uploads/lucys-show-flyer.jpg.png";
+    img.onload = () => setImageLoaded(true);
+    
+    return () => {
+      img.onload = null;
+    };
+  }, []);
   
   // Handle ticket button click with device detection
   const handleTicketClick = (e: React.MouseEvent) => {
@@ -46,7 +57,7 @@ const AnnouncementBanner: React.FC<AnnouncementBannerProps> = ({ onDismiss }) =>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1.0] }}
+        transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1.0] }}
         className="relative bg-gradient-to-r from-purple-900/90 via-pink-800/90 to-purple-900/90 backdrop-blur-sm rounded-lg border border-white/20 shadow-xl overflow-hidden"
       >
         {/* Dismiss button - positioned over everything */}
@@ -60,13 +71,17 @@ const AnnouncementBanner: React.FC<AnnouncementBannerProps> = ({ onDismiss }) =>
         
         <div className="flex flex-row items-center">
           {/* Image section - smaller */}
-          <div className="w-[80px] h-[80px] relative">
-            <div className={`absolute inset-0 bg-gray-800/90 ${imageLoaded ? 'opacity-0' : 'opacity-80'} transition-all duration-1000 ease-in-out`}></div>
+          <div className="w-[80px] h-[80px] relative bg-gray-800">
+            <div className={`absolute inset-0 bg-gray-800/90 ${imageLoaded ? 'opacity-0' : 'opacity-80'} transition-all duration-500 ease-in-out`}></div>
             <img 
               src="/lovable-uploads/lucys-show-flyer.jpg.png" 
               alt="Lucys, Cbarrgs, Coyote Aguilar show flyer" 
-              className={`w-full h-full object-cover transition-opacity duration-1000 ${imageLoaded ? 'opacity-100' : 'opacity-30'}`}
-              onLoad={() => setTimeout(() => setImageLoaded(true), 300)}
+              className={`w-full h-full object-cover transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-30'}`}
+              width={80}
+              height={80}
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
             />
           </div>
           

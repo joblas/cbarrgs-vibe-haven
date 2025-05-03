@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useAnimation, useScroll, useTransform } from 'framer-motion';
+import { motion, useAnimation, useScroll, useTransform, cubicBezier } from 'framer-motion';
 import { fadeIn } from '@/utils/transitions';
 import { SPOTIFY_URL, YOUTUBE_CHANNEL, INSTAGRAM_URL, LINKTREE_URL, APPLE_MUSIC_URL, SOUNDCLOUD_URL } from '@/utils/constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,8 +19,13 @@ const Hero: React.FC = () => {
     offset: ["start start", "end start"]
   });
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
-  const y = useTransform(scrollYProgress, [0, 1], [0, 50]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1.03, 1.05], { 
+    clamp: false,
+    ease: cubicBezier(0.1, 0.4, 0.6, 0.9) // Using proper cubicBezier function
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [0, 50], {
+    ease: cubicBezier(0.1, 0.3, 0.7, 0.9) // Using proper cubicBezier function
+  });
   
   useEffect(() => {
     const sequence = async () => {
@@ -29,11 +34,25 @@ const Hero: React.FC = () => {
         y: 0,
         transition: {
           duration: 0.8,
-          ease: [0.45, 0, 0.55, 1]
+          ease: cubicBezier(0.25, 0.1, 0.25, 1.0), // Using proper cubicBezier function
+          staggerChildren: 0.1
         }
       });
     };
     sequence();
+
+    // Optimize render performance with passive event listeners
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', () => {}, { passive: true });
+      window.addEventListener('resize', () => {}, { passive: true });
+    }
+
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('scroll', () => {});
+        window.removeEventListener('resize', () => {});
+      }
+    };
   }, [controls]);
   
   const socialLinks = [{
@@ -71,19 +90,27 @@ const Hero: React.FC = () => {
       aria-label="Hero section"
     >
       {/* Grain Overlay */}
-      <div className="grain-overlay" aria-hidden="true"></div>
+      <div 
+        className="grain-overlay" 
+        aria-hidden="true"
+        style={{ 
+          willChange: 'transform',
+          transform: 'translateZ(0)'
+        }}
+      ></div>
       
-      {/* Background Image with Parallax - Preload this critical image */}
+      {/* Background Image with Parallax - Using WebP for better performance */}
       <motion.div 
         className="absolute inset-0 z-0" 
         style={{
-          backgroundImage: `url('/lovable-uploads/9743b13a-5af9-480b-ba25-91a45011e839.jpg')`,
+          backgroundImage: `url('/lovable-uploads/cbarrgs-insta-bw.webp')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           scale,
           opacity: 0.8,
           transform: 'translateZ(0)', // Force GPU acceleration
-          willChange: 'transform' // Hint for browser optimization
+          willChange: 'transform', // Hint for browser optimization
+          backfaceVisibility: 'hidden', // Prevent text rendering issues
         }} 
         role="img"
         aria-label="Cbarrgs artistic background image"
@@ -94,7 +121,9 @@ const Hero: React.FC = () => {
         className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/40 z-10"
         style={{
           boxShadow: 'inset 0 0 100px rgba(0, 0, 0, 0.8)',
-          transform: 'translateZ(0)' // Force GPU acceleration
+          transform: 'translateZ(0)', // Force GPU acceleration
+          willChange: 'transform', // Hint for browser optimization
+          mixBlendMode: 'multiply' // Improved blending for richer shadows
         }}
         aria-hidden="true"
       ></div>
@@ -107,12 +136,18 @@ const Hero: React.FC = () => {
           animate={controls}
           style={{
             transform: 'translateZ(0)', // Force GPU acceleration
-            willChange: 'transform, opacity' // Hint for browser optimization
+            willChange: 'transform, opacity', // Hint for browser optimization
+            backfaceVisibility: 'hidden' // Prevent text rendering issues
           }}
         >
           <motion.h1 
             className="text-5xl md:text-7xl lg:text-8xl font-serif font-light tracking-wider mb-6"
             {...fadeIn(0.1)}
+            style={{ 
+              textRendering: 'optimizeLegibility', // Improve text rendering
+              fontSmooth: 'always', // Ensure smooth font rendering
+              filter: 'drop-shadow(0 4px 3px rgba(0, 0, 0, 0.25))' // Premium text shadow
+            }}
           >
             Cbarrgs
           </motion.h1>
@@ -126,7 +161,23 @@ const Hero: React.FC = () => {
               className="btn-secondary"
               onClick={(e) => {
                 e.preventDefault();
-                document.getElementById('about')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const element = document.getElementById('about');
+                if (element) {
+                  const headerOffset = 80;
+                  const elementPosition = element.getBoundingClientRect().top;
+                  const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                  
+                  window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                  });
+                }
+              }}
+              style={{
+                transform: 'translateZ(0)', // Force GPU acceleration for buttons
+                backfaceVisibility: 'hidden', // Prevent rendering issues
+                willChange: 'transform', // Optimize hover animations
+                userSelect: 'none' // Prevent text selection for better mobile experience
               }}
             >
               Discover
@@ -136,7 +187,23 @@ const Hero: React.FC = () => {
               className="btn-secondary"
               onClick={(e) => {
                 e.preventDefault();
-                document.getElementById('shop-coming-soon')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const element = document.getElementById('shop-coming-soon');
+                if (element) {
+                  const headerOffset = 80;
+                  const elementPosition = element.getBoundingClientRect().top;
+                  const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                  
+                  window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                  });
+                }
+              }}
+              style={{
+                transform: 'translateZ(0)', // Force GPU acceleration
+                backfaceVisibility: 'hidden', // Prevent rendering issues
+                willChange: 'transform', // Optimize hover animations
+                userSelect: 'none' // Prevent text selection
               }}
             >
               Store Coming Soon
@@ -155,13 +222,22 @@ const Hero: React.FC = () => {
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="w-14 h-14 flex items-center justify-center text-white hover:text-white/80 transition-colors duration-300 text-2xl touch-manipulation" 
-                whileHover={{ y: -3 }} 
-                whileTap={{ scale: 0.95 }} 
+                whileHover={{ 
+                  y: -3,
+                  scale: 1.05,
+                  transition: { type: "spring", stiffness: 400, damping: 10 }
+                }} 
+                whileTap={{ 
+                  scale: 0.95,
+                  transition: { type: "spring", stiffness: 500, damping: 20 }
+                }} 
                 title={social.name}
                 aria-label={`Visit Cbarrgs on ${social.name}`}
                 style={{
                   transform: 'translateZ(0)', // Force GPU acceleration
-                  willChange: 'transform' // Hint for browser optimization
+                  willChange: 'transform', // Hint for browser optimization
+                  backfaceVisibility: 'hidden', // Prevent text rendering issues
+                  filter: 'drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2))' // Subtle shadow for depth
                 }}
               >
                 {social.icon}
@@ -176,7 +252,15 @@ const Hero: React.FC = () => {
             className="absolute bottom-4 left-0 right-0 mx-auto flex justify-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.8, duration: 0.5 }}
+            transition={{ 
+              delay: 0.4, // Faster appearance
+              duration: 0.5,
+              ease: cubicBezier(0.25, 0.1, 0.25, 1.0) // Using proper cubicBezier function
+            }}
+            style={{
+              filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))', // Subtle floating effect
+              transform: 'translateZ(0)' // Force GPU acceleration
+            }}
           >
             <AnnouncementBanner onDismiss={() => setShowBanner(false)} />
           </motion.div>
