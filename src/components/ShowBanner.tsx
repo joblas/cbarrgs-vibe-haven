@@ -14,12 +14,6 @@ const ShowBanner: React.FC = () => {
     setIsVisible(false);
   };
 
-  // Handle ticket button click with explicit event handler
-  const handleTicketClick = () => {
-    // Direct navigation rather than using window.open for better mobile compatibility
-    window.location.href = ticketUrl;
-  };
-
   if (!isVisible) return null;
 
   return (
@@ -56,6 +50,11 @@ const ShowBanner: React.FC = () => {
           target="_blank" 
           rel="noopener noreferrer"
           className="text-center text-xs md:text-sm px-4 py-2 bg-white text-black rounded-sm hover:bg-purple-200 transition-colors duration-200 whitespace-nowrap font-medium mx-auto block w-full md:w-auto max-w-[200px] z-50 touch-manipulation"
+          onClick={(e) => {
+            // This prevents default behavior and forces opening in a new tab
+            e.preventDefault();
+            window.open(ticketUrl, '_blank', 'noopener,noreferrer');
+          }}
         >
           Get Tickets
         </a>
