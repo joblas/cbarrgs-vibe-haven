@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useScroll, useTransform } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
@@ -10,6 +9,7 @@ import { faLink } from '@fortawesome/free-solid-svg-icons';
 import ShowBanner from '@/components/ShowBanner';
 
 const Hero: React.FC = () => {
+  
   const controls = useAnimation();
   const containerRef = useRef<HTMLDivElement>(null);
   const {
