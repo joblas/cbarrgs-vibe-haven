@@ -12,8 +12,12 @@ const ShowBanner: React.FC = () => {
 
   // Handle ticket button click with explicit event handler
   const handleTicketClick = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent default behavior (scrolling)
     e.stopPropagation(); // Prevent event bubbling
-    window.open("https://dice.fm/event/pyqaqk-lucys-cbarrgs-boodahki-coyote-aguilar-3rd-may-location-tba-boyle-heights-los-angeles-los-angeles-tickets", "_blank", "noopener,noreferrer");
+    
+    // Explicitly open in new tab
+    const url = "https://dice.fm/event/pyqaqk-lucys-cbarrgs-boodahki-coyote-aguilar-3rd-may-location-tba-boyle-heights-los-angeles-los-angeles-tickets";
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   if (!isVisible) return null;
@@ -41,9 +45,9 @@ const ShowBanner: React.FC = () => {
         </div>
         
         <p className="text-sm md:text-base text-center">
-          <span className="mr-2 hidden sm:inline-block">🔥</span>
+          <span className="mr-2 inline-block">🔥</span>
           Performing at MakeOutMusic with Lucys, Cbarrgs, Boodahki, Coyote Aguilar
-          <span className="ml-2 hidden sm:inline-block">🔥</span>
+          <span className="ml-2 inline-block">🔥</span>
         </p>
         
         <button
