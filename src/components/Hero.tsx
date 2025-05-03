@@ -1,13 +1,15 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useAnimation, useScroll, useTransform } from 'framer-motion';
 import { fadeIn } from '@/utils/transitions';
 import { SPOTIFY_URL, YOUTUBE_CHANNEL, INSTAGRAM_URL, LINKTREE_URL, APPLE_MUSIC_URL, SOUNDCLOUD_URL } from '@/utils/constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faYoutube, faApple, faSpotify, faSoundcloud } from '@fortawesome/free-brands-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
+import AnnouncementBanner from './AnnouncementBanner';
 
 const Hero: React.FC = () => {
   
+  const [showBanner, setShowBanner] = useState(true);
   const controls = useAnimation();
   const containerRef = useRef<HTMLDivElement>(null);
   const {
@@ -98,7 +100,7 @@ const Hero: React.FC = () => {
       ></div>
       
       {/* Content */}
-      <div className="relative z-20 text-center px-6 max-w-screen-xl mx-auto">
+      <div className="relative z-20 text-center px-6 max-w-screen-xl mx-auto overflow-visible">
         <motion.div 
           className="space-y-8" 
           initial={{ opacity: 0, y: 20 }} 
@@ -166,6 +168,18 @@ const Hero: React.FC = () => {
               </motion.a>
             ))}
           </motion.div>
+          
+          {/* Announcement Banner - placed below social icons */}
+          {showBanner && (
+            <motion.div 
+              className="w-full flex justify-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8, duration: 0.5 }}
+            >
+              <AnnouncementBanner onDismiss={() => setShowBanner(false)} />
+            </motion.div>
+          )}
         </motion.div>
       </div>
     </motion.section>
