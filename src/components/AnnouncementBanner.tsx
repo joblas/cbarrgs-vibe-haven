@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { X, Calendar, MapPin, Clock, Music } from 'lucide-react';
+import { X, MapPin, Music } from 'lucide-react';
 
 interface AnnouncementBannerProps {
   onDismiss?: () => void;
