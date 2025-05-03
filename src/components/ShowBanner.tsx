@@ -6,7 +6,7 @@ import { X } from 'lucide-react';
 const ShowBanner: React.FC = () => {
   const [isVisible, setIsVisible] = React.useState(true);
   
-  // Concert ticket URL
+  // Concert ticket URL - updated to the correct link
   const ticketUrl = "https://dice.fm/event/pyqaqk-lucys-cbarrgs-boodahki-coyote-aguilar-3rd-may-location-tba-boyle-heights-los-angeles-los-angeles-tickets";
 
   // Hide the banner when clicked
