@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { fadeIn, slideUp } from '@/utils/transitions';
@@ -66,16 +65,25 @@ const Footer: React.FC = () => {
             
             <div className="mt-6 flex space-x-4" aria-label="Social media links">
               {socialLinks.map((link, index) => (
-                <a 
+                <motion.a 
                   key={index}
                   href={link.url} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="w-12 h-12 flex items-center justify-center text-white hover:text-white/80 transition-colors duration-300 text-xl"
+                  className="w-14 h-14 flex items-center justify-center text-white hover:text-white/80 transition-colors duration-300 text-2xl touch-manipulation"
+                  whileHover={{ y: -3 }} 
+                  whileTap={{ scale: 0.95 }}
                   aria-label={link.name}
+                  onClick={(e) => {
+                    // Ensure proper link handling on mobile
+                    if (link.url) {
+                      e.stopPropagation();
+                      window.open(link.url, '_blank', 'noopener,noreferrer');
+                    }
+                  }}
                 >
                   <FontAwesomeIcon icon={link.icon} aria-hidden="true" />
-                </a>
+                </motion.a>
               ))}
             </div>
           </motion.div>
