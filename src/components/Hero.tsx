@@ -100,7 +100,7 @@ const Hero: React.FC = () => {
       ></div>
       
       {/* Content */}
-      <div className="relative z-20 text-center px-6 max-w-screen-xl mx-auto overflow-visible">
+      <div className="relative z-20 text-center px-6 max-w-screen-xl mx-auto overflow-visible flex flex-col h-full justify-center">
         <motion.div 
           className="space-y-8" 
           initial={{ opacity: 0, y: 20 }} 
@@ -170,10 +170,10 @@ const Hero: React.FC = () => {
           </motion.div>
         </motion.div>
         
-        {/* Announcement Banner - placed at the bottom of the screen */}
+        {/* Announcement Banner - placed at the bottom of hero section */}
         {showBanner && (
           <motion.div 
-            className="absolute bottom-5 left-0 right-0 mx-auto flex justify-center"
+            className="absolute bottom-4 left-0 right-0 mx-auto flex justify-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8, duration: 0.5 }}
