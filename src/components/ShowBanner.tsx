@@ -4,6 +4,9 @@ import { X } from 'lucide-react';
 
 const ShowBanner: React.FC = () => {
   const [isVisible, setIsVisible] = React.useState(true);
+  
+  // Concert ticket URL
+  const ticketUrl = "https://dice.fm/event/pyqaqk-lucys-cbarrgs-boodahki-coyote-aguilar-3rd-may-location-tba-boyle-heights-los-angeles-los-angeles-tickets";
 
   // Hide the banner when clicked
   const hideBanner = () => {
@@ -11,13 +14,9 @@ const ShowBanner: React.FC = () => {
   };
 
   // Handle ticket button click with explicit event handler
-  const handleTicketClick = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent default behavior (scrolling)
-    e.stopPropagation(); // Prevent event bubbling
-    
-    // Explicitly open in new tab
-    const url = "https://dice.fm/event/pyqaqk-lucys-cbarrgs-boodahki-coyote-aguilar-3rd-may-location-tba-boyle-heights-los-angeles-los-angeles-tickets";
-    window.open(url, "_blank", "noopener,noreferrer");
+  const handleTicketClick = () => {
+    // Direct navigation rather than using window.open for better mobile compatibility
+    window.location.href = ticketUrl;
   };
 
   if (!isVisible) return null;
@@ -50,12 +49,15 @@ const ShowBanner: React.FC = () => {
           <span className="ml-2 inline-block">🔥</span>
         </p>
         
-        <button
+        <a
+          href={ticketUrl}
+          target="_blank"
+          rel="noopener noreferrer"
           onClick={handleTicketClick}
           className="text-center text-xs md:text-sm px-4 py-2 bg-white text-black rounded-sm hover:bg-purple-200 transition-colors duration-200 whitespace-nowrap font-medium mx-auto block w-full md:w-auto max-w-[200px] z-50 touch-manipulation"
         >
           Get Tickets
-        </button>
+        </a>
       </div>
     </motion.div>
   );
