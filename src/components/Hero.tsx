@@ -1,15 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useScroll, useTransform, cubicBezier } from 'framer-motion';
 import { fadeIn } from '@/utils/transitions';
 import { SPOTIFY_URL, YOUTUBE_CHANNEL, INSTAGRAM_URL, LINKTREE_URL, APPLE_MUSIC_URL, SOUNDCLOUD_URL } from '@/utils/constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faYoutube, faApple, faSpotify, faSoundcloud } from '@fortawesome/free-brands-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
-import AnnouncementBanner from './AnnouncementBanner';
 
 const Hero: React.FC = () => {
   
-  const [showBanner, setShowBanner] = useState(true);
   const controls = useAnimation();
   const containerRef = useRef<HTMLDivElement>(null);
   const {
@@ -245,26 +243,6 @@ const Hero: React.FC = () => {
             ))}
           </motion.div>
         </motion.div>
-        
-        {/* Announcement Banner - placed at the bottom of hero section */}
-        {showBanner && (
-          <motion.div 
-            className="absolute bottom-4 left-0 right-0 mx-auto flex justify-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ 
-              delay: 0.4, // Faster appearance
-              duration: 0.5,
-              ease: cubicBezier(0.25, 0.1, 0.25, 1.0) // Using proper cubicBezier function
-            }}
-            style={{
-              filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))', // Subtle floating effect
-              transform: 'translateZ(0)' // Force GPU acceleration
-            }}
-          >
-            <AnnouncementBanner onDismiss={() => setShowBanner(false)} />
-          </motion.div>
-        )}
       </div>
     </motion.section>
   );
