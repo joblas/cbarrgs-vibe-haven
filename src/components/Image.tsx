@@ -29,7 +29,7 @@ const Image: React.FC<ImageProps> = ({
   });
   
   // Convert placeholder color to URL-safe format
-  const safeColor = placeholderColor.replace('#', '%23');
+  const safeColor = placeholderColor.replace(/#/g, '%23');
   
   // Simpler, smaller placeholder SVG for better performance
   const placeholder = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3Crect fill='${safeColor}' width='1' height='1'/%3E%3C/svg%3E`;
