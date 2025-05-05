@@ -8,29 +8,32 @@ export default defineConfig(({ mode }) => ({
   base: '/',
   server: {
     host: '0.0.0.0',
-    port: 4001, // Match the port we're using
-    strictPort: false, // Allow port to be changed if in use
+    port: 8080,
+    strictPort: true,
     hmr: {
-      clientPort: 4001 // Match the port we're using
+      clientPort: 8080
     },
-    // Modified for local development
+    // Add security headers to mitigate the CORS vulnerability in esbuild
     cors: {
-      origin: true, // Allow all origins in development
+      // Restrict CORS to same origin in development
+      origin: mode === 'development' ? false : true,
     },
-    headers: mode === 'production' ? {
-      // Add security headers for production only
+    headers: {
+      // Add security headers
       'X-Content-Type-Options': 'nosniff',
       'X-Frame-Options': 'SAMEORIGIN',
       'Referrer-Policy': 'same-origin',
+      // These headers help mitigate the vulnerability by restricting cross-origin requests
       'Cross-Origin-Embedder-Policy': 'require-corp',
       'Cross-Origin-Opener-Policy': 'same-origin',
       'Cross-Origin-Resource-Policy': 'same-origin',
+      // Add Content-Security-Policy to restrict scripts
       'Content-Security-Policy': "default-src 'self'; frame-src 'self' https://open.spotify.com https://*.spotify.com; img-src 'self' data: https://*.spotify.com; connect-src 'self' https://*.spotify.com;"
-    } : {} // No restrictive headers in development
+    }
   },
   plugins: [
     react(),
-    mode === 'development' && false, // Disable componentTagger in dev
+    mode === 'development' && componentTagger(),
   ].filter(Boolean),
   resolve: {
     alias: {
@@ -40,6 +43,8 @@ export default defineConfig(({ mode }) => ({
   },
   optimizeDeps: {
     esbuildOptions: {
+      // This doesn't actually fix the vulnerability but helps reduce its impact
+      // by limiting what can be accessed
       define: {
         'process.env.NODE_ENV': JSON.stringify(mode)
       }
