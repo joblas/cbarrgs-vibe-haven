@@ -71,11 +71,11 @@ const Navigation: React.FC = () => {
     })
   };
 
-  // Simplified navigation items as requested
+  // Updated the "Listen" link to point to "#listen-section" instead of "#listen"
   const navItems = [
     { name: "Home", href: isHomePage ? "#hero" : "/#hero" },
     { name: "About", href: isHomePage ? "#about" : "/#about" },
-    { name: "Listen", href: isHomePage ? "#listen" : "/#listen" },
+    { name: "Listen", href: isHomePage ? "#listen-section" : "/#listen-section" },
     { name: "Shop", href: isHomePage ? "#shop-coming-soon" : "/#shop-coming-soon" }
   ];
 
