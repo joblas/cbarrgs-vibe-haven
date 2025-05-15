@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
@@ -71,7 +70,7 @@ const Navigation: React.FC = () => {
     })
   };
 
-  // Updated the "Listen" link to point to "#listen-section" instead of "#listen"
+  // Updated navigation items
   const navItems = [
     { name: "Home", href: isHomePage ? "#hero" : "/#hero" },
     { name: "About", href: isHomePage ? "#about" : "/#about" },
@@ -79,16 +78,16 @@ const Navigation: React.FC = () => {
     { name: "Shop", href: isHomePage ? "#shop-coming-soon" : "/#shop-coming-soon" }
   ];
 
-  const handleNavItemClick = (href: string) => {
+  // Updated to include event parameter
+  const handleNavItemClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     setIsOpen(false);
     
-    // Updated to prevent default behavior for hash links on the home page
-    // This fixes the issue of scrolling back to the top after navigation
+    // Handle home page hash links
     if (isHomePage && href.startsWith('#')) {
+      e.preventDefault();
       const targetId = href.substring(1);
       const element = document.getElementById(targetId);
       if (element) {
-        event.preventDefault();
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     } else if (!isHomePage && !href.startsWith('/')) {
@@ -143,19 +142,7 @@ const Navigation: React.FC = () => {
                 href={item.href} 
                 className="nav-link font-light tracking-wider"
                 role="menuitem"
-                onClick={(e) => {
-                  if (isHomePage && item.href.startsWith('#')) {
-                    e.preventDefault();
-                    const targetId = item.href.substring(1);
-                    const element = document.getElementById(targetId);
-                    if (element) {
-                      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                    setIsOpen(false);
-                  } else {
-                    handleNavItemClick(item.href);
-                  }
-                }}
+                onClick={(e) => handleNavItemClick(e, item.href)}
               >
                 {item.name}
               </a>
@@ -193,19 +180,7 @@ const Navigation: React.FC = () => {
               key={i}
               href={item.href}
               className="text-2xl font-light tracking-wide nav-link"
-              onClick={(e) => {
-                if (isHomePage && item.href.startsWith('#')) {
-                  e.preventDefault();
-                  const targetId = item.href.substring(1);
-                  const element = document.getElementById(targetId);
-                  if (element) {
-                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  }
-                  setIsOpen(false);
-                } else {
-                  handleNavItemClick(item.href);
-                }
-              }}
+              onClick={(e) => handleNavItemClick(e, item.href)}
               custom={i}
               variants={menuItemVariants}
               role="menuitem"
