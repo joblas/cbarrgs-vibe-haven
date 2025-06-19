@@ -44,7 +44,7 @@ const ShopComingSoon: React.FC = () => {
             className="text-white/70 mb-8 font-light"
             {...fadeIn(0.2)}
           >
-            Exclusive merchandise will be available soon. Sign up for updates to be the first to know.
+            Exclusive merchandise available on Shopify now.
           </motion.p>
           
           {/* Enhanced mobile-friendly button - using motion.a directly instead of nested elements */}
