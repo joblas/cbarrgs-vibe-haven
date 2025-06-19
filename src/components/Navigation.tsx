@@ -1,8 +1,9 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { useNavigationScroll } from '@/hooks/useNavigationScroll';
+import { useAccessibility, useReducedMotion } from '@/hooks/useAccessibility';
 import Logo from './navigation/Logo';
 import DesktopMenu from './navigation/DesktopMenu';
 import MobileMenuButton from './navigation/MobileMenuButton';
@@ -14,10 +15,19 @@ const Navigation: React.FC = () => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
   const scrolled = useNavigationScroll();
+  const { announceToScreenReader } = useAccessibility();
+  const prefersReducedMotion = useReducedMotion();
 
-  const toggleMenu = () => setIsOpen(!isOpen);
+  const toggleMenu = () => {
+    const newState = !isOpen;
+    setIsOpen(newState);
+    announceToScreenReader(newState ? 'Menu opened' : 'Menu closed');
+  };
 
-  const navVariants = {
+  const navVariants = prefersReducedMotion ? {
+    hidden: { opacity: 1, y: 0 },
+    visible: { opacity: 1, y: 0 }
+  } : {
     hidden: { opacity: 0, y: -20 },
     visible: {
       opacity: 1,
@@ -48,6 +58,7 @@ const Navigation: React.FC = () => {
       const element = document.getElementById(targetId);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        announceToScreenReader(`Navigated to ${targetId.replace('-', ' ')} section`);
       }
     } else if (!isHomePage && !href.startsWith('/')) {
       const targetId = href.replace('/#', '');
@@ -55,11 +66,25 @@ const Navigation: React.FC = () => {
     }
   };
 
+  // Close mobile menu on escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+        announceToScreenReader('Menu closed');
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isOpen, announceToScreenReader]);
+
   return (
     <>
       <motion.nav
+        id="navigation"
         className={`fixed w-full z-50 transition-all duration-300 ${
-          scrolled ? 'py-4 bg-black/80 backdrop-blur-md' : 'py-6 bg-transparent'
+          scrolled ? 'py-4 bg-black/90 backdrop-blur-md' : 'py-6 bg-transparent'
         }`}
         variants={navVariants}
         initial="hidden"
