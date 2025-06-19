@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useScroll, useTransform, cubicBezier } from 'framer-motion';
 import { fadeIn } from '@/utils/transitions';
-import { SPOTIFY_URL, YOUTUBE_CHANNEL, INSTAGRAM_URL, LINKTREE_URL, APPLE_MUSIC_URL, SOUNDCLOUD_URL } from '@/utils/constants';
+import { SPOTIFY_URL, YOUTUBE_CHANNEL, INSTAGRAM_URL, LINKTREE_URL, APPLE_MUSIC_URL, SOUNDCLOUD_URL, SHOPIFY_STORE } from '@/utils/constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faYoutube, faApple, faSpotify, faSoundcloud } from '@fortawesome/free-brands-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
@@ -181,22 +181,10 @@ const Hero: React.FC = () => {
               Discover
             </a>
             <a 
-              href="#shop-coming-soon" 
+              href={SHOPIFY_STORE}
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-secondary"
-              onClick={(e) => {
-                e.preventDefault();
-                const element = document.getElementById('shop-coming-soon');
-                if (element) {
-                  const headerOffset = 80;
-                  const elementPosition = element.getBoundingClientRect().top;
-                  const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                  
-                  window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                  });
-                }
-              }}
               style={{
                 transform: 'translateZ(0)', // Force GPU acceleration
                 backfaceVisibility: 'hidden', // Prevent rendering issues

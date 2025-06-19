@@ -47,20 +47,23 @@ const ShopComingSoon: React.FC = () => {
             Exclusive merchandise available on Shopify now.
           </motion.p>
           
-          {/* Simplified mobile-optimized button */}
+          {/* Enhanced mobile-optimized button */}
           <motion.a
             href={SHOPIFY_STORE} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="inline-block w-full sm:w-auto border border-white/30 bg-white/5 hover:bg-white/10 text-white px-8 py-4 rounded-sm font-light transition-colors duration-300 cursor-pointer select-none"
+            className="inline-block w-full sm:w-auto border border-white/30 bg-white/5 hover:bg-white/10 text-white px-8 py-4 rounded-sm font-light transition-colors duration-300"
             style={{
               minHeight: '48px',
               minWidth: '120px',
               touchAction: 'manipulation',
-              WebkitTapHighlightColor: 'rgba(255,255,255,0.1)',
+              WebkitTapHighlightColor: 'rgba(255,255,255,0.05)',
               WebkitTouchCallout: 'none',
               WebkitUserSelect: 'none',
-              userSelect: 'none'
+              userSelect: 'none',
+              cursor: 'pointer',
+              display: 'block',
+              textAlign: 'center'
             }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
