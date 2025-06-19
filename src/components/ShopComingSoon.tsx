@@ -47,27 +47,24 @@ const ShopComingSoon: React.FC = () => {
             Exclusive merchandise available on Shopify now.
           </motion.p>
           
-          {/* Enhanced mobile-friendly button - using motion.a directly instead of nested elements */}
+          {/* Simplified mobile-optimized button */}
           <motion.a
             href={SHOPIFY_STORE} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="btn-secondary block w-full sm:inline-block sm:w-auto border border-white/30 backdrop-blur-sm bg-white/5 hover:bg-white/10 transition-all duration-300 text-white px-8 py-4 md:py-3 rounded-sm font-light"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            {...fadeIn(0.3)}
+            className="inline-block w-full sm:w-auto border border-white/30 bg-white/5 hover:bg-white/10 text-white px-8 py-4 rounded-sm font-light transition-colors duration-300 cursor-pointer select-none"
             style={{
-              touchAction: 'manipulation', // Optimize for touch
-              WebkitTapHighlightColor: 'transparent', // Remove highlight on iOS
-              userSelect: 'none', // Prevent text selection
-              cursor: 'pointer', // Show pointer cursor
-              transform: 'translateZ(0)', // Force GPU acceleration
-              willChange: 'transform', // Optimize animations
-              display: 'block', // Ensure full width is clickable
-              minHeight: '44px', // Minimum touch target height
-              textAlign: 'center', // Center text
-              lineHeight: '1.25', // Ensure consistent line height
+              minHeight: '48px',
+              minWidth: '120px',
+              touchAction: 'manipulation',
+              WebkitTapHighlightColor: 'rgba(255,255,255,0.1)',
+              WebkitTouchCallout: 'none',
+              WebkitUserSelect: 'none',
+              userSelect: 'none'
             }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            {...fadeIn(0.3)}
           >
             Visit Store
           </motion.a>
