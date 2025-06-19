@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion, useAnimation, useInView, cubicBezier } from 'framer-motion';
 import { useRef, useEffect } from 'react';
@@ -36,7 +37,7 @@ const ShopComingSoon: React.FC = () => {
             className="font-serif text-3xl md:text-4xl mb-6 font-light"
             {...fadeIn(0.1)}
           >
-            Shop Coming Soon
+            Shop Now
           </motion.h2>
           
           <motion.p 
