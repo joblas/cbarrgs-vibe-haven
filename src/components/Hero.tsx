@@ -204,7 +204,7 @@ const Hero: React.FC = () => {
                 userSelect: 'none' // Prevent text selection
               }}
             >
-              Store Coming Soon
+              Shop Now
             </a>
           </motion.div>
           
