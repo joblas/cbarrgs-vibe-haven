@@ -23,6 +23,8 @@ const SubscribeForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    console.log('Form submission started', { email });
+    
     // Clear previous errors
     setErrors({});
     
@@ -45,14 +47,20 @@ const SubscribeForm: React.FC = () => {
     announceToScreenReader('Submitting subscription...');
 
     try {
-      const { error } = await supabase
+      console.log('Attempting to insert subscriber:', email.trim().toLowerCase());
+      
+      const { data, error } = await supabase
         .from('subscribers')
         .insert([{ 
-          email: email.trim().toLowerCase(),
-          subscribed_at: new Date().toISOString()
-        }]);
+          email: email.trim().toLowerCase()
+        }])
+        .select();
+
+      console.log('Supabase response:', { data, error });
 
       if (error) {
+        console.error('Supabase error:', error);
+        
         if (error.code === '23505') {
           toast({
             title: "Already subscribed",
@@ -61,9 +69,23 @@ const SubscribeForm: React.FC = () => {
           });
           announceToScreenReader("You're already subscribed to our mailing list");
         } else {
-          throw error;
+          console.error('Database error details:', {
+            code: error.code,
+            message: error.message,
+            details: error.details,
+            hint: error.hint
+          });
+          
+          toast({
+            title: "Error",
+            description: "Sorry, something went wrong. Please try again.",
+            variant: "destructive",
+          });
+          announceToScreenReader("Sorry, something went wrong. Please try again.");
         }
       } else {
+        console.log('Subscription successful:', data);
+        
         toast({
           title: "Success!",
           description: "Thank you for subscribing to updates from Cbarrgs.",
@@ -73,7 +95,8 @@ const SubscribeForm: React.FC = () => {
         setEmail('');
       }
     } catch (error) {
-      console.error('Subscription error:', error);
+      console.error('Unexpected error in subscription:', error);
+      
       const errorMessage = "Sorry, something went wrong. Please try again.";
       toast({
         title: "Error",
