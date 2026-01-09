@@ -1,138 +1,182 @@
 
-import React, { useState, useRef } from 'react';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { supabase } from '@/integrations/supabase/client';
-import { Input } from '@/components/ui/input';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
-import { toast } from '@/hooks/use-toast';
-import { AlertCircle, Check } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { useAccessibility, useReducedMotion } from '@/hooks/useAccessibility';
 
-const formSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
-  honeypot: z.string().max(0, 'Bot detected')
-});
-
-type FormValues = z.infer<typeof formSchema>;
-
-const SubscribeForm = () => {
+const SubscribeForm: React.FC = () => {
+  const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const honeyRef = useRef<HTMLInputElement>(null);
-  
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: '',
-      honeypot: ''
-    }
-  });
+  const [errors, setErrors] = useState<{ email?: string }>({});
+  const { toast } = useToast();
+  const { announceToScreenReader } = useAccessibility();
+  const prefersReducedMotion = useReducedMotion();
 
-  const onSubmit = async (values: FormValues) => {
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    console.log('Form submission started', { email });
+    
+    // Clear previous errors
+    setErrors({});
+    
+    // Validate email
+    if (!email.trim()) {
+      const error = 'Email address is required';
+      setErrors({ email: error });
+      announceToScreenReader(error);
+      return;
+    }
+    
+    if (!validateEmail(email)) {
+      const error = 'Please enter a valid email address';
+      setErrors({ email: error });
+      announceToScreenReader(error);
+      return;
+    }
+
+    setIsSubmitting(true);
+    announceToScreenReader('Submitting subscription...');
+
     try {
-      setIsSubmitting(true);
+      console.log('Attempting to insert subscriber:', email.trim().toLowerCase());
       
-      // Check honeypot field
-      if (values.honeypot || honeyRef.current?.value) {
-        console.log('Bot submission detected');
-        // Fake success to fool bots
-        toast({
-          title: "Thanks for subscribing!",
-          description: "You'll receive updates soon.",
-          variant: "default"
-        });
-        return;
-      }
-      
-      console.log('Submitting subscription:', values.email);
-      
-      // Real submission
-      const { error, data } = await supabase
+      const { data, error } = await supabase
         .from('subscribers')
-        .insert([{ email: values.email }]);
-        
-      console.log('Supabase response:', error ? 'Error: ' + JSON.stringify(error) : 'Success', data);
-        
+        .insert([{ 
+          email: email.trim().toLowerCase()
+        }])
+        .select();
+
+      console.log('Supabase response:', { data, error });
+
       if (error) {
-        if (error.code === '23505') { // Unique violation
+        console.error('Supabase error:', error);
+        
+        if (error.code === '23505') {
           toast({
             title: "Already subscribed",
-            description: "This email is already on our list. Thank you!",
-            variant: "default"
+            description: "You're already on our mailing list!",
+            variant: "default",
           });
+          announceToScreenReader("You're already subscribed to our mailing list");
         } else {
-          console.error('Subscription error details:', error);
-          throw error;
+          console.error('Database error details:', {
+            code: error.code,
+            message: error.message,
+            details: error.details,
+            hint: error.hint
+          });
+          
+          toast({
+            title: "Error",
+            description: "Sorry, something went wrong. Please try again.",
+            variant: "destructive",
+          });
+          announceToScreenReader("Sorry, something went wrong. Please try again.");
         }
       } else {
-        // Display a more prominent success toast
+        console.log('Subscription successful:', data);
+        
         toast({
-          title: "Successfully Subscribed!",
-          description: "Thanks for joining! You'll receive updates soon.",
+          title: "Success!",
+          description: "Thank you for subscribing to updates from Cbarrgs.",
           variant: "default",
-          duration: 5000,
-          icon: <Check className="h-5 w-5 text-green-500" />,
         });
-        form.reset();
+        announceToScreenReader("Successfully subscribed! Thank you for joining our mailing list");
+        setEmail('');
       }
     } catch (error) {
-      console.error('Subscription error:', error);
+      console.error('Unexpected error in subscription:', error);
+      
+      const errorMessage = "Sorry, something went wrong. Please try again.";
       toast({
-        title: "Something went wrong",
-        description: "Please try again later.",
+        title: "Error",
+        description: errorMessage,
         variant: "destructive",
-        icon: <AlertCircle className="h-5 w-5" />,
       });
+      announceToScreenReader(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const motionProps = prefersReducedMotion ? {} : {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6, ease: [0.45, 0, 0.55, 1] }
+  };
+
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col space-y-3">
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  type="email"
-                  placeholder="Your email"
-                  className="px-4 py-2 bg-white/5 border border-white/10 rounded-sm focus:outline-none focus:ring-1 focus:ring-white/50 text-white placeholder:text-white/40 font-light"
-                  required
-                  aria-label="Email address"
-                  {...field}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        
-        {/* Honeypot field - hidden from users but visible to bots */}
-        <input
-          ref={honeyRef}
-          type="text" 
-          name="honeypot"
-          tabIndex={-1}
-          className="opacity-0 absolute top-0 left-0 h-0 w-0"
-          style={{ position: 'absolute', left: '-9999px' }}
-          aria-hidden="true"
-          {...form.register('honeypot')}
-        />
-        
-        <Button
-          type="submit"
-          className="btn-secondary text-sm"
-          aria-label="Subscribe to newsletter"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? 'Subscribing...' : 'Subscribe'}
-        </Button>
+    <motion.div
+      className="max-w-md mx-auto"
+      {...motionProps}
+    >
+      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+        <fieldset disabled={isSubmitting}>
+          <legend className="sr-only">Subscribe to Cbarrgs newsletter</legend>
+          
+          <div>
+            <label htmlFor="email-subscribe" className="sr-only">
+              Email address
+            </label>
+            <Input
+              id="email-subscribe"
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={`bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/50 focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 ${
+                errors.email ? 'border-red-500 focus:border-red-500' : ''
+              }`}
+              aria-invalid={errors.email ? 'true' : 'false'}
+              aria-describedby={errors.email ? 'email-error' : 'email-description'}
+              required
+              autoComplete="email"
+            />
+            
+            <div id="email-description" className="sr-only">
+              Enter your email address to receive updates about new music and shows
+            </div>
+            
+            {errors.email && (
+              <div 
+                id="email-error" 
+                className="text-red-400 text-sm mt-1"
+                role="alert"
+                aria-live="polite"
+              >
+                {errors.email}
+              </div>
+            )}
+          </div>
+          
+          <Button 
+            type="submit" 
+            className="w-full btn-primary" 
+            disabled={isSubmitting}
+            aria-describedby="submit-description"
+          >
+            {isSubmitting ? 'Subscribing...' : 'Subscribe'}
+          </Button>
+          
+          <div id="submit-description" className="sr-only">
+            Click to subscribe to Cbarrgs newsletter for music updates and announcements
+          </div>
+        </fieldset>
       </form>
-    </Form>
+      
+      {/* Live region for form status announcements */}
+      <div aria-live="polite" aria-atomic="true" className="sr-only" />
+    </motion.div>
   );
 };
 

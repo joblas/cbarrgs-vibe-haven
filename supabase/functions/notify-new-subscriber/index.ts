@@ -77,7 +77,7 @@ serve(async (req) => {
         console.log(`Attempting to send email notification at: ${new Date().toISOString()}`);
         
         const from = "Cbarrgs Music <updates@cbarrgs.com>";
-        const to = ["cbarrgs@cbarrgs.com", "cbarrgs@gmail.com"];
+        const to = ["cbarrgs@gmail.com"];
         const subject = "New Subscriber Alert";
         
         console.log(`Sending email from: ${from}`);
@@ -142,7 +142,7 @@ serve(async (req) => {
       console.error("=================== CONFIGURATION ERROR ===================");
       console.error(`Error at: ${new Date().toISOString()}`);
       console.error("Resend API key not configured or invalid");
-      console.error(`Would send notification to cbarrgs@cbarrgs.com and cbarrgs@gmail.com about new subscriber: ${subscriber.email}`);
+      console.error(`Would send notification to cbarrgs@gmail.com about new subscriber: ${subscriber.email}`);
       
       return new Response(
         JSON.stringify({ 

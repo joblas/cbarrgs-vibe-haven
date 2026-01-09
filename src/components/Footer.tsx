@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { fadeIn, slideUp } from '@/utils/transitions';
@@ -23,12 +22,28 @@ const Footer: React.FC = () => {
     { name: 'Linktree', icon: faLink, url: LINKTREE_URL },
   ];
 
-  // Simplified footer links as requested
+  // Updated footer links to include Listen link
   const footerLinks = [
     { name: 'Home', href: isHomePage ? '#hero' : '/#hero' },
     { name: 'About', href: isHomePage ? '#about' : '/#about' },
+    { name: 'Listen', href: isHomePage ? '#listen-section' : '/#listen-section' },
     { name: 'Shop', href: isHomePage ? '#shop-coming-soon' : '/#shop-coming-soon' },
   ];
+
+  // Function to handle anchor links on home page
+  const handleFooterLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (isHomePage && href.startsWith('#')) {
+      e.preventDefault();
+      const targetId = href.substring(1);
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    } else if (!isHomePage && !href.startsWith('/')) {
+      const targetId = href.replace('/#', '');
+      localStorage.setItem('scrollTarget', targetId);
+    }
+  };
 
   return (
     <footer className="relative bg-black py-16 md:py-24" role="contentinfo">
@@ -96,12 +111,7 @@ const Footer: React.FC = () => {
                   <a 
                     href={link.href} 
                     className="nav-link font-light tracking-wide"
-                    onClick={() => {
-                      if (!isHomePage && !link.href.startsWith('/')) {
-                        const targetId = link.href.replace('/#', '');
-                        localStorage.setItem('scrollTarget', targetId);
-                      }
-                    }}
+                    onClick={(e) => handleFooterLinkClick(e, link.href)}
                   >
                     {link.name}
                   </a>

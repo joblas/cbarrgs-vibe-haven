@@ -3,9 +3,42 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cbarrgs | Electronic Music Artist & Producer</title>
+    <title>Cbarrgs | Music, Artist & Producer</title>
     <meta name="description" content="Cbarrgs (see-bargs) blends electronic textures with ambient soundscapes. Explore music, upcoming shows, and exclusive merchandise." />
     <meta name="keywords" content="Cbarrgs, electronic music, ambient, artist, producer, soundscapes, digital solitude" />
+    
+    <!-- Performance optimizations -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//dice.fm" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href="/lovable-uploads/cbarrgs-insta-bw.webp" as="image" fetchpriority="high" />
+    <link rel="preload" href="/lovable-uploads/lucys-show-flyer.jpg.png" as="image" />
+    
+    <!-- Font rendering optimization -->
+    <script>
+      // Font display optimization
+      if ('fonts' in document) {
+        // Optimize font loading with font-display: swap via JS
+        document.addEventListener('DOMContentLoaded', function() {
+          if (sessionStorage.fontsLoaded) {
+            document.documentElement.classList.add('fonts-loaded');
+            return;
+          }
+          
+          Promise.all([
+            document.fonts.load('1em serif'),
+            document.fonts.load('1em sans-serif')
+          ]).then(function() {
+            document.documentElement.classList.add('fonts-loaded');
+            sessionStorage.fontsLoaded = true;
+          });
+        });
+      }
+    </script>
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://cbarrgs.com" />
@@ -15,19 +48,50 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
     
+    <!-- SMS and messaging app previews -->
+    <link rel="apple-touch-icon-precomposed" href="https://cbarrgs.com/og-image.png?v=20250503" />
+    <link rel="icon" type="image/png" href="https://cbarrgs.com/og-image.png?v=20250503" />
+    
+    <!-- Mobile compatibility -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Cbarrgs Music">
+    <meta name="application-name" content="Cbarrgs Music">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    
+    <!-- Mobile app linking -->
+    <meta property="al:ios:url" content="https://cbarrgs.com/" />
+    <meta property="al:ios:app_store_id" content="0" />
+    <meta property="al:ios:app_name" content="Web Browser" />
+    <meta property="al:android:url" content="https://cbarrgs.com/" />
+    <meta property="al:android:package" content="com.android.chrome" />
+    <meta property="al:android:app_name" content="Web Browser" />
+    <meta property="al:web:url" content="https://cbarrgs.com/" />
+    
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://cbarrgs.com/" />
     <meta property="og:title" content="Cbarrgs | Electronic Music Artist" />
     <meta property="og:description" content="Cbarrgs blends electronic textures with ambient soundscapes, creating immersive spaces where listeners explore themes of connection and digital solitude." />
-    <meta property="og:image" content="https://cbarrgs.com/og-image.png" />
+    <meta property="og:image" content="https://cbarrgs.com/og-image.png?v=20250503" />
+    <meta property="og:image:secure_url" content="https://cbarrgs.com/og-image.png?v=20250503" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Cbarrgs - Electronic Music Artist" />
+    <meta property="og:site_name" content="Cbarrgs Music" />
+    <!-- Fallback for messaging apps -->
+    <link rel="image_src" href="https://cbarrgs.com/og-image.png?v=20250503" />
     
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://cbarrgs.com/" />
-    <meta property="twitter:title" content="Cbarrgs | Electronic Music Artist" />
-    <meta property="twitter:description" content="Electronic artist blending textures with ambient soundscapes since 2015." />
-    <meta property="twitter:image" content="https://cbarrgs.com/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://cbarrgs.com/" />
+    <meta name="twitter:title" content="Cbarrgs | Electronic Music Artist" />
+    <meta name="twitter:description" content="Cbarrgs blends electronic textures with ambient soundscapes, creating immersive spaces where listeners explore themes of connection and digital solitude." />
+    <meta name="twitter:image" content="https://cbarrgs.com/og-image-sms.png?v=20250503" />
+    <meta name="twitter:image:alt" content="Cbarrgs - Electronic Music Artist" />
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
@@ -38,7 +102,7 @@
       "@type": "MusicGroup",
       "name": "Cbarrgs",
       "url": "https://cbarrgs.com",
-      "image": "https://cbarrgs.com/og-image.png",
+      "image": "https://cbarrgs.com/og-image.png?v=20250503",
       "description": "Cbarrgs (see-bargs) blends electronic textures with ambient soundscapes and alternative sensibilities. His sonic world has been expanding since 2015.",
       "genre": ["Electronic", "Ambient", "Alternative"],
       "sameAs": [
@@ -53,8 +117,7 @@
   </head>
   <body>
     <div id="root"></div>
-    <!-- Remove GPT Engineer script for local development -->
-    <!-- <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script> -->
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
