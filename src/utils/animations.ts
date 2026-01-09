@@ -32,13 +32,15 @@ export const duration = {
 // ============================================
 
 export const floatingVariants: Variants = {
-  initial: { y: 0 },
+  initial: { y: 0, scale: 1 },
   animate: {
-    y: [0, -6, 0],
+    y: [0, -12, 0],
+    scale: [1, 1.02, 1],
     transition: {
-      duration: 4,
+      duration: 3,
       repeat: Infinity,
-      ease: 'easeInOut',
+      ease: [0.45, 0.05, 0.55, 0.95], // Bouncy ease
+      times: [0, 0.5, 1],
     },
   },
 };

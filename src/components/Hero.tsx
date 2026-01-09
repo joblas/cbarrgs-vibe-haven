@@ -90,21 +90,26 @@ const Hero: React.FC = () => {
           initial="hidden"
           animate="visible"
         >
-          {/* Floating Title */}
+          {/* Floating Logo */}
           <motion.div
             variants={reducedMotion ? {} : floatingVariants}
             initial="initial"
             animate="animate"
           >
-            <motion.h1
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-serif font-light tracking-wider"
+            <motion.div
               variants={staggerItemVariants}
-              style={{
-                textShadow: '0 4px 20px rgba(0, 0, 0, 0.5), 0 0 60px rgba(255, 255, 255, 0.1)',
-              }}
+              className="flex justify-center"
             >
-              Cbarrgs
-            </motion.h1>
+              <img
+                src="/images/cbarrgs-logo.png"
+                alt="Cbarrgs"
+                className="h-28 sm:h-36 md:h-44 lg:h-52 xl:h-60 w-auto"
+                style={{
+                  filter: 'invert(1) drop-shadow(0 0 20px rgba(255, 255, 255, 0.5)) drop-shadow(0 0 40px rgba(255, 255, 255, 0.3)) drop-shadow(0 4px 15px rgba(0, 0, 0, 0.8))',
+                }}
+              />
+              <h1 className="sr-only">Cbarrgs</h1>
+            </motion.div>
           </motion.div>
 
           {/* CTA Buttons */}
