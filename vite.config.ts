@@ -24,11 +24,17 @@ export default defineConfig(({ mode }) => ({
       'X-Frame-Options': 'SAMEORIGIN',
       'Referrer-Policy': 'same-origin',
       // These headers help mitigate the vulnerability by restricting cross-origin requests
-      'Cross-Origin-Embedder-Policy': 'require-corp',
-      'Cross-Origin-Opener-Policy': 'same-origin',
-      'Cross-Origin-Resource-Policy': 'same-origin',
-      // Add Content-Security-Policy to restrict scripts
-      'Content-Security-Policy': "default-src 'self'; frame-src 'self' https://open.spotify.com https://*.spotify.com; img-src 'self' data: https://*.spotify.com; connect-src 'self' https://*.spotify.com;"
+      // Only apply strict CORP/COOP in production - they break external resources in development
+      ...(mode === 'development' ? {} : {
+        'Cross-Origin-Embedder-Policy': 'require-corp',
+        'Cross-Origin-Opener-Policy': 'same-origin',
+        'Cross-Origin-Resource-Policy': 'same-origin',
+      }),
+      // CSP for development - more permissive to allow Vite HMR and inline scripts
+      // Production CSP should be configured on the hosting platform (Vercel, etc.)
+      ...(mode === 'development' ? {} : {
+        'Content-Security-Policy': "default-src 'self'; frame-src 'self' https://open.spotify.com https://*.spotify.com; img-src 'self' data: https://*.spotify.com https://cbarrgs.com; connect-src 'self' https://*.spotify.com; script-src 'self' 'unsafe-inline' https://cdn.gpteng.co https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com;"
+      })
     }
   },
   plugins: [
