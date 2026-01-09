@@ -20,9 +20,6 @@ const About: React.FC = () => {
 
   return (
     <section id="about" className="relative py-20 md:py-32 bg-black overflow-hidden">
-      {/* Grain Overlay */}
-      <div className="grain-overlay opacity-15" aria-hidden="true" />
-
       {/* Ambient glow - positioned on the right for visual interest */}
       <div
         className="absolute top-1/3 -right-40 w-[500px] h-[500px] pointer-events-none"

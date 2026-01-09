@@ -1,9 +1,8 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { SPOTIFY_URL, YOUTUBE_CHANNEL, INSTAGRAM_URL, LINKTREE_URL, APPLE_MUSIC_URL, SOUNDCLOUD_URL, SHOPIFY_STORE } from '@/utils/constants';
+import { SHOPIFY_STORE } from '@/utils/constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInstagram, faYoutube, faApple, faSpotify, faSoundcloud } from '@fortawesome/free-brands-svg-icons';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
+import { socialLinks } from '@/data/socialLinks';
 import {
   floatingVariants,
   staggerContainerVariants,
@@ -28,15 +27,6 @@ const Hero: React.FC = () => {
   const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const backgroundScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
-  const socialLinks = [
-    { name: 'Instagram', url: INSTAGRAM_URL, icon: faInstagram },
-    { name: 'YouTube', url: YOUTUBE_CHANNEL, icon: faYoutube },
-    { name: 'Apple Music', url: APPLE_MUSIC_URL, icon: faApple },
-    { name: 'Spotify', url: SPOTIFY_URL, icon: faSpotify },
-    { name: 'SoundCloud', url: SOUNDCLOUD_URL, icon: faSoundcloud },
-    { name: 'Linktree', url: LINKTREE_URL, icon: faLink },
-  ];
-
   const handleScrollToAbout = (e: React.MouseEvent) => {
     e.preventDefault();
     const element = document.getElementById('about');
@@ -55,9 +45,6 @@ const Hero: React.FC = () => {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       aria-label="Hero section"
     >
-      {/* Grain Overlay */}
-      <div className="grain-overlay" aria-hidden="true" />
-
       {/* Background Image with Parallax */}
       <motion.div
         className="absolute inset-0 z-0"

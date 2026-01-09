@@ -1,11 +1,9 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { INSTAGRAM_URL, YOUTUBE_CHANNEL, SPOTIFY_URL, LINKTREE_URL, APPLE_MUSIC_URL, SOUNDCLOUD_URL } from '@/utils/constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInstagram, faSpotify, faYoutube, faApple, faSoundcloud } from '@fortawesome/free-brands-svg-icons';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { Link, useLocation } from 'react-router-dom';
 import SubscribeForm from './SubscribeForm';
+import { socialLinks } from '@/data/socialLinks';
 import {
   staggerContainerVariants,
   staggerItemVariants,
@@ -19,15 +17,6 @@ const Footer: React.FC = () => {
   const isHomePage = location.pathname === '/';
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
-
-  const socialLinks = [
-    { name: 'Instagram', icon: faInstagram, url: INSTAGRAM_URL },
-    { name: 'Spotify', icon: faSpotify, url: SPOTIFY_URL },
-    { name: 'YouTube', icon: faYoutube, url: YOUTUBE_CHANNEL },
-    { name: 'Apple Music', icon: faApple, url: APPLE_MUSIC_URL },
-    { name: 'SoundCloud', icon: faSoundcloud, url: SOUNDCLOUD_URL },
-    { name: 'Linktree', icon: faLink, url: LINKTREE_URL },
-  ];
 
   const footerLinks = [
     { name: 'Home', href: isHomePage ? '#hero' : '/#hero' },
@@ -52,9 +41,6 @@ const Footer: React.FC = () => {
 
   return (
     <footer className="relative bg-black py-16 md:py-24 overflow-hidden" role="contentinfo">
-      {/* Grain Overlay */}
-      <div className="grain-overlay opacity-10" aria-hidden="true" />
-
       {/* Top border glow */}
       <div
         className="absolute top-0 left-0 right-0 h-px"

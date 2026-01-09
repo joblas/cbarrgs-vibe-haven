@@ -24,9 +24,6 @@ const Listen: React.FC = () => {
       id="listen-section"
       className="relative py-20 md:py-32 bg-black overflow-hidden scroll-mt-20"
     >
-      {/* Grain Overlay */}
-      <div className="grain-overlay opacity-10" aria-hidden="true" />
-
       {/* Ambient glow */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[400px] pointer-events-none"
