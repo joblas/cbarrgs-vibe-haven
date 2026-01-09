@@ -20,11 +20,11 @@ const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 console.log("=================== FUNCTION INITIALIZATION ===================");
 console.log(`Function initialized at: ${new Date().toISOString()}`);
-console.log(`Resend API key configured: ${resendApiKey ? "Yes (masked)" : "No"}`);
-if (resendApiKey) {
-  console.log(`API Key length: ${resendApiKey.length}`);
-  console.log(`API Key first/last chars: ${resendApiKey.substring(0, 2)}...${resendApiKey.substring(resendApiKey.length - 2)}`);
-}
+console.log(`Resend API key configured: ${resendApiKey ? "Yes (present)" : "No"}`);
+
+
+
+
 
 // Helper function to validate email
 function isValidEmail(email: string): boolean {
