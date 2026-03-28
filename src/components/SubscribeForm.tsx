@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase, isSupabaseConfigured } from '@/integrations/supabase/client';
 import { useAccessibility, useReducedMotion } from '@/hooks/useAccessibility';
 
 // Simple client-side rate limiting
@@ -59,9 +59,21 @@ const SubscribeForm: React.FC = () => {
     announceToScreenReader('Submitting subscription...');
 
     try {
+      if (!supabase) {
+        // Supabase not configured — show friendly message
+        toast({
+          title: "Coming soon",
+          description: "Newsletter signup is temporarily unavailable. Follow us on social media for updates!",
+          variant: "default",
+        });
+        announceToScreenReader("Newsletter signup is temporarily unavailable. Follow us on social media for updates.");
+        setIsSubmitting(false);
+        return;
+      }
+
       const { data, error } = await supabase
         .from('subscribers')
-        .insert([{ 
+        .insert([{
           email: email.trim().toLowerCase()
         }])
         .select();

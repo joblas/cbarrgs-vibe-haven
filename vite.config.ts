@@ -33,7 +33,7 @@ export default defineConfig(({ mode }) => ({
       // CSP for development - more permissive to allow Vite HMR and inline scripts
       // Production CSP should be configured on the hosting platform (Vercel, etc.)
       ...(mode === 'development' ? {} : {
-        'Content-Security-Policy': "default-src 'self'; frame-src 'self' https://open.spotify.com https://*.spotify.com; img-src 'self' data: https://*.spotify.com https://cbarrgs.com; connect-src 'self' https://*.spotify.com https://*.supabase.co; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;"
+        'Content-Security-Policy': "default-src 'self'; frame-src 'self' https://open.spotify.com https://*.spotify.com; img-src 'self' data: https://*.spotify.com https://cbarrgs.com; connect-src 'self' https://*.spotify.com https://*.supabase.co; script-src 'self' 'unsafe-inline' https://cdn.gpteng.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;"
       })
     }
   },
