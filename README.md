@@ -1,70 +1,143 @@
+# Cbarrgs - Music, Artist & Producer
 
-# Cbarrgs Official Website
+Official website for **Cbarrgs** — a bedroom pop artist and producer. Dark-themed, minimal, and built for the vibe.
 
-![Website Demo](cbarrgs-website.gif)
-
-A clean, minimalist website for the music artist Cbarrgs. Designed locally with Windsurf and pushed to Lovable for deployment.
+**Live:** [cbarrgs.com](https://cbarrgs.com)
 
 ## Features
 
-- Minimalist design inspired by homeshake.net
+- Minimalist dark aesthetic with grain overlay and parallax effects
 - Responsive layout for all devices
-- YouTube video integration with hover-to-play functionality
-- Custom guitar cursor
-- Animated UI elements
-- Spotify and store links
-- Simple, clean UI with Tailwind CSS styling
+- Spotify embed integration
+- Animated UI with Framer Motion
+- Newsletter subscribe form (Supabase-backed, optional)
+- ADA-compliant (WCAG 2.1 AA)
+- Edge-level security headers via Cloudflare
 
 ## Tech Stack
 
-- React + Vite
-- TypeScript
-- Tailwind CSS
-- Framer Motion for animations
-- Lucide Icons
+- **Framework:** React 18 + TypeScript
+- **Build:** Vite 5 (SWC)
+- **Styling:** Tailwind CSS 3 + Framer Motion
+- **UI Components:** Radix UI primitives + shadcn/ui
+- **Hosting:** Cloudflare Pages (auto-deploys from `main`)
+- **DNS:** Cloudflare (CNAME flattening for apex domain)
+- **Backend:** Supabase (optional — site works without it)
+- **Icons:** Lucide React + Font Awesome
 
-## Recent Updates
+## Getting Started
 
-- Simplified implementation focusing on core functionality
-- Improved performance and stability
-- Resolved rendering issues for better cross-browser compatibility
-- Modern, accessible UI design
+### Prerequisites
 
-## Development
+- Node.js 18+
+- npm
 
-```sh
-# Install dependencies
+### Install & Run
+
+```bash
 npm install
-
-# Run development server
 npm run dev
-
-# Build for production
-npm run build
 ```
+
+The dev server starts at `http://localhost:4000`.
+
+### Build
+
+```bash
+npm run build
+npm run preview
+```
+
+### Environment Variables
+
+Copy `.env.example` to `.env` and fill in values:
+
+```
+VITE_SUPABASE_URL=        # Optional — newsletter signup
+VITE_SUPABASE_ANON_KEY=   # Optional — newsletter signup
+VITE_RESEND_API_KEY=      # Optional — email notifications
+```
+
+The site runs fully without these — the subscribe form degrades gracefully with a "coming soon" message.
+
+## Project Structure
+
+```
+src/
+  components/         # UI components
+    ui/               # shadcn/ui primitives
+    navigation/       # Nav + mobile menu
+    ErrorBoundary.tsx # React error boundary
+    Hero.tsx          # Landing hero with parallax
+    About.tsx         # Artist bio section
+    Listen.tsx        # Spotify embed
+    ShopComingSoon.tsx# Merch placeholder
+    SubscribeForm.tsx # Newsletter signup (rate-limited)
+  hooks/              # Custom hooks (accessibility)
+  integrations/       # Supabase client (nullable pattern)
+  pages/              # Route pages
+    Index.tsx         # Home page
+    NotFound.tsx      # 404 with animations
+    PrivacyPolicy.tsx # Legal
+    TermsOfService.tsx
+  lib/                # Utilities
+public/
+  _headers            # Cloudflare Pages security headers + caching
+  _redirects          # SPA routing fallback
+  sitemap.xml         # SEO sitemap
+  robots.txt          # Crawler rules
+```
+
+## Deployment
+
+Cloudflare Pages auto-deploys on push to `main`:
+
+| Setting | Value |
+|---------|-------|
+| Build command | `npm run build` |
+| Output directory | `dist` |
+| Node version | 18 |
+
+### DNS & Domain
+
+- **Registrar:** Hostinger
+- **Nameservers:** Cloudflare (`holly.ns.cloudflare.com`, `johnny.ns.cloudflare.com`)
+- **DNS:** CNAME `@` and `www` → `cbarrgs.pages.dev` (proxied, CNAME flattened)
+
+## Security
+
+- **Content Security Policy** via `public/_headers` (Cloudflare edge)
+- **X-Frame-Options**, **X-Content-Type-Options**, **Referrer-Policy** on all responses
+- **Permissions-Policy** blocks camera, microphone, geolocation
+- **Supabase credentials** in environment variables, never in source
+- **Client-side rate limiting** on form submissions (10s cooldown)
+
+## Accessibility (WCAG 2.1 AA)
+
+- Skip-to-content link
+- ARIA labels on interactive elements
+- Reduced motion support (`prefers-reduced-motion` reactive hook)
+- Color contrast ratios meet AA standards
+- Keyboard navigable
+- Spotify embed includes fallback content
+
+## Performance
+
+- Vendor code splitting (React, Framer Motion, Radix UI as separate chunks)
+- Non-blocking font loading (preload + font-display swap)
+- Immutable caching on `/assets/*` (1 year)
+- 30-day caching on images
+- HTML served with `must-revalidate` for instant deploy updates
+- Chunk size budget: 500KB warning threshold
 
 ## Design Principles
 
-- Clean, minimalist aesthetic
-- Black background with white text
-- Focus on content with minimal distractions
-- Smooth animations and transitions
+- Black background, white text, serif accents
+- Grain overlay texture for analog feel
+- Parallax scrolling effects
+- Smooth Framer Motion transitions
 - Mobile-first responsive design
-
-## Components
-
-- Navigation: Clean, minimal navigation with essential links
-- Hero: Main landing section with artist branding
-- About: Artist information and bio
-- Music: Showcases music with links to streaming platforms
-- VideoSection: YouTube videos that only play when hovered
-- SocialLinks: Links to social media platforms
-- Footer: Simple footer with navigation and copyright
-- CustomCursor: Custom guitar-shaped cursor
-
-## Project Info
-
-**URL**: https://lovable.dev/projects/bd2ed203-bec5-49e8-9ae1-430b058370a6
+- Minimal distractions — content focused
 
 ## License
 
