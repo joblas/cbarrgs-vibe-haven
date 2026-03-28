@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
-import { componentTagger } from "lovable-tagger";
+// lovable-tagger removed — migrated to Cloudflare Pages
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -31,15 +31,16 @@ export default defineConfig(({ mode }) => ({
         'Cross-Origin-Resource-Policy': 'same-origin',
       }),
       // CSP for development - more permissive to allow Vite HMR and inline scripts
-      // Production CSP should be configured on the hosting platform (Vercel, etc.)
+      // Production CSP is configured via public/_headers (Cloudflare Pages)
+      // This is only used for local preview builds
       ...(mode === 'development' ? {} : {
-        'Content-Security-Policy': "default-src 'self'; frame-src 'self' https://open.spotify.com https://*.spotify.com; img-src 'self' data: https://*.spotify.com https://cbarrgs.com; connect-src 'self' https://*.spotify.com https://*.supabase.co; script-src 'self' 'unsafe-inline' https://cdn.gpteng.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;"
+        'Content-Security-Policy': "default-src 'self'; frame-src 'self' https://open.spotify.com https://*.spotify.com; img-src 'self' data: https://*.spotify.com https://cbarrgs.com; connect-src 'self' https://*.spotify.com https://*.supabase.co; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;"
       })
     }
   },
   plugins: [
     react(),
-    mode === 'development' && componentTagger(),
+    // componentTagger removed — was Lovable-specific
   ].filter(Boolean),
   resolve: {
     alias: {

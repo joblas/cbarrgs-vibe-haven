@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev:*)",
+      "Bash(python check_console.py:*)",
+      "Bash(pip install:*)",
+      "Bash(playwright install:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(C:/Users/blasj/AppData/Local/Programs/Python/Python310/python.exe:*)",
+      "Bash(python test_grain_fix.py:*)",
+      "Bash(\"C:\\\\Users\\\\blasj\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\python.exe\" C:/Users/blasj/cbarrgs-vibe-haven/test_grain_fix.py)",
+      "Bash(npm run build:*)",
+      "Bash(\"C:\\\\Users\\\\blasj\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\python.exe\" C:/Users/blasj/cbarrgs-vibe-haven/test_logo.py)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: add custom Cbarrgs blackletter logo with bouncy animation\n\n- Replace text title with custom blackletter logo \\(spiked C design\\)\n- Invert to white with glowing drop shadow for visibility\n- Add bouncy floating animation \\(12px lift, 2% scale pulse\\)\n- Responsive sizing across breakpoints\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(gh pr create --base main --head dev --title \"UI/UX Refresh: Custom logo, animations, mobile polish\" --body \"$\\(cat <<''EOF''\n## Summary\n- **Custom blackletter logo** with spiked C, white glow effect, bouncy animation\n- **Mobile navigation polish** - animated hamburger menu, staggered link animations\n- **Reduced grain overlay** - was too heavy, now subtle 1.5% opacity\n- **Performance optimizations** - lazy loading routes, centralized social links data\n- **Smooth animations** - floating effects, 3D card tilt, scroll-triggered reveals\n\n## Changes\n- Hero section: Custom logo replaces text, floating animation\n- Mobile menu: Full-screen with backdrop blur, social icons\n- All sections: Consistent Framer Motion animations\n- Bundle: ~18KB smaller initial load via code splitting\n\n## Test plan\n- [ ] Desktop: Check logo visibility and animations\n- [ ] Mobile: Test hamburger menu and navigation\n- [ ] Performance: Verify smooth 60fps animations\n\n🤖 Generated with [Claude Code]\\(https://claude.ai/claude-code\\)\nEOF\n\\)\")",
+      "Bash(gh pr merge:*)",
+      "Bash(git fetch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git pull:*)"
+    ]
+  }
+}
