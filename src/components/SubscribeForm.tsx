@@ -4,8 +4,12 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase, isSupabaseConfigured } from '@/integrations/supabase/client';
 import { useAccessibility, useReducedMotion } from '@/hooks/useAccessibility';
+
+// Simple client-side rate limiting
+const RATE_LIMIT_MS = 10_000; // 10 seconds between submissions
+let lastSubmitTime = 0;
 
 const SubscribeForm: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -23,11 +27,18 @@ const SubscribeForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    console.log('Form submission started', { email });
-    
     // Clear previous errors
     setErrors({});
-    
+
+    // Rate limiting check
+    const now = Date.now();
+    if (now - lastSubmitTime < RATE_LIMIT_MS) {
+      const error = 'Please wait a moment before trying again';
+      setErrors({ email: error });
+      announceToScreenReader(error);
+      return;
+    }
+
     // Validate email
     if (!email.trim()) {
       const error = 'Email address is required';
@@ -44,23 +55,30 @@ const SubscribeForm: React.FC = () => {
     }
 
     setIsSubmitting(true);
+    lastSubmitTime = Date.now();
     announceToScreenReader('Submitting subscription...');
 
     try {
-      console.log('Attempting to insert subscriber:', email.trim().toLowerCase());
-      
+      if (!supabase) {
+        // Supabase not configured — show friendly message
+        toast({
+          title: "Coming soon",
+          description: "Newsletter signup is temporarily unavailable. Follow us on social media for updates!",
+          variant: "default",
+        });
+        announceToScreenReader("Newsletter signup is temporarily unavailable. Follow us on social media for updates.");
+        setIsSubmitting(false);
+        return;
+      }
+
       const { data, error } = await supabase
         .from('subscribers')
-        .insert([{ 
+        .insert([{
           email: email.trim().toLowerCase()
         }])
         .select();
 
-      console.log('Supabase response:', { data, error });
-
       if (error) {
-        console.error('Supabase error:', error);
-        
         if (error.code === '23505') {
           toast({
             title: "Already subscribed",
@@ -69,13 +87,6 @@ const SubscribeForm: React.FC = () => {
           });
           announceToScreenReader("You're already subscribed to our mailing list");
         } else {
-          console.error('Database error details:', {
-            code: error.code,
-            message: error.message,
-            details: error.details,
-            hint: error.hint
-          });
-          
           toast({
             title: "Error",
             description: "Sorry, something went wrong. Please try again.",
@@ -84,8 +95,6 @@ const SubscribeForm: React.FC = () => {
           announceToScreenReader("Sorry, something went wrong. Please try again.");
         }
       } else {
-        console.log('Subscription successful:', data);
-        
         toast({
           title: "Success!",
           description: "Thank you for subscribing to updates from Cbarrgs.",
@@ -95,7 +104,6 @@ const SubscribeForm: React.FC = () => {
         setEmail('');
       }
     } catch (error) {
-      console.error('Unexpected error in subscription:', error);
       
       const errorMessage = "Sorry, something went wrong. Please try again.";
       toast({

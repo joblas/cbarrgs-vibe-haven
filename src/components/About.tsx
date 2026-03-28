@@ -74,7 +74,7 @@ const About: React.FC = () => {
                 }}
               >
                 <h3 className="text-base sm:text-lg font-serif font-light mb-1">Cbarrgs</h3>
-                <p className="text-xs sm:text-sm text-white/60 font-light">Artist • Musician • Creator</p>
+                <p className="text-xs sm:text-sm text-white/70 font-light">Artist • Musician • Creator</p>
               </div>
             </motion.div>
           </motion.div>

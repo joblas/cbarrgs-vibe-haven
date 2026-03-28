@@ -94,7 +94,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index }) => {
           />
         </div>
         <h3 className="font-serif text-lg sm:text-xl mb-2 font-light">{product.title}</h3>
-        <p className="text-white/50 text-sm font-light">{product.description}</p>
+        <p className="text-white/60 text-sm font-light">{product.description}</p>
       </div>
     </motion.div>
   );
