@@ -33,7 +33,7 @@ export default defineConfig(({ mode }) => ({
       // CSP for development - more permissive to allow Vite HMR and inline scripts
       // Production CSP should be configured on the hosting platform (Vercel, etc.)
       ...(mode === 'development' ? {} : {
-        'Content-Security-Policy': "default-src 'self'; frame-src 'self' https://open.spotify.com https://*.spotify.com; img-src 'self' data: https://*.spotify.com https://cbarrgs.com; connect-src 'self' https://*.spotify.com; script-src 'self' 'unsafe-inline' https://cdn.gpteng.co https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com;"
+        'Content-Security-Policy': "default-src 'self'; frame-src 'self' https://open.spotify.com https://*.spotify.com; img-src 'self' data: https://*.spotify.com https://cbarrgs.com; connect-src 'self' https://*.spotify.com https://*.supabase.co; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;"
       })
     }
   },
@@ -59,14 +59,18 @@ export default defineConfig(({ mode }) => ({
     force: true,
   },
   build: {
-    // Prevent breaking the build on warnings
-    chunkSizeWarningLimit: 1600,
+    chunkSizeWarningLimit: 500,
     commonjsOptions: {
       transformMixedEsModules: true,
     },
     rollupOptions: {
-      // Make sure to externalize deps that shouldn't be bundled
-      external: [],
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-motion': ['framer-motion'],
+          'vendor-ui': ['@radix-ui/react-toast', '@radix-ui/react-tooltip', '@radix-ui/react-checkbox', '@radix-ui/react-switch'],
+        },
+      },
     },
   },
 }));

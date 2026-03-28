@@ -9,11 +9,10 @@ const NotFound: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
-  }, [location.pathname]);
+    // Set document title for 404 pages
+    document.title = 'Page Not Found | Cbarrgs';
+    return () => { document.title = 'Cbarrgs | Music, Artist & Producer'; };
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black px-6">

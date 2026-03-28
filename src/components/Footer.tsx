@@ -106,7 +106,7 @@ const Footer: React.FC = () => {
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-white/60 hover:text-white transition-colors duration-300 font-light tracking-wide text-sm sm:text-base"
+                    className="text-white/70 hover:text-white transition-colors duration-300 font-light tracking-wide text-sm sm:text-base"
                     onClick={(e) => handleFooterLinkClick(e, link.href)}
                   >
                     {link.name}
@@ -121,7 +121,7 @@ const Footer: React.FC = () => {
             <h3 className="text-base sm:text-lg font-serif font-light mb-4" id="subscribe-section">
               Stay Connected
             </h3>
-            <p className="text-white/50 mb-4 font-light text-sm sm:text-base">
+            <p className="text-white/60 mb-4 font-light text-sm sm:text-base">
               Sign up for updates on music releases and more.
             </p>
             <SubscribeForm />
@@ -130,7 +130,7 @@ const Footer: React.FC = () => {
 
         {/* Bottom Bar */}
         <motion.div
-          className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-white/40 text-xs sm:text-sm font-light gap-4"
+          className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-white/60 text-xs sm:text-sm font-light gap-4"
           variants={fadeInUpVariants}
         >
           <p>&copy; {currentYear} Cbarrgs. All rights reserved.</p>
