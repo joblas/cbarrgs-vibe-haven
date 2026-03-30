@@ -9,6 +9,7 @@ Official website for **Cbarrgs** — a bedroom pop artist and producer. Dark-the
 - Minimalist dark aesthetic with grain overlay and parallax effects
 - Responsive layout for all devices
 - Spotify embed integration
+- Shopify store integration (`shopify.cbarrgs.com`)
 - Animated UI with Framer Motion
 - Newsletter subscribe form (Supabase-backed, optional)
 - ADA-compliant (WCAG 2.1 AA)
@@ -21,6 +22,7 @@ Official website for **Cbarrgs** — a bedroom pop artist and producer. Dark-the
 - **Styling:** Tailwind CSS 3 + Framer Motion
 - **UI Components:** Radix UI primitives + shadcn/ui
 - **Hosting:** Cloudflare Pages (auto-deploys from `main`)
+- **Shop:** Shopify (`shopify.cbarrgs.com`)
 - **DNS:** Cloudflare (CNAME flattening for apex domain)
 - **Backend:** Supabase (optional — site works without it)
 - **Icons:** Lucide React + Font Awesome
@@ -102,7 +104,11 @@ Cloudflare Pages auto-deploys on push to `main`:
 
 - **Registrar:** Hostinger
 - **Nameservers:** Cloudflare (`holly.ns.cloudflare.com`, `johnny.ns.cloudflare.com`)
-- **DNS:** CNAME `@` and `www` → `cbarrgs.pages.dev` (proxied, CNAME flattened)
+- **DNS Records:**
+  - CNAME `@` → `cbarrgs.pages.dev` (proxied, CNAME flattened)
+  - CNAME `www` → `cbarrgs.pages.dev` (proxied)
+  - CNAME `shopify` → `shops.myshopify.com` (DNS only)
+- **CI/CD:** GitHub Actions auto-merges Dependabot patch/minor PRs after build passes
 
 ## Security
 
