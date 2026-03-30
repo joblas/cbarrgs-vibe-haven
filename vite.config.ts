@@ -49,13 +49,6 @@ export default defineConfig(({ mode }) => ({
     },
   },
   optimizeDeps: {
-    esbuildOptions: {
-      // This doesn't actually fix the vulnerability but helps reduce its impact
-      // by limiting what can be accessed
-      define: {
-        'process.env.NODE_ENV': JSON.stringify(mode)
-      }
-    },
     include: ['nanoid', '@babel/runtime'],
     force: true,
   },
@@ -66,10 +59,16 @@ export default defineConfig(({ mode }) => ({
     },
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-motion': ['framer-motion'],
-          'vendor-ui': ['@radix-ui/react-toast', '@radix-ui/react-tooltip', '@radix-ui/react-checkbox', '@radix-ui/react-switch'],
+        manualChunks(id: string) {
+          if (id.includes('react-dom') || id.includes('react-router-dom') || id.includes('node_modules/react/')) {
+            return 'vendor-react';
+          }
+          if (id.includes('framer-motion')) {
+            return 'vendor-motion';
+          }
+          if (id.includes('@radix-ui')) {
+            return 'vendor-ui';
+          }
         },
       },
     },
