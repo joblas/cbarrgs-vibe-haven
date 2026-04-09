@@ -96,7 +96,7 @@ const ShopComingSoon: React.FC = () => {
             className="text-white/60 mb-10 sm:mb-12 font-light max-w-md mx-auto text-sm sm:text-base px-4"
             variants={fadeInUpVariants}
           >
-            From the EP "Pieces For You" — out now.
+            Just arrived — from the upcoming EP "Pieces For You." In the shop soon.
           </motion.p>
 
           {/* Horizontal scrolling product carousel */}

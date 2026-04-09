@@ -130,7 +130,7 @@ const Hero: React.FC = () => {
                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-white/90" />
                 </span>
                 <span className="text-white font-light tracking-wider text-sm sm:text-base">
-                  New EP &middot; Show &middot; Merch
+                  New EP Coming Soon &middot; Show &middot; New Merch
                 </span>
               </motion.div>
             </Link>
@@ -142,10 +142,13 @@ const Hero: React.FC = () => {
             variants={staggerItemVariants}
           >
             <p className="text-white/80 text-sm sm:text-base font-light tracking-wider">
-              "Pieces For You" EP &middot; Out April 25th
+              "Pieces For You" EP &middot; Coming April 25th
             </p>
             <p className="text-white/60 text-xs sm:text-sm font-light tracking-wide">
               Free live show &middot; April 11th &middot; All ages
+            </p>
+            <p className="text-white/50 text-xs sm:text-sm font-light tracking-wide">
+              New tees &amp; pins just arrived &middot; In the shop soon
             </p>
           </motion.div>
 

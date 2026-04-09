@@ -103,15 +103,18 @@ const Promo: React.FC = () => {
               Pieces For You
             </h1>
             <p className="text-white/60 text-sm font-light tracking-wide">
-              New EP &middot; Out April 25th
+              New EP &middot; Coming April 25th
             </p>
           </motion.div>
 
           {/* Section: Listen */}
           <motion.div className="mb-8" variants={staggerItemVariants}>
-            <h2 className="text-xs font-light tracking-[0.2em] text-white/40 uppercase mb-3 text-center">
-              Listen
+            <h2 className="text-xs font-light tracking-[0.2em] text-white/40 uppercase mb-1 text-center">
+              Listen Now
             </h2>
+            <p className="text-white/30 text-xs font-light tracking-wide text-center mb-3">
+              "Pieces For You" EP drops April 25th
+            </p>
             <div className="space-y-2.5">
               {streamingPlatforms.map((platform) => (
                 <a
@@ -170,9 +173,12 @@ const Promo: React.FC = () => {
 
           {/* Section: Shop */}
           <motion.div className="mb-8" variants={staggerItemVariants}>
-            <h2 className="text-xs font-light tracking-[0.2em] text-white/40 uppercase mb-3 text-center">
-              Merch
+            <h2 className="text-xs font-light tracking-[0.2em] text-white/40 uppercase mb-1 text-center">
+              New Merch Just Arrived
             </h2>
+            <p className="text-white/30 text-xs font-light tracking-wide text-center mb-3">
+              In the shop soon
+            </p>
             <div className="grid grid-cols-3 gap-2.5 mb-3">
               {[
                 { src: '/images/merch/tshirt.jpeg', alt: 'Cbarrgs tee' },
