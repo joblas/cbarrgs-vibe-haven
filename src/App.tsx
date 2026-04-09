@@ -9,6 +9,7 @@ import { LazyMotion, domAnimation } from "framer-motion";
 import Index from "./pages/Index";
 
 // Lazy load secondary pages - rarely visited, reduces initial bundle
+const Promo = lazy(() => import("./pages/Promo"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -32,6 +33,7 @@ const App = () => {
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/new" element={<Promo />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />
               <Route path="*" element={<NotFound />} />
