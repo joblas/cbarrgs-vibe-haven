@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { supabase, isSupabaseConfigured } from '@/integrations/supabase/client';
 import { useAccessibility, useReducedMotion } from '@/hooks/useAccessibility';
 
 // Simple client-side rate limiting
@@ -26,7 +25,7 @@ const SubscribeForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Clear previous errors
     setErrors({});
 
@@ -46,7 +45,7 @@ const SubscribeForm: React.FC = () => {
       announceToScreenReader(error);
       return;
     }
-    
+
     if (!validateEmail(email)) {
       const error = 'Please enter a valid email address';
       setErrors({ email: error });
@@ -59,41 +58,28 @@ const SubscribeForm: React.FC = () => {
     announceToScreenReader('Submitting subscription...');
 
     try {
-      if (!supabase) {
-        // Supabase not configured — show friendly message
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
         toast({
-          title: "Coming soon",
-          description: "Newsletter signup is temporarily unavailable. Follow us on social media for updates!",
+          title: "Error",
+          description: data.error || "Sorry, something went wrong. Please try again.",
+          variant: "destructive",
+        });
+        announceToScreenReader(data.error || "Sorry, something went wrong. Please try again.");
+      } else if (data.status === 'already_subscribed') {
+        toast({
+          title: "Already subscribed",
+          description: data.message,
           variant: "default",
         });
-        announceToScreenReader("Newsletter signup is temporarily unavailable. Follow us on social media for updates.");
-        setIsSubmitting(false);
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from('subscribers')
-        .insert([{
-          email: email.trim().toLowerCase()
-        }])
-        .select();
-
-      if (error) {
-        if (error.code === '23505') {
-          toast({
-            title: "Already subscribed",
-            description: "You're already on our mailing list!",
-            variant: "default",
-          });
-          announceToScreenReader("You're already subscribed to our mailing list");
-        } else {
-          toast({
-            title: "Error",
-            description: "Sorry, something went wrong. Please try again.",
-            variant: "destructive",
-          });
-          announceToScreenReader("Sorry, something went wrong. Please try again.");
-        }
+        announceToScreenReader("You're already subscribed to our mailing list");
       } else {
         toast({
           title: "Success!",
@@ -103,8 +89,7 @@ const SubscribeForm: React.FC = () => {
         announceToScreenReader("Successfully subscribed! Thank you for joining our mailing list");
         setEmail('');
       }
-    } catch (error) {
-      
+    } catch {
       const errorMessage = "Sorry, something went wrong. Please try again.";
       toast({
         title: "Error",

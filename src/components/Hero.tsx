@@ -8,7 +8,6 @@ import {
   staggerContainerVariants,
   staggerItemVariants,
   socialIconHover,
-  buttonHover,
   glowPulseVariants,
   prefersReducedMotion
 } from '@/utils/animations';
@@ -116,38 +115,36 @@ const Hero: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* CTA Buttons - three actions */}
-          <motion.div
-            className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 pt-2"
+          {/* Navigation links - minimal text style like Hellion USA */}
+          <motion.nav
+            className="flex flex-row justify-center items-center gap-6 sm:gap-8 pt-4"
             variants={staggerItemVariants}
+            aria-label="Quick links"
           >
-            <motion.a
+            <a
               href="#live-show"
               onClick={(e) => handleScrollToSection(e, 'live-show')}
-              className="w-full sm:w-auto min-w-[140px] px-8 py-3 border-2 border-white/60 bg-white/5 text-white font-light tracking-wider rounded-sm hover:bg-white/15 hover:border-white transition-all duration-300"
-              {...buttonHover}
+              className="text-white/80 hover:text-white text-sm sm:text-base font-light tracking-wider transition-colors duration-300 underline-offset-4 hover:underline"
             >
-              Show Details
-            </motion.a>
-            <motion.a
+              show
+            </a>
+            <a
               href={SPOTIFY_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto min-w-[140px] px-8 py-3 border-2 border-white/60 bg-white/5 text-white font-light tracking-wider rounded-sm hover:bg-white/15 hover:border-white transition-all duration-300"
-              {...buttonHover}
+              className="text-white/80 hover:text-white text-sm sm:text-base font-light tracking-wider transition-colors duration-300 underline-offset-4 hover:underline"
             >
-              Listen
-            </motion.a>
-            <motion.a
+              listen
+            </a>
+            <a
               href={SHOPIFY_STORE}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto min-w-[140px] px-8 py-3 border-2 border-white/60 bg-white/5 text-white font-light tracking-wider rounded-sm hover:bg-white/15 hover:border-white transition-all duration-300"
-              {...buttonHover}
+              className="text-white/80 hover:text-white text-sm sm:text-base font-light tracking-wider transition-colors duration-300 underline-offset-4 hover:underline"
             >
-              Shop Merch
-            </motion.a>
-          </motion.div>
+              shop
+            </a>
+          </motion.nav>
 
           {/* Social Media Icons */}
           <motion.div
