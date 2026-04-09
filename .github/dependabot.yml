@@ -12,3 +12,21 @@ updates:
         update-types:
           - minor
           - patch
+    ignore:
+      # Major version bumps that would break the project
+      - dependency-name: tailwindcss
+        update-types: ["version-update:semver-major"]
+      - dependency-name: react
+        update-types: ["version-update:semver-major"]
+      - dependency-name: react-dom
+        update-types: ["version-update:semver-major"]
+      - dependency-name: react-router-dom
+        update-types: ["version-update:semver-major"]
+      - dependency-name: framer-motion
+        update-types: ["version-update:semver-major"]
+      - dependency-name: lucide-react
+        update-types: ["version-update:semver-major"]
+      - dependency-name: globals
+        update-types: ["version-update:semver-major"]
+      - dependency-name: stylelint-config-standard
+        update-types: ["version-update:semver-major"]
