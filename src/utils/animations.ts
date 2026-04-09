@@ -32,10 +32,9 @@ export const duration = {
 // ============================================
 
 export const floatingVariants: Variants = {
-  initial: { y: 0, scale: 1 },
+  initial: { y: 0 },
   animate: {
     y: [0, -12, 0],
-    scale: [1, 1.02, 1],
     transition: {
       duration: 3,
       repeat: Infinity,
@@ -65,7 +64,6 @@ export const glowPulseVariants: Variants = {
   initial: { opacity: 0.3 },
   animate: {
     opacity: [0.3, 0.5, 0.3],
-    scale: [1, 1.02, 1],
     transition: {
       duration: 3,
       repeat: Infinity,

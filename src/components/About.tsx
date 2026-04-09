@@ -67,7 +67,7 @@ const About: React.FC = () => {
               variants={fadeInUpVariants}
             >
               <div
-                className="inline-block p-4 sm:p-5 rounded-sm bg-white/10 backdrop-blur-md border border-white/20"
+                className="inline-block p-4 sm:p-5 rounded-sm bg-black/60 border border-white/20"
                 style={{
                   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
                 }}

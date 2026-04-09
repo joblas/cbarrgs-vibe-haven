@@ -50,7 +50,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => (
           src={product.image}
           alt={product.alt}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-          loading="lazy"
+          loading="eager"
         />
       </div>
       <h3 className="font-serif text-lg mb-1 font-light">{product.title}</h3>

@@ -31,18 +31,13 @@ const Hero: React.FC = () => {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       aria-label="Hero section"
     >
-      {/* Background Image - pure CSS for smooth scrolling */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: `url('/lovable-uploads/cbarrgs-insta-bw.webp')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-          willChange: 'transform',
-        }}
-        role="img"
-        aria-label="Cbarrgs artistic background image"
+      {/* Background Image - fixed position img for smooth scrolling without repaints */}
+      <img
+        src="/lovable-uploads/cbarrgs-insta-bw.webp"
+        alt="Cbarrgs artistic background image"
+        fetchPriority="high"
+        decoding="async"
+        className="fixed inset-0 w-full h-full object-cover z-0 pointer-events-none"
       />
 
       {/* Dark Overlay with Vignette */}
@@ -64,6 +59,30 @@ const Hero: React.FC = () => {
         aria-hidden="true"
       />
 
+      {/* Floating Logo - top left */}
+      <motion.div
+        className="absolute top-6 left-6 sm:top-8 sm:left-8 z-20"
+        variants={reducedMotion ? {} : floatingVariants}
+        initial="initial"
+        animate="animate"
+      >
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <img
+            src="/images/cbarrgs-logo.png"
+            alt="Cbarrgs"
+            className="h-16 sm:h-20 md:h-24 lg:h-28 w-auto"
+            style={{
+              filter: 'invert(1) drop-shadow(0 2px 10px rgba(0, 0, 0, 0.8))',
+            }}
+          />
+          <h1 className="sr-only">Cbarrgs</h1>
+        </motion.div>
+      </motion.div>
+
       {/* Content */}
       <div
         className="relative z-20 text-center px-4 sm:px-6 max-w-screen-xl mx-auto"
@@ -74,27 +93,8 @@ const Hero: React.FC = () => {
           initial="hidden"
           animate="visible"
         >
-          {/* Floating Logo */}
-          <motion.div
-            variants={reducedMotion ? {} : floatingVariants}
-            initial="initial"
-            animate="animate"
-          >
-            <motion.div
-              variants={staggerItemVariants}
-              className="flex justify-center"
-            >
-              <img
-                src="/images/cbarrgs-logo.png"
-                alt="Cbarrgs"
-                className="h-24 sm:h-32 md:h-40 lg:h-48 xl:h-52 w-auto"
-                style={{
-                  filter: 'invert(1) drop-shadow(0 0 20px rgba(255, 255, 255, 0.5)) drop-shadow(0 0 40px rgba(255, 255, 255, 0.3)) drop-shadow(0 4px 15px rgba(0, 0, 0, 0.8))',
-                }}
-              />
-              <h1 className="sr-only">Cbarrgs</h1>
-            </motion.div>
-          </motion.div>
+          {/* Spacer to offset content below the logo */}
+          <div className="h-16 sm:h-20 md:h-24" aria-hidden="true" />
 
           {/* Landing page headline */}
           <motion.div
