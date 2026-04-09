@@ -188,21 +188,18 @@ const Hero: React.FC = () => {
             >
               listen
             </a>
-            <div ref={dropRef} className="relative flex items-center">
+            <div ref={dropRef} className="relative">
               <button
                 onClick={() => setDropOpen((prev) => !prev)}
-                className="text-white/60 hover:text-white text-xs sm:text-sm font-light tracking-wider transition-colors duration-300 underline-offset-4 hover:underline flex items-center gap-1"
+                className="text-white/60 hover:text-white text-xs sm:text-sm font-light tracking-wider transition-colors duration-300 underline-offset-4 hover:underline leading-none"
                 aria-expanded={dropOpen}
                 aria-haspopup="true"
               >
-                drop
-                <motion.span
-                  className="inline-block text-[10px]"
+                drop<motion.span
+                  className="inline-block text-[10px] ml-1 align-middle"
                   animate={{ rotate: dropOpen ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
-                >
-                  &#9662;
-                </motion.span>
+                >&#9662;</motion.span>
               </button>
               <AnimatePresence>
                 {dropOpen && (
