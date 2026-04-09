@@ -142,6 +142,9 @@
     opacity: 0.015;
     pointer-events: none;
     z-index: 100;
+    contain: strict;
+    will-change: auto;
+    transform: translateZ(0);
   }
 
   /* Respect reduced motion for grain overlay */
@@ -171,6 +174,47 @@
 
 .font-serif {
   font-family: Lora, serif;
+}
+
+/* Horizontal auto-scrolling product carousel */
+.shop-carousel {
+  overflow: hidden;
+  width: 100%;
+  mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+}
+
+.shop-carousel-track {
+  display: flex;
+  gap: 1rem;
+  width: max-content;
+  animation: shop-scroll 25s linear infinite;
+  padding: 0.5rem 0;
+}
+
+.shop-carousel:hover .shop-carousel-track {
+  animation-play-state: paused;
+}
+
+@keyframes shop-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-33.333%));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shop-carousel-track {
+    animation: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  .shop-carousel-track > * {
+    scroll-snap-align: start;
+  }
 }
 
 /* Add a subtle hover effect for images */

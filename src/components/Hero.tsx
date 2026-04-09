@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { SHOPIFY_STORE } from '@/utils/constants';
+import { motion } from 'framer-motion';
+import { SHOPIFY_STORE, SPOTIFY_URL } from '@/utils/constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { socialLinks } from '@/data/socialLinks';
 import {
@@ -17,19 +17,9 @@ const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const reducedMotion = prefersReducedMotion();
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  });
-
-  // Parallax effects - reduced on mobile for performance
-  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, 150]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const backgroundScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
-
-  const handleScrollToAbout = (e: React.MouseEvent) => {
+  const handleScrollToSection = (e: React.MouseEvent, sectionId: string) => {
     e.preventDefault();
-    const element = document.getElementById('about');
+    const element = document.getElementById(sectionId);
     if (element) {
       const headerOffset = 80;
       const elementPosition = element.getBoundingClientRect().top;
@@ -39,21 +29,21 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <motion.section
+    <section
       id="hero"
       ref={containerRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       aria-label="Hero section"
     >
-      {/* Background Image with Parallax */}
-      <motion.div
+      {/* Background Image - pure CSS for smooth scrolling */}
+      <div
         className="absolute inset-0 z-0"
         style={{
           backgroundImage: `url('/lovable-uploads/cbarrgs-insta-bw.webp')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          y: reducedMotion ? 0 : backgroundY,
-          scale: reducedMotion ? 1 : backgroundScale,
+          backgroundAttachment: 'fixed',
+          willChange: 'transform',
         }}
         role="img"
         aria-label="Cbarrgs artistic background image"
@@ -66,12 +56,11 @@ const Hero: React.FC = () => {
         aria-hidden="true"
       />
 
-      {/* Ambient Glow behind title - dreamy bedroom pop effect */}
+      {/* Ambient Glow behind title - pre-blurred gradient, no runtime filter */}
       <motion.div
-        className="absolute z-15 w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full pointer-events-none"
+        className="absolute z-15 w-[400px] h-[400px] md:w-[600px] md:h-[600px] rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 40%, transparent 70%)',
-          filter: 'blur(40px)',
+          background: 'radial-gradient(circle, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 30%, transparent 60%)',
         }}
         variants={reducedMotion ? {} : glowPulseVariants}
         initial="initial"
@@ -80,9 +69,8 @@ const Hero: React.FC = () => {
       />
 
       {/* Content */}
-      <motion.div
+      <div
         className="relative z-20 text-center px-4 sm:px-6 max-w-screen-xl mx-auto"
-        style={{ opacity: contentOpacity }}
       >
         <motion.div
           className="space-y-6 md:space-y-8"
@@ -103,7 +91,7 @@ const Hero: React.FC = () => {
               <img
                 src="/images/cbarrgs-logo.png"
                 alt="Cbarrgs"
-                className="h-28 sm:h-36 md:h-44 lg:h-52 xl:h-60 w-auto"
+                className="h-24 sm:h-32 md:h-40 lg:h-48 xl:h-52 w-auto"
                 style={{
                   filter: 'invert(1) drop-shadow(0 0 20px rgba(255, 255, 255, 0.5)) drop-shadow(0 0 40px rgba(255, 255, 255, 0.3)) drop-shadow(0 4px 15px rgba(0, 0, 0, 0.8))',
                 }}
@@ -112,33 +100,58 @@ const Hero: React.FC = () => {
             </motion.div>
           </motion.div>
 
-          {/* CTA Buttons */}
+          {/* Landing page headline */}
           <motion.div
-            className="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4"
+            className="space-y-2"
+            variants={staggerItemVariants}
+          >
+            <p className="text-white/90 text-sm sm:text-base font-light tracking-wider">
+              Free live show · All ages · April 11th
+            </p>
+            <p className="text-white/70 text-xs sm:text-sm font-light tracking-wide">
+              "Pieces For You" EP · Out April 25th
+            </p>
+            <p className="text-white/60 text-xs sm:text-sm font-light tracking-wide">
+              New tees and pins available now
+            </p>
+          </motion.div>
+
+          {/* CTA Buttons - three actions */}
+          <motion.div
+            className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 pt-2"
             variants={staggerItemVariants}
           >
             <motion.a
-              href="#about"
-              onClick={handleScrollToAbout}
-              className="w-full sm:w-auto min-w-[140px] px-8 py-3 border-2 border-white/60 bg-white/5 backdrop-blur-sm text-white font-light tracking-wider rounded-sm hover:bg-white/15 hover:border-white transition-all duration-300"
+              href="#live-show"
+              onClick={(e) => handleScrollToSection(e, 'live-show')}
+              className="w-full sm:w-auto min-w-[140px] px-8 py-3 border-2 border-white/60 bg-white/5 text-white font-light tracking-wider rounded-sm hover:bg-white/15 hover:border-white transition-all duration-300"
               {...buttonHover}
             >
-              Discover
+              Show Details
+            </motion.a>
+            <motion.a
+              href={SPOTIFY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto min-w-[140px] px-8 py-3 border-2 border-white/60 bg-white/5 text-white font-light tracking-wider rounded-sm hover:bg-white/15 hover:border-white transition-all duration-300"
+              {...buttonHover}
+            >
+              Listen
             </motion.a>
             <motion.a
               href={SHOPIFY_STORE}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto min-w-[140px] px-8 py-3 border-2 border-white/60 bg-white/5 backdrop-blur-sm text-white font-light tracking-wider rounded-sm hover:bg-white/15 hover:border-white transition-all duration-300"
+              className="w-full sm:w-auto min-w-[140px] px-8 py-3 border-2 border-white/60 bg-white/5 text-white font-light tracking-wider rounded-sm hover:bg-white/15 hover:border-white transition-all duration-300"
               {...buttonHover}
             >
-              Shop Now
+              Shop Merch
             </motion.a>
           </motion.div>
 
-          {/* Social Media Icons - Staggered entrance */}
+          {/* Social Media Icons */}
           <motion.div
-            className="flex flex-wrap justify-center gap-1 sm:gap-2 pt-4"
+            className="flex flex-wrap justify-center gap-1 sm:gap-2 pt-2"
             variants={staggerItemVariants}
           >
             {socialLinks.map((social, i) => (
@@ -158,7 +171,7 @@ const Hero: React.FC = () => {
             ))}
           </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
 
       {/* Scroll Indicator */}
       <motion.div
@@ -179,7 +192,7 @@ const Hero: React.FC = () => {
           />
         </motion.div>
       </motion.div>
-    </motion.section>
+    </section>
   );
 };
 

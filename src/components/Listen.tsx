@@ -26,10 +26,9 @@ const Listen: React.FC = () => {
     >
       {/* Ambient glow */}
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[400px] pointer-events-none"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[500px] pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse, rgba(30, 215, 96, 0.05) 0%, transparent 60%)',
-          filter: 'blur(60px)',
+          background: 'radial-gradient(ellipse, rgba(30, 215, 96, 0.04) 0%, rgba(30, 215, 96, 0.01) 30%, transparent 55%)',
         }}
         aria-hidden="true"
       />

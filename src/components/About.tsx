@@ -22,10 +22,9 @@ const About: React.FC = () => {
     <section id="about" className="relative py-20 md:py-32 bg-black overflow-hidden">
       {/* Ambient glow - positioned on the right for visual interest */}
       <div
-        className="absolute top-1/3 -right-40 w-[500px] h-[500px] pointer-events-none"
+        className="absolute top-1/3 -right-40 w-[600px] h-[600px] pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 60%)',
-          filter: 'blur(80px)',
+          background: 'radial-gradient(circle, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 30%, transparent 55%)',
         }}
         aria-hidden="true"
       />
