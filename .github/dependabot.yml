@@ -28,5 +28,3 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: globals
         update-types: ["version-update:semver-major"]
-      - dependency-name: stylelint-config-standard
-        update-types: ["version-update:semver-major"]

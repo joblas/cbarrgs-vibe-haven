@@ -35,16 +35,20 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Auto-merge patch and minor updates
-        if: steps.metadata.outputs.update-type != 'version-update:semver-major'
+      - name: Auto-merge if build passes
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr merge "$PR_URL" --merge --auto
-
-      - name: Comment on major updates for review
-        if: steps.metadata.outputs.update-type == 'version-update:semver-major'
-        env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr comment "$PR_URL" --body "Major version bump — needs manual review."
+          UPDATE_TYPE: ${{ steps.metadata.outputs.update-type }}
+          DEP_TYPE: ${{ steps.metadata.outputs.dependency-type }}
+        run: |
+          # Auto-merge all patch/minor updates (build already passed above)
+          # Auto-merge major bumps for dev dependencies (won't affect production)
+          # Flag major bumps for production dependencies for manual review
+          if [ "$UPDATE_TYPE" != "version-update:semver-major" ]; then
+            gh pr merge "$PR_URL" --merge --auto
+          elif [ "$DEP_TYPE" = "direct:development" ]; then
+            gh pr merge "$PR_URL" --merge --auto
+          else
+            gh pr comment "$PR_URL" --body "⚠️ Major version bump on a production dependency — needs manual review. Build passed but check for breaking API changes."
+          fi
