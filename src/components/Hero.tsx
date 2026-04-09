@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef, useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { SHOPIFY_STORE, SPOTIFY_URL } from '@/utils/constants';
 import {
@@ -12,7 +12,22 @@ import {
 
 const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const dropRef = useRef<HTMLDivElement>(null);
   const reducedMotion = prefersReducedMotion();
+  const [dropOpen, setDropOpen] = useState(false);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropRef.current && !dropRef.current.contains(e.target as Node)) {
+        setDropOpen(false);
+      }
+    };
+    if (dropOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [dropOpen]);
 
   const handleScrollToSection = (e: React.MouseEvent, sectionId: string) => {
     e.preventDefault();
@@ -173,14 +188,53 @@ const Hero: React.FC = () => {
             >
               listen
             </a>
-            <a
-              href={SHOPIFY_STORE}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white/60 hover:text-white text-xs sm:text-sm font-light tracking-wider transition-colors duration-300 underline-offset-4 hover:underline"
-            >
-              shop
-            </a>
+            <div ref={dropRef} className="relative">
+              <button
+                onClick={() => setDropOpen((prev) => !prev)}
+                className="text-white/60 hover:text-white text-xs sm:text-sm font-light tracking-wider transition-colors duration-300 underline-offset-4 hover:underline flex items-center gap-1"
+                aria-expanded={dropOpen}
+                aria-haspopup="true"
+              >
+                drop
+                <motion.span
+                  className="inline-block text-[10px]"
+                  animate={{ rotate: dropOpen ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  &#9662;
+                </motion.span>
+              </button>
+              <AnimatePresence>
+                {dropOpen && (
+                  <motion.div
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2 flex flex-col items-center gap-2 py-3 px-5 rounded-lg bg-black/80 border border-white/10"
+                    initial={{ opacity: 0, y: -8, scaleY: 0.8 }}
+                    animate={{ opacity: 1, y: 0, scaleY: 1 }}
+                    exit={{ opacity: 0, y: -8, scaleY: 0.8 }}
+                    transition={{ duration: 0.2, ease: 'easeOut' }}
+                    style={{ transformOrigin: 'top center' }}
+                  >
+                    <a
+                      href={SHOPIFY_STORE}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white/70 hover:text-white text-xs sm:text-sm font-light tracking-wider transition-colors duration-200 whitespace-nowrap"
+                    >
+                      new
+                    </a>
+                    <div className="w-8 h-px bg-white/10" />
+                    <a
+                      href={SHOPIFY_STORE}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white/50 hover:text-white text-xs sm:text-sm font-light tracking-wider transition-colors duration-200 whitespace-nowrap"
+                    >
+                      archive
+                    </a>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </motion.nav>
 
         </motion.div>
