@@ -188,7 +188,7 @@ const Hero: React.FC = () => {
             >
               listen
             </a>
-            <div ref={dropRef} className="relative">
+            <div ref={dropRef} className="relative flex items-center">
               <button
                 onClick={() => setDropOpen((prev) => !prev)}
                 className="text-white/60 hover:text-white text-xs sm:text-sm font-light tracking-wider transition-colors duration-300 underline-offset-4 hover:underline flex items-center gap-1"
