@@ -1,13 +1,10 @@
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { SHOPIFY_STORE, SPOTIFY_URL } from '@/utils/constants';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { socialLinks } from '@/data/socialLinks';
 import {
   floatingVariants,
   staggerContainerVariants,
   staggerItemVariants,
-  socialIconHover,
   glowPulseVariants,
   prefersReducedMotion
 } from '@/utils/animations';
@@ -146,27 +143,6 @@ const Hero: React.FC = () => {
             </a>
           </motion.nav>
 
-          {/* Social Media Icons */}
-          <motion.div
-            className="flex flex-wrap justify-center gap-1 sm:gap-2 pt-2"
-            variants={staggerItemVariants}
-          >
-            {socialLinks.map((social, i) => (
-              <motion.a
-                key={social.name}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center text-white/80 hover:text-white transition-colors duration-300 text-xl sm:text-2xl touch-manipulation"
-                {...socialIconHover}
-                custom={i}
-                title={social.name}
-                aria-label={`Visit Cbarrgs on ${social.name}`}
-              >
-                <FontAwesomeIcon icon={social.icon} />
-              </motion.a>
-            ))}
-          </motion.div>
         </motion.div>
       </div>
 

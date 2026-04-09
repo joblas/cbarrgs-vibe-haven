@@ -1,6 +1,5 @@
 
 import React, { useEffect } from 'react';
-import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import SkipToContent from '@/components/SkipToContent';
 import Hero from '@/components/Hero';
@@ -48,7 +47,6 @@ const Index: React.FC = () => {
       {!prefersReducedMotion && <div className="grain-overlay" aria-hidden="true"></div>}
 
       <SkipToContent />
-      <Navigation />
 
       <main id="main-content" className="relative" role="main">
         <Hero />
