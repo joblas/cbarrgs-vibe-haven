@@ -84,6 +84,26 @@ const Hero: React.FC = () => {
         </motion.div>
       </motion.div>
 
+      {/* Shopping Cart - top right */}
+      <motion.a
+        href={SHOPIFY_STORE}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="absolute top-6 right-6 sm:top-8 sm:right-8 z-20 group"
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+        aria-label="Shop Cbarrgs merch"
+      >
+        <motion.img
+          src="/images/cbarrgs-cart.svg"
+          alt="Shop"
+          className="h-12 sm:h-14 md:h-16 w-auto opacity-70 group-hover:opacity-100 transition-opacity duration-300"
+          whileHover={reducedMotion ? {} : { x: 4 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+        />
+      </motion.a>
+
       {/* Content */}
       <div
         className="relative z-20 text-center px-4 sm:px-6 max-w-screen-xl mx-auto"
