@@ -1,7 +1,5 @@
 interface Env {
   SUBSCRIBERS: KVNamespace;
-  RESEND_API_KEY?: string;
-  NOTIFY_EMAIL?: string;
 }
 
 interface SubscribeRequest {
@@ -48,33 +46,18 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     return jsonResponse({ status: 'already_subscribed', message: "You're already on our mailing list!" });
   }
 
-  // Store in KV with timestamp metadata
+  // Store in KV with timestamp and source metadata
+  const subscribedAt = new Date().toISOString();
   await env.SUBSCRIBERS.put(email, JSON.stringify({
     email,
-    subscribedAt: new Date().toISOString(),
+    subscribedAt,
+    source: new URL(request.url).origin,
   }));
 
-  // Send notification email via Resend (non-blocking — don't fail subscription on email error)
-  if (env.RESEND_API_KEY) {
-    const notifyEmail = env.NOTIFY_EMAIL || 'cbarrgs@gmail.com';
-    try {
-      await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${env.RESEND_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: 'Cbarrgs <noreply@cbarrgs.com>',
-          to: [notifyEmail],
-          subject: 'New Subscriber on cbarrgs.com',
-          html: `<p>New subscriber: <strong>${email}</strong></p><p>Subscribed at: ${new Date().toISOString()}</p>`,
-        }),
-      });
-    } catch (err) {
-      console.error('Failed to send notification email:', err);
-    }
-  }
+  // Update subscriber count in KV for quick stats
+  const countStr = await env.SUBSCRIBERS.get('__count__');
+  const count = countStr ? parseInt(countStr, 10) + 1 : 1;
+  await env.SUBSCRIBERS.put('__count__', String(count));
 
   return jsonResponse({ status: 'subscribed', message: 'Thank you for subscribing!' });
 };

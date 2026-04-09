@@ -55,12 +55,10 @@ npm run preview
 Copy `.env.example` to `.env` and fill in values:
 
 ```
-VITE_SUPABASE_URL=        # Optional — newsletter signup
-VITE_SUPABASE_ANON_KEY=   # Optional — newsletter signup
-VITE_RESEND_API_KEY=      # Optional — email notifications
+No environment variables needed for local development.
+Email subscriptions are handled by Cloudflare Pages Functions + KV.
+Email routing (contact@, bookings@) is handled by Cloudflare Email Workers.
 ```
-
-The site runs fully without these — the subscribe form degrades gracefully with a "coming soon" message.
 
 ## Project Structure
 

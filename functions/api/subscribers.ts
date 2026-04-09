@@ -31,6 +31,9 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   const subscribers: Array<{ email: string; subscribedAt: string }> = [];
 
   for (const key of list.keys) {
+    // Skip internal keys
+    if (key.name.startsWith('__')) continue;
+
     const value = await env.SUBSCRIBERS.get(key.name);
     if (value) {
       try {
