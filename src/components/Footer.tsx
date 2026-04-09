@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useLocation } from 'react-router-dom';
 import SubscribeForm from './SubscribeForm';
 import { socialLinks } from '@/data/socialLinks';
+import { CONTACT_EMAIL, BOOKING_EMAIL } from '@/utils/constants';
 import {
   staggerContainerVariants,
   staggerItemVariants,
@@ -133,6 +134,11 @@ const Footer: React.FC = () => {
           className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-white/60 text-xs sm:text-sm font-light gap-4"
           variants={fadeInUpVariants}
         >
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-center">
+            <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-white transition-colors duration-300">{CONTACT_EMAIL}</a>
+            <span className="hidden sm:inline">|</span>
+            <a href={`mailto:${BOOKING_EMAIL}`} className="hover:text-white transition-colors duration-300">{BOOKING_EMAIL}</a>
+          </div>
           <p>&copy; {currentYear} Cbarrgs. All rights reserved.</p>
           <div className="flex gap-6">
             <Link

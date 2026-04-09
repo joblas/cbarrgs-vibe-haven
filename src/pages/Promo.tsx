@@ -122,7 +122,7 @@ const Promo: React.FC = () => {
                   href={platform.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`group flex items-center gap-4 w-full p-4 rounded-lg bg-white/[0.04] border border-white/10 transition-all duration-300 ${platform.color}`}
+                  className={`group flex items-center gap-4 w-full p-4 rounded-lg bg-white/[0.04] border border-white/10 transition-all duration-300 touch-manipulation ${platform.color}`}
                 >
                   <FontAwesomeIcon
                     icon={platform.icon}

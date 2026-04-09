@@ -18,7 +18,7 @@ Each track balances technical precision with raw feeling — inviting you to get
 
 // Contact information - adjust these as needed
 export const CONTACT_EMAIL = "contact@cbarrgs.com";
-export const BOOKING_EMAIL = "booking@cbarrgs.com";
+export const BOOKING_EMAIL = "bookings@cbarrgs.com";
 
 // Store information
 export const SHOPIFY_STORE = "https://shopify.cbarrgs.com/";
