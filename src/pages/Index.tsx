@@ -7,6 +7,7 @@ import LiveShow from '@/components/LiveShow';
 import About from '@/components/About';
 import ShopComingSoon from '@/components/ShopComingSoon';
 import Listen from '@/components/Listen';
+import ScrollProgress from '@/components/ui/scroll-progress';
 import { useReducedMotion } from '@/hooks/useAccessibility';
 
 const Index: React.FC = () => {
@@ -45,6 +46,7 @@ const Index: React.FC = () => {
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       {!prefersReducedMotion && <div className="grain-overlay" aria-hidden="true"></div>}
+      {!prefersReducedMotion && <ScrollProgress />}
 
       <SkipToContent />
 

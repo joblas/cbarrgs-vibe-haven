@@ -222,12 +222,16 @@
   @apply transition-all duration-500 hover:scale-[1.02] focus-within:scale-[1.02];
 }
 
-/* Ensure all interactive elements meet minimum size requirements */
-button, 
-a, 
-input, 
-select, 
+/* Ensure interactive elements in navigation/forms meet minimum touch target size */
+button,
+input,
+select,
 textarea {
+  min-height: 44px;
+}
+
+/* Links only need min-height when they act as standalone touch targets */
+a.touch-target {
   min-height: 44px;
   min-width: 44px;
 }
