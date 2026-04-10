@@ -1,5 +1,6 @@
 interface Env {
   SUBSCRIBERS: KVNamespace;
+  RESEND_API_KEY: string;
 }
 
 interface SubscribeRequest {
@@ -53,6 +54,27 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     subscribedAt,
     source: new URL(request.url).origin,
   }));
+
+  // Trigger Notification via Resend
+  if (env.RESEND_API_KEY) {
+    try {
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: 'Cbarrgs Updates <notifications@cbarrgs.com>',
+          to: ['joe@joestechsolutions.com'],
+          subject: 'New Subscriber: cbarrgs.com',
+          html: `<p>You have a new subscriber!</p><p><strong>Email:</strong> ${email}</p><p><strong>Date:</strong> ${subscribedAt}</p>`,
+        }),
+      });
+    } catch (e) {
+      console.error('Failed to send notification email:', e);
+    }
+  }
 
   // Update subscriber count in KV for quick stats
   const countStr = await env.SUBSCRIBERS.get('__count__');
