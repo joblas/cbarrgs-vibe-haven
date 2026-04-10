@@ -16,6 +16,7 @@ const Hero: React.FC = () => {
   const dropRef = useRef<HTMLDivElement>(null);
   const reducedMotion = prefersReducedMotion();
   const [dropOpen, setDropOpen] = useState(false);
+  const [bgImageLoaded, setBgImageLoaded] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -47,14 +48,16 @@ const Hero: React.FC = () => {
       className="relative min-h-[100svh] flex items-center justify-center overflow-hidden"
       aria-label="Hero section"
     >
-      {/* Background Image */}
-      <img
-        src="/lovable-uploads/cbarrgs-insta-bw.webp"
-        alt="Cbarrgs artistic background image"
-        fetchPriority="high"
-        decoding="async"
-        className="fixed inset-0 w-full h-full object-cover z-0 pointer-events-none"
-      />
+       {/* Background Image */}
+       <img
+         src="/lovable-uploads/cbarrgs-insta-bw.webp"
+         alt="Cbarrgs artistic background image"
+         fetchPriority="high"
+         decoding="async"
+         className="fixed inset-0 w-full h-full object-cover z-0 pointer-events-none transition-opacity duration-1000 ease-in-out"
+         style={{ opacity: bgImageLoaded ? 1 : 0 }}
+         onLoad={() => setBgImageLoaded(true)}
+       />
 
       {/* Dark Overlay with Vignette */}
       <div

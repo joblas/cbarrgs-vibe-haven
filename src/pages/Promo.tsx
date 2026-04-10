@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -58,19 +58,22 @@ const socialFollowLinks = [
 
 const Promo: React.FC = () => {
   const reducedMotion = prefersReducedMotion();
+  const [bgImageLoaded, setBgImageLoaded] = useState(false);
 
   return (
     <div className="min-h-[100svh] bg-black text-white overflow-x-hidden">
-      {/* Background */}
-      <div className="fixed inset-0 z-0">
-        <img
-          src="/lovable-uploads/cbarrgs-insta-bw.webp"
-          alt=""
-          className="w-full h-full object-cover opacity-20"
-          fetchPriority="high"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black" />
-      </div>
+       {/* Background */}
+       <div className="fixed inset-0 z-0">
+         <img
+           src="/lovable-uploads/cbarrgs-insta-bw.webp"
+           alt=""
+           className="w-full h-full object-cover opacity-20 transition-opacity duration-1000 ease-in-out"
+           style={{ opacity: bgImageLoaded ? 0.2 : 0 }}
+           fetchPriority="high"
+           onLoad={() => setBgImageLoaded(true)}
+         />
+         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black" />
+       </div>
 
       {/* Content */}
       <div className="relative z-10">
