@@ -190,28 +190,38 @@ const Promo: React.FC = () => {
               <p className="text-white/25 text-xs font-extralight tracking-wide text-center mb-3">
                 In the shop soon
               </p>
-              <div className="grid grid-cols-3 gap-2 sm:gap-2.5 mb-3">
-                {[
-                  { src: '/images/merch/tshirt.jpeg', alt: 'Cbarrgs tee' },
-                  { src: '/images/merch/Pin.jpeg', alt: 'Cbarrgs pin' },
-                  { src: '/images/merch/stickers.jpeg', alt: 'Cbarrgs stickers' },
-                ].map((item) => (
-                  <a
-                    key={item.alt}
-                    href={SHOPIFY_STORE}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="aspect-square rounded-lg overflow-hidden bg-white/[0.03] border border-white/[0.08] hover:border-white/20 transition-all duration-300"
-                  >
-                    <img
-                      src={item.src}
-                      alt={item.alt}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                      loading="eager"
-                    />
-                  </a>
-                ))}
-              </div>
+               <div className="grid grid-cols-3 gap-2 sm:gap-2.5 mb-3">
+                 {[
+                   { src: '/images/merch/tshirt.jpeg', alt: 'Cbarrgs tee', soldOut: true },
+                   { src: '/images/merch/Pin.jpeg', alt: 'Cbarrgs pin', soldOut: false },
+                   { src: '/images/merch/stickers.jpeg', alt: 'Cbarrgs stickers', soldOut: false },
+                 ].map((item) => (
+                   <a
+                     key={item.alt}
+                     href={SHOPIFY_STORE}
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     className="aspect-square rounded-lg overflow-hidden bg-white/[0.03] border border-white/[0.08] hover:border-white/20 transition-all duration-300 relative group"
+                   >
+                     <img
+                       src={item.src}
+                       alt={item.alt}
+                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                       loading="eager"
+                     />
+                     {item.soldOut && (
+                       <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm text-white/80 text-xs font-extralight tracking-wider">
+                         Sold Out
+                       </div>
+                     )}
+                     {!item.soldOut && item.alt === 'Cbarrgs tee' && (
+                       <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm text-white/80 text-xs font-extralight tracking-wider">
+                         New Design Coming Soon
+                       </div>
+                     )}
+                   </a>
+                 ))}
+               </div>
               <a
                 href={SHOPIFY_STORE}
                 target="_blank"
