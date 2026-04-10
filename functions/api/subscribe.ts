@@ -66,7 +66,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         },
         body: JSON.stringify({
           from: 'Cbarrgs Updates <notifications@cbarrgs.com>',
-          to: ['joe@joestechsolutions.com'],
+          to: ['cbarrgs@gmail.com', 'joe@joestechsolutions.com'],
           subject: 'New Subscriber: cbarrgs.com',
           html: `<p>You have a new subscriber!</p><p><strong>Email:</strong> ${email}</p><p><strong>Date:</strong> ${subscribedAt}</p>`,
         }),
