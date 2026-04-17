@@ -1,5 +1,5 @@
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faInstagram, faSpotify, faYoutube, faApple, faSoundcloud } from '@fortawesome/free-brands-svg-icons';
+import { faInstagram, faSpotify, faYoutube, faApple, faSoundcloud, faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import {
   INSTAGRAM_URL,
@@ -7,7 +7,8 @@ import {
   YOUTUBE_CHANNEL,
   APPLE_MUSIC_URL,
   SOUNDCLOUD_URL,
-  LINKTREE_URL
+  LINKTREE_URL,
+  TIKTOK_URL
 } from '@/utils/constants';
 
 export interface SocialLink {
@@ -26,6 +27,7 @@ export const socialLinks: SocialLink[] = [
   { name: 'Apple Music', url: APPLE_MUSIC_URL, icon: faApple },
   { name: 'Spotify', url: SPOTIFY_URL, icon: faSpotify },
   { name: 'SoundCloud', url: SOUNDCLOUD_URL, icon: faSoundcloud },
+  { name: 'TikTok', url: TIKTOK_URL, icon: faTiktok },
   { name: 'Linktree', url: LINKTREE_URL, icon: faLink },
 ];
 
@@ -34,6 +36,7 @@ export const socialLinks: SocialLink[] = [
  */
 export const mobileSocialLinks: SocialLink[] = [
   { name: 'Instagram', url: INSTAGRAM_URL, icon: faInstagram },
+  { name: 'TikTok', url: TIKTOK_URL, icon: faTiktok },
   { name: 'Spotify', url: SPOTIFY_URL, icon: faSpotify },
   { name: 'YouTube', url: YOUTUBE_CHANNEL, icon: faYoutube },
 ];

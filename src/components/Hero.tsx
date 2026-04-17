@@ -10,6 +10,7 @@ import {
   prefersReducedMotion
 } from '@/utils/animations';
 import Magnetic from '@/components/ui/magnetic';
+import { useMarketingNews } from '@/hooks/useMarketingNews';
 
 const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -17,6 +18,7 @@ const Hero: React.FC = () => {
   const reducedMotion = prefersReducedMotion();
   const [dropOpen, setDropOpen] = useState(false);
   const [bgImageLoaded, setBgImageLoaded] = useState(false);
+  const { news } = useMarketingNews();
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -147,9 +149,7 @@ const Hero: React.FC = () => {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white/60 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-white/90" />
                 </span>
-                <span className="text-white/90 font-light tracking-wider text-xs sm:text-sm">
-                  New EP Coming Soon &middot; Show &middot; New Merch
-                </span>
+                <span className="text-white/90 font-light tracking-wider text-xs sm:text-sm" dangerouslySetInnerHTML={{ __html: news?.ctaText || "New EP Coming Soon &middot; Show &middot; New Merch" }} />
               </motion.div>
             </Link>
           </motion.div>
@@ -164,17 +164,15 @@ const Hero: React.FC = () => {
               initial={{ opacity: 0, filter: 'blur(4px)' }}
               animate={{ opacity: 1, filter: 'blur(0px)' }}
               transition={{ duration: 0.8, delay: 0.5 }}
-            >
-              "Pieces For You" EP &middot; Coming April 25th
-            </motion.p>
+              dangerouslySetInnerHTML={{ __html: news?.headline || "\"Pieces For You\" EP &middot; Coming April 25th" }}
+            />
             <motion.p
               className="text-white/40 text-xs sm:text-sm font-extralight tracking-wide"
               initial={{ opacity: 0, filter: 'blur(4px)' }}
               animate={{ opacity: 1, filter: 'blur(0px)' }}
               transition={{ duration: 0.8, delay: 0.7 }}
-            >
-              New tees &amp; pins just arrived &middot; In the shop soon
-            </motion.p>
+              dangerouslySetInnerHTML={{ __html: news?.subheadline || "New tees &amp; pins just arrived &middot; In the shop soon" }}
+            />
           </motion.div>
 
           {/* Navigation links */}

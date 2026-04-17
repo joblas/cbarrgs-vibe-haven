@@ -6,6 +6,7 @@ export const INSTAGRAM_URL = "https://www.instagram.com/cbarrgs";
 export const APPLE_MUSIC_URL = "https://music.apple.com/us/artist/cbarrgs/1448293718";
 export const SOUNDCLOUD_URL = "https://soundcloud.com/cbarrgs";
 export const LINKTREE_URL = "https://linktr.ee/CBARRGS";
+export const TIKTOK_URL = "https://www.tiktok.com/@cbarrgscdmx";
 
 // Artist bio text
 export const ARTIST_BIO = `
