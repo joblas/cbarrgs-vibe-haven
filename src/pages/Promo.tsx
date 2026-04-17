@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpotify, faApple, faYoutube, faSoundcloud, faInstagram } from '@fortawesome/free-brands-svg-icons';
-import { MapPin, Calendar, Clock, ArrowLeft, ShoppingBag, Mail } from 'lucide-react';
+import { ArrowLeft, ShoppingBag, Mail } from 'lucide-react';
 import {
   SPOTIFY_URL,
   APPLE_MUSIC_URL,
@@ -147,39 +147,7 @@ const Promo: React.FC = () => {
             </div>
           </BlurFade>
 
-          {/* Section: Free Show */}
-          <BlurFade delay={0.25}>
-            <div className="mb-7 sm:mb-8">
-              <h2 className="text-xs font-extralight tracking-[0.2em] text-white/35 uppercase mb-3 text-center">
-                Free Live Show
-              </h2>
-              <a
-                href={venueUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group block w-full p-4 sm:p-5 rounded-lg bg-white/[0.03] border border-white/[0.08] hover:bg-white/[0.06] hover:border-white/15 transition-all duration-300"
-              >
-                <div className="text-center">
-                  <h3 className="font-serif text-lg font-light mb-3 tracking-wide">Distinction Gallery</h3>
-                  <div className="flex flex-wrap justify-center gap-x-4 sm:gap-x-5 gap-y-2 text-white/55 text-sm font-extralight">
-                    <span className="flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-white/35" />
-                      April 11th
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5 text-white/35" />
-                      6pm &ndash; 8pm
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <MapPin className="w-3.5 h-3.5 text-white/35" />
-                      Escondido, CA
-                    </span>
-                  </div>
-                  <p className="text-white/35 text-xs mt-2 font-extralight">All ages &middot; Free admission</p>
-                </div>
-              </a>
-            </div>
-          </BlurFade>
+          
 
           {/* Section: Shop */}
           <BlurFade delay={0.35}>

@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import Footer from '@/components/Footer';
 import SkipToContent from '@/components/SkipToContent';
 import Hero from '@/components/Hero';
-import LiveShow from '@/components/LiveShow';
 import About from '@/components/About';
 import ShopComingSoon from '@/components/ShopComingSoon';
 import Listen from '@/components/Listen';
@@ -52,7 +51,6 @@ const Index: React.FC = () => {
 
       <main id="main-content" className="relative" role="main">
         <Hero />
-        <LiveShow />
         <Listen />
         <ShopComingSoon />
         <About />

@@ -168,18 +168,10 @@ const Hero: React.FC = () => {
               "Pieces For You" EP &middot; Coming April 25th
             </motion.p>
             <motion.p
-              className="text-white/50 text-xs sm:text-sm font-extralight tracking-wide"
-              initial={{ opacity: 0, filter: 'blur(4px)' }}
-              animate={{ opacity: 1, filter: 'blur(0px)' }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-            >
-              Free live show &middot; April 11th &middot; All ages
-            </motion.p>
-            <motion.p
               className="text-white/40 text-xs sm:text-sm font-extralight tracking-wide"
               initial={{ opacity: 0, filter: 'blur(4px)' }}
               animate={{ opacity: 1, filter: 'blur(0px)' }}
-              transition={{ duration: 0.8, delay: 0.9 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
             >
               New tees &amp; pins just arrived &middot; In the shop soon
             </motion.p>
@@ -191,15 +183,6 @@ const Hero: React.FC = () => {
             variants={staggerItemVariants}
             aria-label="Quick links"
           >
-            <Magnetic strength={0.15} radius={80}>
-              <a
-                href="#live-show"
-                onClick={(e) => handleScrollToSection(e, 'live-show')}
-                className="text-white/50 hover:text-white text-sm sm:text-base font-extralight tracking-[0.15em] transition-colors duration-300 underline-offset-4 hover:underline py-2"
-              >
-                show
-              </a>
-            </Magnetic>
             <Magnetic strength={0.15} radius={80}>
               <a
                 href={SPOTIFY_URL}

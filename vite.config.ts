@@ -45,12 +45,10 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      '@babel/runtime': path.resolve(__dirname, 'node_modules/@babel/runtime'),
     },
   },
   optimizeDeps: {
-    include: ['nanoid', '@babel/runtime'],
-    force: true,
+    include: ['nanoid'],
   },
   build: {
     chunkSizeWarningLimit: 500,
