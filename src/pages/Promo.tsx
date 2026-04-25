@@ -108,7 +108,7 @@ const Promo: React.FC = () => {
                 Pieces For You
               </h1>
               <p className="text-white/50 text-sm font-extralight tracking-wide">
-                New EP &middot; Coming April 25th
+                New EP &middot; Out Now
               </p>
             </div>
           </BlurFade>
@@ -120,7 +120,7 @@ const Promo: React.FC = () => {
                 Listen Now
               </h2>
               <p className="text-white/25 text-xs font-extralight tracking-wide text-center mb-3">
-                "Pieces For You" EP drops April 25th
+                "Pieces For You" EP is out now
               </p>
               <div className="space-y-2">
                 {streamingPlatforms.map((platform) => (
