@@ -46,10 +46,15 @@ npm run preview    # preview production build
 - Subtle animations only (opacity, y-translate). No scale in infinite loops.
 - Avoid: backdrop-blur, background-attachment: fixed, heavy CSS filters
 
-## Current Campaign (April 2026)
+## Current State (updated 2026-08-25)
 
-- **"Pieces For You" EP** — coming April 25th
-- **Free live show** — April 11th, Distinction Gallery, Escondido CA
-- **New merch** (tees, pins, stickers) — just arrived, going to shop soon
-- When EP releases: flip "Coming April 25th" → "Out Now" sitewide
-- When merch goes live: flip "In the shop soon" → "Shop Now" sitewide
+- **"Pieces For You" EP** — released April 25, 2026. Sitewide copy and OG tags say "Out Now".
+- **Merch** — live at shopify.cbarrgs.com (linked from site).
+- SEO upkeep runs via Joe's daily `steward_cbarrgs` cron (charter in Hermes
+  project-steward references). Keyword/content work follows the
+  grounding-seo-content skill: no new pages without search data or an
+  explicit UNVERIFIED label.
+- `/new` is the smart-link page in all bios/flyers/QR codes — never rename or
+  delete it without a redirect.
+- Keep `public/sitemap.xml` in sync when routes change; keep OG/Twitter tags
+  current with the latest release (stale "coming soon" tags sat for 4 months).
