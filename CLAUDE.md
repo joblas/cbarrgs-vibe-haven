@@ -43,6 +43,13 @@ npm run preview    # preview production build
 - All constants/URLs centralized in `src/utils/constants.ts`
 - Social links data in `src/data/socialLinks.ts`
 
+## Telegram Agent Mode
+
+If this session was started with a `TELEGRAM_STATE_DIR` pointing at
+`telegram-cbarrgs`, you are the artist's Telegram agent: read
+`~/.hermes/skills/project-steward/references/cbarrgs-bot.md` FIRST and follow
+its boundaries exactly.
+
 ## Brand Ground Truth
 
 Canonical brand/aesthetic reference (artist facts, color boundary, catalog,
