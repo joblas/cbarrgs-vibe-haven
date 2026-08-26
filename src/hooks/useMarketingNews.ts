@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 
-// For local development, this points to the local Cloudflare Agent.
-// In production, this should point to the deployed Agent URL (e.g., https://agent.cbarrgs.com)
-const AGENT_API_URL = import.meta.env.PROD 
-  ? 'https://cbarrgs-marketing-agent.YOUR_SUBDOMAIN.workers.dev' 
+// In production the site's own Pages Function (/api/news) proxies the
+// marketing-agent worker same-origin, so the CSP (connect-src 'self')
+// is satisfied. For local development it points at the local agent.
+const AGENT_API_URL = import.meta.env.PROD
+  ? ''
   : 'http://localhost:8787';
 
 export interface MarketingNews {
