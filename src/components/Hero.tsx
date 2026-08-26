@@ -149,7 +149,7 @@ const Hero: React.FC = () => {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white/60 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-white/90" />
                 </span>
-                <span className="text-white/90 font-light tracking-wider text-xs sm:text-sm"              dangerouslySetInnerHTML={{ __html: news?.ctaText || "New EP Out Now &middot; Show &middot; New Merch" }}/>
+                <span className="text-white/90 font-light tracking-wider text-xs sm:text-sm">{news?.ctaText || "New EP Out Now · Merch In The Shop"}</span>
               </motion.div>
             </Link>
           </motion.div>
@@ -164,15 +164,17 @@ const Hero: React.FC = () => {
               initial={{ opacity: 0, filter: 'blur(4px)' }}
               animate={{ opacity: 1, filter: 'blur(0px)' }}
               transition={{ duration: 0.8, delay: 0.5 }}
-              dangerouslySetInnerHTML={{ __html: news?.headline || "\"Pieces For You\" EP &middot; Out Now" }}
-            />
+            >
+              {news?.headline || '"Pieces For You" EP · Out Now'}
+            </motion.p>
             <motion.p
               className="text-white/40 text-xs sm:text-sm font-extralight tracking-wide"
               initial={{ opacity: 0, filter: 'blur(4px)' }}
               animate={{ opacity: 1, filter: 'blur(0px)' }}
               transition={{ duration: 0.8, delay: 0.7 }}
-              dangerouslySetInnerHTML={{ __html: news?.subheadline || "New tees &amp; pins just arrived &middot; In the shop soon" }}
-            />
+            >
+              {news?.subheadline || "Tees, pins & stickers · In the shop now"}
+            </motion.p>
           </motion.div>
 
           {/* Navigation links */}
