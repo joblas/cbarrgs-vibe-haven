@@ -38,6 +38,14 @@ npm run preview    # preview production build
 - All constants/URLs centralized in `src/utils/constants.ts`
 - Social links data in `src/data/socialLinks.ts`
 
+## Brand Ground Truth
+
+Canonical brand/aesthetic reference (artist facts, color boundary, catalog,
+motifs): `~/.hermes/skills/project-steward/references/cbarrgs-brand.md`.
+Redesign mockups + image assets: `design-canvas/` (gitignored) and the canvas
+at https://claude.ai/code/artifact/68963549-4ea4-4d00-b2fe-cc5163fce1d8 —
+read both before design work; don't re-derive the aesthetic from scratch.
+
 ## Design Guidelines
 
 - Dark, minimal, moody aesthetic — reference hellionusa.com
