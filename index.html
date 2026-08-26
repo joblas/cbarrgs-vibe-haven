@@ -43,6 +43,43 @@
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://cbarrgs.com" />
+
+    <!-- Structured data: served statically so non-JS crawlers and AI agents can parse it -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MusicGroup",
+      "@id": "https://cbarrgs.com/#artist",
+      "name": "Cbarrgs",
+      "alternateName": "see-bargs",
+      "url": "https://cbarrgs.com",
+      "genre": ["Electronic", "Ambient", "Bedroom Pop"],
+      "description": "Cbarrgs (see-bargs) blends electronic textures with ambient soundscapes — songs about connection and digital solitude, in Spanish and English.",
+      "sameAs": [
+        "https://open.spotify.com/artist/4qRI7BqjuKH3ulYQrEYnLa",
+        "https://music.apple.com/us/artist/cbarrgs/1448293718",
+        "https://soundcloud.com/cbarrgs",
+        "https://www.instagram.com/cbarrgs",
+        "https://www.tiktok.com/@cbarrgscdmx",
+        "https://www.youtube.com/@cbarrgs",
+        "https://linktr.ee/CBARRGS"
+      ],
+      "album": {
+        "@type": "MusicAlbum",
+        "name": "Pieces For You",
+        "albumReleaseType": "https://schema.org/EPRelease",
+        "datePublished": "2026-04-25",
+        "byArtist": { "@id": "https://cbarrgs.com/#artist" },
+        "track": [
+          { "@type": "MusicRecording", "name": "All For What?", "position": 1 },
+          { "@type": "MusicRecording", "name": "Regresaré", "position": 2 },
+          { "@type": "MusicRecording", "name": "Tímido", "position": 3 },
+          { "@type": "MusicRecording", "name": "Pieces For You", "position": 4 },
+          { "@type": "MusicRecording", "name": "Do You Love Me?", "position": 5 }
+        ]
+      }
+    }
+    </script>
     
     <!-- Favicon -->
     <link rel="icon" href="/favicon.ico" sizes="any" />
