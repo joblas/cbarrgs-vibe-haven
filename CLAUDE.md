@@ -32,6 +32,11 @@ npm run preview    # preview production build
 ## Architecture Notes
 
 - `functions/api/subscribe.ts` — Cloudflare Pages Function for email capture (KV + Resend)
+- `functions/api/news.ts` — same-origin proxy to the `cbarrgs-marketing-agent`
+  worker's /api/news (CSP is connect-src 'self', so the browser never calls the
+  worker directly). Sanitizes to plain text; hero renders these strings as text
+  (never dangerouslySetInnerHTML). Hero copy updates via the worker's Telegram
+  bot — no site deploy needed.
 - Hero section has logo top-left, shopping cart (SVG) top-right, "drop" dropdown (Hellion USA style)
 - `/new` page is the single marketing URL — goes in all bios, flyers, QR codes
 - Dependabot auto-merges minor/patch updates via GitHub Actions
