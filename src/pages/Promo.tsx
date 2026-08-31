@@ -105,10 +105,10 @@ const Promo: React.FC = () => {
                 transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
               />
               <h1 className="font-serif text-2xl sm:text-3xl font-light tracking-wider mb-2">
-                Pieces For You
+                Solitude
               </h1>
               <p className="text-white/50 text-sm font-extralight tracking-wide">
-                New EP &middot; Out Now
+                New single &middot; Out Now
               </p>
             </div>
           </BlurFade>
@@ -120,7 +120,7 @@ const Promo: React.FC = () => {
                 Listen Now
               </h2>
               <p className="text-white/25 text-xs font-extralight tracking-wide text-center mb-3">
-                "Pieces For You" EP is out now
+                "Solitude" single is out now — plus the "Pieces For You" EP
               </p>
               <div className="space-y-2">
                 {streamingPlatforms.map((platform) => (
