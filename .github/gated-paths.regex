@@ -1,1 +1,1 @@
-^(\.github/|\.claude/|CLAUDE\.md$|AGENTS\.md$|wrangler\.toml$|functions/api/subscribe\.ts$|package\.json$|package-lock\.json$)
+^(\.github/|\.claude/|CLAUDE\.md$|AGENTS\.md$|wrangler\.(toml|jsonc|json)$|functions/api/|functions/_email\.ts$|package\.json$|package-lock\.json$)

@@ -89,9 +89,12 @@ read both before design work; don't re-derive the aesthetic from scratch.
   at the head SHA plus green CI (`ci.yml`: build).
 - **Gated paths** (`.github/gated-paths.regex`, read by both the CI tripwire and
   the gate): all of `.github/**`, `.claude/**`, `CLAUDE.md`, `AGENTS.md`,
-  `wrangler.toml`, `functions/api/subscribe.ts`, `package.json`,
+  `wrangler.toml|jsonc|json`, all of `functions/api/**` (the subscriber list and
+  its admin key live there) and `functions/_email.ts`, `package.json`,
   `package-lock.json`. They change only via a PR labeled `needs-joe` that Joe's
   word merges, recorded on the PR as `joe-approved` (any later push voids it).
+  One exception: Dependabot's minor/patch bumps to `package.json` merge through
+  `dependabot-auto-merge.yml`; the gate skips Dependabot PRs.
   A direct push to `main` touching one fails CI. Also gated, by the charter and
   not by regex: anything Shopify, money, accounts, credentials, Cloudflare
   settings, deletions, new tools.
@@ -99,4 +102,5 @@ read both before design work; don't re-derive the aesthetic from scratch.
   not as "housekeeping". Reports about CI, merges, or deploys carry the run ID,
   merge SHA, and a live `curl` of cbarrgs.com.
 - The site repo is PUBLIC: never commit personal info, internal notes, design
-  working files, or secrets (`.env`, `*.p8` are gitignored; keep it so).
+  working files, or secrets (`.env*` and, as of this change, `*.p8` are
+  gitignored; keep it so).
