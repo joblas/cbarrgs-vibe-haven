@@ -86,7 +86,7 @@ read both before design work; don't re-derive the aesthetic from scratch.
   first — and Cloudflare Pages deploys the push. Everything else, from any
   agent, goes branch → PR → **the ship gate** (`.github/workflows/ship-gate.yml`
   + `.claude/skills/ship-review`), which merges on a clean independent review
-  at the head SHA plus green CI (`ci.yml`: build).
+  at the head SHA plus green CI (`ci.yml`: build + functions typecheck).
 - **Gated paths** (`.github/gated-paths.regex`, read by both the CI tripwire and
   the gate): all of `.github/**`, `.claude/**`, `CLAUDE.md`, `AGENTS.md`,
   `wrangler.toml|jsonc|json`, all of `functions/api/**` (the subscriber list and
