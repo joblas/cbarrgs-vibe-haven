@@ -23,7 +23,7 @@ jobs:
 
       # Gated-path tripwire — a direct push to main (not a PR merge) that touches a
       # gated path fails this run. PR merges are recognised by GitHub's merge
-      # committer (noreply@github.com) or a merge commit and pass through.
+      # committer (noreply@github.com) and pass through.
       - name: Gated-path tripwire (enforcement rule 1)
         if: github.event_name == 'push'
         env:
