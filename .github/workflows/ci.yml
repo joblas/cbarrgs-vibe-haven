@@ -1,0 +1,67 @@
+name: CI
+
+# The check the ship gate waits for. Build is the verdict; lint is shown but
+# not blocking until `npm run lint` runs clean on main (it currently crashes on
+# a module-load error — a separate fix). The tripwire mechanizes enforcement
+# rule 1 for direct pushes: Carlos's bot pushes JS/content changes to main by
+# Joe's decision (2026-09-05), so a direct push that touches a gated path must
+# go red in minutes, not at the next audit pass.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history: the tripwire below diffs the pushed range.
+          fetch-depth: 0
+
+      # Gated-path tripwire — a direct push to main (not a PR merge) that touches a
+      # gated path fails this run. PR merges are recognised by GitHub's merge
+      # committer (noreply@github.com) or a merge commit and pass through.
+      - name: Gated-path tripwire (enforcement rule 1)
+        if: github.event_name == 'push'
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          committer=$(git log -1 --format=%ce "$AFTER")
+          parents=$(git rev-list --parents -n 1 "$AFTER" | wc -w)
+          if [ "$committer" = "noreply@github.com" ] || [ "$parents" -gt 2 ]; then
+            echo "PR merge ($committer, $((parents-1)) parent(s)) — allowed"; exit 0
+          fi
+          if [ "$BEFORE" = "0000000000000000000000000000000000000000" ] || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            echo "::warning title=Tripwire skipped::no reachable base commit for this push"; exit 0
+          fi
+          # One list, shared with the ship gate: .github/gated-paths.regex (one
+          # extended regex per line). Blank lines are dropped because an empty
+          # pattern matches every path; an empty LIST is an error because zero
+          # patterns would match nothing and pass every push.
+          patterns=$(grep -v '^[[:space:]]*$' .github/gated-paths.regex 2>/dev/null || true)
+          if [ -z "$patterns" ]; then
+            echo "::error title=Gated list missing::.github/gated-paths.regex is missing or empty — the tripwire cannot run"
+            exit 1
+          fi
+          hits=$(git diff --name-only "$BEFORE" "$AFTER" | grep -E -f <(printf '%s\n' "$patterns") || true)
+          if [ -n "$hits" ]; then
+            echo "::error title=Gated path pushed directly::Enforcement rule 1 — these paths change only via a needs-joe PR merged on Joe's word:"
+            echo "$hits"
+            exit 1
+          fi
+          echo "direct push touches no gated paths — ok"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Lint (non-blocking until it runs clean on main)
+        continue-on-error: true
+        run: npm run lint
