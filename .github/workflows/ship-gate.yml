@@ -1,0 +1,184 @@
+# Ship gate — the independent review is the merge gate, in CI.
+#
+# Canonical copy: agent-playbook/ops/ship-gate/ship-gate.yml. Copy into a repo as
+# .github/workflows/ship-gate.yml together with .claude/skills/ship-review/SKILL.md
+# and .github/gated-paths.regex (see ops/ship-gate/README.md).
+#
+# On every PR event: run Anthropic's claude-code-action as the Claude GitHub App,
+# billed to the owner's Claude subscription, executing the repo-local /ship-review
+# skill. Then a deterministic step reads the verdict FOR THIS HEAD SHA, labels the
+# PR, holds anything touching gated paths for the owner's one-word approval
+# (`joe-approved` label), waits for every other check, and merges exactly the
+# reviewed head with SHIP_TOKEN (a PAT on the agent account) — never GITHUB_TOKEN,
+# because merges made with GITHUB_TOKEN do not trigger the push/workflow_run
+# workflows that deploy, and never the action's App token, which the action
+# revokes in its own final step.
+#
+# Why pull_request_target: the workflow, the review skill and the gated-path list
+# are read from the BASE branch, so a PR cannot edit its own gate. Secrets are
+# exposed to this event, so the job runs only for same-repo branches (never
+# forks), and nothing here executes code from the PR: the review reads the diff
+# through the GitHub API.
+#
+# Fail-closed by construction: no clean verdict for this exact head = no merge;
+# a finding at this head = no merge; a cut-off review (timeout) = no verdict;
+# the owner's approval is voided by any later push.
+name: Ship gate
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review, labeled]
+
+jobs:
+  gate:
+    # The job name is the check-run name; the wait loop excludes it by this string.
+    name: ship-gate
+    # Job-level, not workflow-level: a run whose job `if` skips (for example the
+    # `labeled` event this job itself causes by adding ship-reviewed) never claims
+    # the group, so it cannot cancel the run in progress.
+    concurrency:
+      group: ship-gate-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.draft == false &&
+      github.actor != 'dependabot[bot]' &&
+      (github.event.action != 'labeled' || github.event.label.name == 'joe-approved')
+    runs-on: ubuntu-latest
+    # Review time plus up to 30 minutes waiting for other checks.
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+      id-token: write
+    env:
+      REPO: ${{ github.repository }}
+      PR: ${{ github.event.pull_request.number }}
+      HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      EVENT_ACTION: ${{ github.event.action }}
+    steps:
+      # On pull_request_target this checks out the BASE ref: the skill and the
+      # gated-path list come from the trusted branch, not from the PR.
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Independent review (claude[bot], subscription-billed)
+        id: review
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: "/ship-review --comment ${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
+          # The action starts the inline-comment MCP server only when --allowedTools
+          # names it; the gh commands and Agent are listed so subagents never stall
+          # on a permission prompt in non-interactive mode.
+          claude_args: '--allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment:*),Bash(gh pr list:*),Bash(gh issue view:*),Bash(gh issue list:*),Bash(gh search:*),Agent"'
+
+      - name: Verdict → labels → gated paths → CI → merge
+        env:
+          # A PAT on the agent account: contents, pull requests, issues (write),
+          # scoped to this repository. Required; there is no fallback.
+          GH_TOKEN: ${{ secrets.SHIP_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "::error::SHIP_TOKEN secret is not set (a PAT on the agent account with contents, pull-requests and issues write)"
+            exit 1
+          fi
+
+          state=$(gh pr view "$PR" --json state --jq .state)
+          if [ "$state" = "MERGED" ]; then echo "::notice::already merged"; exit 0; fi
+
+          # Approval is per head: any push after the owner's word voids it. A push
+          # while the PR is closed or draft fires no run, so reopen and
+          # ready_for_review strip it too.
+          case "$EVENT_ACTION" in
+            synchronize|reopened|ready_for_review) gh pr edit "$PR" --remove-label joe-approved 2>/dev/null || true ;;
+          esac
+
+          # 1. Verdict for THIS head, from the review's own comments. Only the
+          #    Claude App counts (a Bot named claude[bot]); backticks are stripped so
+          #    a formatted SHA still matches; findings count by the head they were
+          #    posted at (original_commit_id — GitHub moves commit_id forward on
+          #    later pushes); pages are slurped so long PRs cannot hide findings.
+          #    gh rejects --slurp together with --jq, so the pages are piped into jq;
+          #    a non-numeric result (a failed query) is an error, never a merge.
+          bot='(.user.type == "Bot" and .user.login == "claude[bot]")'
+          clean=$(gh api "repos/$REPO/issues/$PR/comments?per_page=100" --paginate --slurp | jq \
+            "[.[][] | select($bot) | select((.body | gsub(\"\`\"; \"\") | contains(\"Reviewed head: $HEAD_SHA\")) and (.body | contains(\"No issues found\")))] | length")
+          findings=$(gh api "repos/$REPO/pulls/$PR/comments?per_page=100" --paginate --slurp | jq \
+            "[.[][] | select($bot and .original_commit_id == \"$HEAD_SHA\")] | length")
+          for n in "$clean" "$findings"; do
+            case "$n" in
+              ''|*[!0-9]*) echo "::error::verdict query returned a non-number (clean='$clean' findings='$findings')"; exit 1 ;;
+            esac
+          done
+          if [ "$clean" -eq 0 ] || [ "$findings" -gt 0 ]; then
+            gh pr edit "$PR" --remove-label ship-reviewed 2>/dev/null || true
+            echo "::notice::not clean at $HEAD_SHA (clean=$clean findings=$findings); the builder fixes and the next push re-runs"
+            exit 0
+          fi
+          gh pr edit "$PR" --add-label ship-reviewed
+
+          # 2. Gated paths (the regex comes from the BASE checkout) and holds.
+          #    The diff is captured first: piping gh into grep -q can SIGPIPE gh
+          #    and fail open under pipefail. Blank regex lines are dropped because
+          #    an empty pattern matches every path. Missing regex = hold.
+          labels=$(gh pr view "$PR" --json labels --jq '[.labels[].name] | join(",")')
+          changed=$(gh pr diff "$PR" --name-only)
+          hold=0
+          patterns=$(grep -v '^[[:space:]]*$' .github/gated-paths.regex 2>/dev/null || true)
+          if [ -z "$patterns" ]; then
+            echo "::warning::.github/gated-paths.regex missing or empty on the base branch; holding for owner approval"
+            hold=1
+          elif grep -Eq -f <(printf '%s\n' "$patterns") <<< "$changed"; then
+            hold=1
+            gh pr edit "$PR" --add-label needs-joe 2>/dev/null || true
+          fi
+          case ",$labels," in
+            *,needs-joe,*|*,needs-native-build,*|*,blocked-on-info,*) hold=1 ;;
+          esac
+          if [ "$hold" = 1 ]; then
+            case ",$labels," in
+              *,joe-approved,*) echo "::notice::held item carries joe-approved for this head; proceeding" ;;
+              *) echo "::notice::held — waiting for the owner's word (joe-approved label)"; exit 0 ;;
+            esac
+          fi
+
+          # 3. Every OTHER check on this head must be green (30-minute cap);
+          #    a transient API error is retried, not treated as a verdict.
+          state=PENDING
+          for _ in $(seq 1 60); do
+            if ! state=$(gh api "repos/$REPO/commits/$HEAD_SHA/check-runs?per_page=100" --jq '
+              [.check_runs[] | select(.name != "ship-gate")]
+              | if length == 0 then "EMPTY"
+                elif any(.status != "completed") then "PENDING"
+                elif all(.conclusion == "success" or .conclusion == "skipped" or .conclusion == "neutral") then "GREEN"
+                else "RED" end'); then
+              state=RETRY
+            fi
+            case "$state" in
+              GREEN|EMPTY) break ;;
+              RED) echo "::error::another check is red at $HEAD_SHA"; exit 1 ;;
+            esac
+            sleep 30
+          done
+          case "$state" in
+            GREEN|EMPTY) ;;
+            *) echo "::error::other checks still pending after 30 minutes (last state: $state)"; exit 1 ;;
+          esac
+
+          # 4. A held PR must still carry the owner's word after the wait (an owner
+          #    removing joe-approved mid-wait is honored); then merge exactly the
+          #    reviewed head. A merge commit keeps history and is recognised as a
+          #    PR merge by the gated-path tripwire.
+          if [ "$hold" = 1 ]; then
+            labels=$(gh pr view "$PR" --json labels --jq '[.labels[].name] | join(",")')
+            case ",$labels," in
+              *,joe-approved,*) ;;
+              *) echo "::notice::joe-approved was removed during the wait; holding"; exit 0 ;;
+            esac
+          fi
+          gh pr merge "$PR" --merge --delete-branch --match-head-commit "$HEAD_SHA"
+          gh pr comment "$PR" --body "Merged by the ship gate. Review clean at $HEAD_SHA; gate run ${{ github.run_id }}."

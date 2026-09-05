@@ -78,3 +78,25 @@ read both before design work; don't re-derive the aesthetic from scratch.
   delete it without a redirect.
 - Keep `public/sitemap.xml` in sync when routes change; keep OG/Twitter tags
   current with the latest release (stale "coming soon" tags sat for 4 months).
+
+## Shipping (2026-09-05)
+
+- **Two lanes.** Carlos's Telegram agent (charter in Hermes references) makes
+  JS/content changes on `main` directly by Joe's decision — build must pass
+  first — and Cloudflare Pages deploys the push. Everything else, from any
+  agent, goes branch → PR → **the ship gate** (`.github/workflows/ship-gate.yml`
+  + `.claude/skills/ship-review`), which merges on a clean independent review
+  at the head SHA plus green CI (`ci.yml`: build).
+- **Gated paths** (`.github/gated-paths.regex`, read by both the CI tripwire and
+  the gate): all of `.github/**`, `.claude/**`, `CLAUDE.md`, `AGENTS.md`,
+  `wrangler.toml`, `functions/api/subscribe.ts`, `package.json`,
+  `package-lock.json`. They change only via a PR labeled `needs-joe` that Joe's
+  word merges, recorded on the PR as `joe-approved` (any later push voids it).
+  A direct push to `main` touching one fails CI. Also gated, by the charter and
+  not by regex: anything Shopify, money, accounts, credentials, Cloudflare
+  settings, deletions, new tools.
+- **No agent merges a PR by hand**, and no agent commits gated paths directly,
+  not as "housekeeping". Reports about CI, merges, or deploys carry the run ID,
+  merge SHA, and a live `curl` of cbarrgs.com.
+- The site repo is PUBLIC: never commit personal info, internal notes, design
+  working files, or secrets (`.env`, `*.p8` are gitignored; keep it so).
