@@ -15,6 +15,9 @@ dist-ssr
 .env.local
 .env.production
 
+# Apple / App Store keys — never commit
+*.p8
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
