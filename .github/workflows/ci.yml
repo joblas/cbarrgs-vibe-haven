@@ -11,10 +11,19 @@ on:
   push:
     branches: [main]
   pull_request:
+  # Merges made with GITHUB_TOKEN (Dependabot's auto-merge) fire no push run, so
+  # a daily run on main keeps a current CI verdict for main to cite.
+  schedule:
+    - cron: '17 12 * * *'
+  workflow_dispatch:
 
 jobs:
   verify:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # The tripwire asks the API which PR (if any) produced the pushed commit.
+      pull-requests: read
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,24 +31,37 @@ jobs:
           fetch-depth: 0
 
       # Gated-path tripwire — a direct push to main (not a PR merge) that touches a
-      # gated path fails this run. PR merges are recognised by GitHub's merge
-      # committer (noreply@github.com) and pass through.
+      # gated path fails this run. A push passes as a PR merge only when the API
+      # names a PR merged into main whose merge_commit_sha is the pushed commit
+      # (merge, squash and rebase merges alike); the committer email is never
+      # trusted, since anyone can set it.
       - name: Gated-path tripwire (enforcement rule 1)
         if: github.event_name == 'push'
         env:
           BEFORE: ${{ github.event.before }}
           AFTER: ${{ github.sha }}
+          REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          # Only merges GitHub itself created pass (the gate's `gh pr merge`,
-          # Dependabot's auto-merge): committer noreply@github.com. A merge commit
-          # made locally and pushed straight to main is judged like any direct push.
-          committer=$(git log -1 --format=%ce "$AFTER")
-          if [ "$committer" = "noreply@github.com" ]; then
-            echo "GitHub-created merge ($committer) — allowed"; exit 0
+          merged=$(gh api "repos/$REPO/commits/$AFTER/pulls" --jq \
+            "[.[] | select(.merged_at != null and .merge_commit_sha == \"$AFTER\" and .base.ref == \"main\")] | length")
+          case "$merged" in
+            ''|*[!0-9]*) echo "::error title=Tripwire query failed::could not ask which PR produced $AFTER (got '$merged')"; exit 1 ;;
+          esac
+          if [ "$merged" -gt 0 ]; then
+            echo "$AFTER is the merge commit of a PR merged into main — allowed"; exit 0
           fi
-          if [ "$BEFORE" = "0000000000000000000000000000000000000000" ] || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
-            echo "::warning title=Tripwire skipped::no reachable base commit for this push"; exit 0
+          # A force-push can orphan BEFORE; fetch it by SHA, and fail closed if it
+          # is still missing rather than skip the check.
+          if [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            echo "::error title=Tripwire has no base::push has no base commit; cannot verify gated paths"; exit 1
+          fi
+          if ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            git fetch --quiet origin "$BEFORE" 2>/dev/null || true
+            if ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+              echo "::error title=Tripwire has no base::base commit $BEFORE is unreachable (force-push?); cannot verify gated paths"; exit 1
+            fi
           fi
           # One list, shared with the ship gate: .github/gated-paths.regex (one
           # extended regex per line). Blank lines are dropped because an empty
@@ -50,13 +72,19 @@ jobs:
             echo "::error title=Gated list missing::.github/gated-paths.regex is missing or empty — the tripwire cannot run"
             exit 1
           fi
-          hits=$(git diff --name-only "$BEFORE" "$AFTER" | grep -E -f <(printf '%s\n' "$patterns") || true)
+          # --no-renames lists a rename's source path too, so moving a file out of
+          # a gated path is caught.
+          hits=$(git diff --no-renames --name-only "$BEFORE" "$AFTER" | grep -E -f <(printf '%s\n' "$patterns") || true)
           if [ -n "$hits" ]; then
             echo "::error title=Gated path pushed directly::Enforcement rule 1 — these paths change only via a needs-joe PR merged on Joe's word:"
             echo "$hits"
             exit 1
           fi
           echo "direct push touches no gated paths — ok"
+
+      # Regression tests for the guard scripts above and in the other workflows.
+      - name: Workflow guard tests
+        run: bash .github/tests/workflow-guards.sh
 
       - uses: actions/setup-node@v4
         with:

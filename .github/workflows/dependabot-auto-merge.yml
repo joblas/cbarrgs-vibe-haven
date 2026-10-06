@@ -42,13 +42,11 @@ jobs:
           UPDATE_TYPE: ${{ steps.metadata.outputs.update-type }}
           DEP_TYPE: ${{ steps.metadata.outputs.dependency-type }}
         run: |
-          # Auto-merge all patch/minor updates (build already passed above)
-          # Auto-merge major bumps for dev dependencies (won't affect production)
-          # Flag major bumps for production dependencies for manual review
+          # Auto-merge patch/minor updates only (build already passed above), as
+          # CLAUDE.md states. Every major bump, dev or production, is flagged for
+          # manual review.
           if [ "$UPDATE_TYPE" != "version-update:semver-major" ]; then
             gh pr merge "$PR_URL" --merge --auto
-          elif [ "$DEP_TYPE" = "direct:development" ]; then
-            gh pr merge "$PR_URL" --merge --auto
           else
-            gh pr comment "$PR_URL" --body "⚠️ Major version bump on a production dependency — needs manual review. Build passed but check for breaking API changes."
+            gh pr comment "$PR_URL" --body "⚠️ Major version bump ($DEP_TYPE) — needs manual review. Build passed but check for breaking API changes."
           fi
