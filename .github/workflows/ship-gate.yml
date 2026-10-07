@@ -65,7 +65,8 @@ jobs:
        github.event.pull_request.head.repo.full_name == github.repository &&
        github.event.pull_request.draft == false &&
        github.actor != 'dependabot[bot]' &&
-       (github.event.action != 'labeled' || github.event.label.name == 'joe-approved')) ||
+       (github.event.action != 'labeled' ||
+        (github.event.label.name == 'joe-approved' && github.actor == github.repository_owner))) ||
       (github.event_name == 'workflow_run' &&
        github.event.workflow_run.event == 'pull_request' &&
        github.event.workflow_run.head_repository.full_name == github.repository &&
@@ -218,8 +219,12 @@ jobs:
             # SHA becomes the head (opened, synchronize, reopened, ready for
             # review), including a force-push back to an older SHA; adding a
             # label starts none. Unknown either way = stale = hold.
-            approved_at=$(gh api "repos/$REPO/issues/$PR/events?per_page=100" --paginate --slurp | jq -r \
-              '[.[][] | select(.event == "labeled" and .label.name == "joe-approved") | .created_at] | max // ""')
+            # Only the owner's own label event counts (the agent account can add
+            # labels, and on repos it does not own that must not release a hold);
+            # on repos the agent account owns it is the owner account itself.
+            owner=$(gh api "repos/$REPO" --jq .owner.login)
+            approved_at=$(gh api "repos/$REPO/issues/$PR/events?per_page=100" --paginate --slurp | jq -r --arg owner "$owner" \
+              '[.[][] | select(.event == "labeled" and .label.name == "joe-approved" and .actor.login == $owner) | .created_at] | max // ""')
             head_at=$(gh api "repos/$REPO/actions/runs?head_sha=$HEAD_SHA&per_page=100" --jq \
               '[.workflow_runs[] | select(.event == "pull_request") | .created_at] | max // ""')
             if [ -z "$approved_at" ] || [ -z "$head_at" ] || [[ "$approved_at" < "$head_at" ]]; then
@@ -275,6 +280,18 @@ jobs:
               *,joe-approved,*) ;;
               *) echo "::notice::joe-approved was removed during the wait; holding"; exit 0 ;;
             esac
+            # The word must still be the owner's own after the wait. The agent
+            # account can add labels, so a joe-approved whose latest labeled
+            # event was not applied by the repo's owner is not the owner's word
+            # and holds (on repos the agent account owns, it is the owner).
+            owner=$(gh api "repos/$REPO" --jq .owner.login)
+            latest=$(gh api "repos/$REPO/issues/$PR/events?per_page=100" --paginate --slurp | jq -r --arg owner "$owner" \
+              '[.[][] | select(.event == "labeled" and .label.name == "joe-approved")] | max_by(.created_at) // {} | .actor.login // ""')
+            if [ "$latest" != "$owner" ]; then
+              gh pr edit "$PR" --remove-label joe-approved 2>/dev/null || true
+              echo "::notice::the latest joe-approved was applied by '${latest:-nobody}', not the owner $owner; holding for the owner's own word"
+              exit 0
+            fi
           fi
           # The base may have been changed during the wait; merge only into the
           # default branch, checked again at the last moment.
