@@ -85,8 +85,9 @@ new_fixture() {
   BEFORE=$(git rev-parse HEAD)
 }
 pulls_none() { echo '[]' > "$WORK/pulls.json"; }
-pulls_merged() { # merge_commit_sha base_ref
-  printf '[{"number":7,"merged_at":"2026-10-02T19:14:00Z","merge_commit_sha":"%s","base":{"ref":"%s"}}]\n' "$1" "$2" > "$WORK/pulls.json"
+pulls_merged() { # merge_commit_sha base_ref [head_sha]
+  printf '[{"number":7,"merged_at":"2026-10-02T19:14:00Z","merge_commit_sha":"%s","head":{"sha":"%s"},"base":{"ref":"%s"}}]\n' \
+    "$1" "${3:-7777777777777777777777777777777777777777}" "$2" > "$WORK/pulls.json"
 }
 run_tripwire() { # before after
   ( cd "$WORK/repo" && BEFORE="$1" AFTER="$2" REPO=joblas/cbarrgs-vibe-haven \
@@ -119,6 +120,21 @@ new_fixture
 echo x >> CLAUDE.md; git add -A; git commit -qm direct
 pulls_merged 1111111111111111111111111111111111111111 main
 check "merged PR with a different merge_commit_sha does not excuse a gated push" 1 "$(run_tripwire "$BEFORE" "$(git rev-parse HEAD)")"
+
+# A PR's head branch pushed straight to main is auto-marked merged with
+# merge_commit_sha == the pushed head commit (seen live: renfaire-directory
+# #22, head == merge_commit_sha, single-parent). That push is a direct push,
+# not a merge, so it must fail, touching a gated path.
+new_fixture
+echo x >> CLAUDE.md; git add -A; git commit -qm "head-branch push"
+pulls_merged "$(git rev-parse HEAD)" main "$(git rev-parse HEAD)"
+check "PR head branch pushed to main (auto-merged, merge_commit_sha == head) touching a gated path fails" 1 "$(run_tripwire "$BEFORE" "$(git rev-parse HEAD)")"
+
+# Control: the same auto-marked PR push touching only ungated content passes.
+new_fixture
+echo y >> src/a.js; git add -A; git commit -qm "head-branch push, ungated"
+pulls_merged "$(git rev-parse HEAD)" main "$(git rev-parse HEAD)"
+check "control: PR head branch pushed to main touching only src/ passes" 0 "$(run_tripwire "$BEFORE" "$(git rev-parse HEAD)")"
 
 # A PR merged into another branch does not excuse a push to main.
 new_fixture

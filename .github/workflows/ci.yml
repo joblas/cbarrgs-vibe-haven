@@ -33,7 +33,10 @@ jobs:
       # Gated-path tripwire — a direct push to main (not a PR merge) that touches a
       # gated path fails this run. A push passes as a PR merge only when the API
       # names a PR merged into main whose merge_commit_sha is the pushed commit
-      # (merge, squash and rebase merges alike); the committer email is never
+      # and whose head is a DIFFERENT commit (merge, squash and rebase merges
+      # all create one); a PR's head branch pushed straight to main is
+      # auto-marked merged with merge_commit_sha == that same head commit, and
+      # that push is judged, never excused. The committer email is never
       # trusted, since anyone can set it.
       - name: Gated-path tripwire (enforcement rule 1)
         if: github.event_name == 'push'
@@ -45,7 +48,7 @@ jobs:
         run: |
           set -euo pipefail
           merged=$(gh api "repos/$REPO/commits/$AFTER/pulls" --jq \
-            "[.[] | select(.merged_at != null and .merge_commit_sha == \"$AFTER\" and .base.ref == \"main\")] | length")
+            "[.[] | select(.merged_at != null and .merge_commit_sha == \"$AFTER\" and .base.ref == \"main\" and .head.sha != \"$AFTER\")] | length")
           case "$merged" in
             ''|*[!0-9]*) echo "::error title=Tripwire query failed::could not ask which PR produced $AFTER (got '$merged')"; exit 1 ;;
           esac
