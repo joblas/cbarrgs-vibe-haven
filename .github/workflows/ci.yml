@@ -64,17 +64,37 @@ jobs:
             fi
           fi
           # One list, shared with the ship gate: .github/gated-paths.regex (one
-          # extended regex per line). Blank lines are dropped because an empty
-          # pattern matches every path; an empty LIST is an error because zero
-          # patterns would match nothing and pass every push.
-          patterns=$(grep -v '^[[:space:]]*$' .github/gated-paths.regex 2>/dev/null | tr -d '\r' || true)
+          # extended regex per line). It is read from BEFORE, not from the
+          # checkout of AFTER: a direct push must not be able to drop \.github/
+          # from its own tripwire list in the same commit as a gated change.
+          # Blank lines are dropped because an empty pattern matches every path;
+          # an empty LIST is an error because zero patterns would match nothing
+          # and pass every push. The gate itself always holds changes to this
+          # file's own regex on PRs; this is the direct-push backstop.
+          if ! patterns=$(git show "$BEFORE:.github/gated-paths.regex" 2>/dev/null | grep -v '^[[:space:]]*$' | tr -d '\r'); then
+            echo "::error title=Gated list missing::.github/gated-paths.regex is missing or unreadable at $BEFORE — the tripwire cannot run"
+            exit 1
+          fi
           if [ -z "$patterns" ]; then
-            echo "::error title=Gated list missing::.github/gated-paths.regex is missing or empty — the tripwire cannot run"
+            echo "::error title=Gated list missing::.github/gated-paths.regex is missing or empty at $BEFORE — the tripwire cannot run"
             exit 1
           fi
           # --no-renames lists a rename's source path too, so moving a file out of
-          # a gated path is caught.
-          hits=$(git diff --no-renames --name-only "$BEFORE" "$AFTER" | grep -E -f <(printf '%s\n' "$patterns") || true)
+          # a gated path is caught. grep exits 1 for no match and 2 for a pattern
+          # it cannot parse; only a clean "no match" lets a push through, and a
+          # git diff failure is an error, never "clean" — both must fail closed.
+          diff_out=""
+          if ! diff_out=$(git diff --no-renames --name-only "$BEFORE" "$AFTER"); then
+            echo "::error title=Tripwire diff failed::git diff $BEFORE..$AFTER could not be computed; cannot verify gated paths"
+            exit 1
+          fi
+          rc=0
+          hits=$(grep -E -f <(printf '%s\n' "$patterns") <<< "$diff_out" || rc=$?)
+          case "$rc" in
+            0) ;;
+            1) hits="" ;;
+            *) echo "::error title=Gated list failed to parse::.github/gated-paths.regex at $BEFORE has a line grep cannot parse (exit $rc) — cannot verify gated paths"; exit 1 ;;
+          esac
           if [ -n "$hits" ]; then
             echo "::error title=Gated path pushed directly::Enforcement rule 1 — these paths change only via a needs-joe PR merged on Joe's word:"
             echo "$hits"

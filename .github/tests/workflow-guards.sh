@@ -31,11 +31,15 @@ PY
 
 # gh stub: `api .../commits/*/pulls` answers from $STUB_PULLS, `api .../pulls/*/files`
 # from $STUB_FILES, `pr diff --name-only` from $STUB_DIFF; --jq is applied with jq.
+# $STUB_FILES_PAGES, when set, serves `pulls/*/files` one page per call with
+# per_page honored (the real API lists at most 3000 files and paginates at 100);
+# $STUB_FAIL, when set, makes every api call fail (network/permission error).
 # Every invocation is logged to $GH_LOG.
 mkdir -p "$WORK/bin"
 cat > "$WORK/bin/gh" <<'STUB'
 #!/usr/bin/env bash
 echo "gh $*" >> "${GH_LOG:-/dev/null}"
+if [ -n "${STUB_FAIL:-}" ]; then echo "gh stub: simulated failure" >&2; exit 1; fi
 jqexpr=""; args=()
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -47,7 +51,18 @@ done
 emit() { if [ -n "$jqexpr" ]; then jq -r "$jqexpr" "$1"; else cat "$1"; fi; }
 case "${args[0]} ${args[1]:-}" in
   "api "*/commits/*/pulls*) emit "$STUB_PULLS" ;;
-  "api "*/pulls/*/files*)   emit "$STUB_FILES" ;;
+  "api "*/pulls/*/files*)
+    if [ -n "${STUB_FILES_PAGES:-}" ]; then
+      # Real `gh api --paginate` applies --jq per page and concatenates the
+      # output; serve each page file that way so page-2 entries reach the caller.
+      for f in "${STUB_FILES_PAGES}"/*.json; do
+        [ -e "$f" ] || continue
+        jq -r "${jqexpr:-.}" "$f"
+      done
+    else
+      emit "$STUB_FILES"
+    fi ;;
+  "api "*/pulls/*)          emit "$STUB_PR" ;;
   "pr diff")                printf '%s\n' "$STUB_DIFF" ;;
   "pr merge"|"pr comment")  : ;;
   *) echo "gh stub: unhandled: ${args[*]}" >&2; exit 2 ;;
@@ -117,6 +132,34 @@ echo y >> src/a.js; git add -A; git commit -qm after
 pulls_none
 check "F4 unreachable, unfetchable BEFORE fails closed" 1 "$(run_tripwire 2222222222222222222222222222222222222222 "$(git rev-parse HEAD)")"
 
+# Audit 2026-10-06 F1': the pattern list is read from BEFORE, not from the
+# pushed commit. A push that DELETES .github/gated-paths.regex in the same
+# commit as a gated change must fail closed, not lose its own tripwire.
+new_fixture
+rm .github/gated-paths.regex; echo gone >> CLAUDE.md; git add -A; git commit -qm delete-list
+pulls_none
+check "audit-F1' push deleting gated-paths.regex with a gated change fails closed" 1 "$(run_tripwire "$BEFORE" "$(git rev-parse HEAD)")"
+
+# A push that NARROWS the list in the same commit as a gated change is still
+# judged by the OLD list: the tripwire must not accept its own loosening. The
+# narrowed list drops every pattern that matches the pushed change, so only
+# the OLD list can hold it.
+new_fixture
+printf '^src/\\n' > .github/gated-paths.regex; echo x >> CLAUDE.md
+git add -A; git commit -qm narrow-list-with-gated-change
+pulls_none
+check "audit-F1' push narrowing gated-paths.regex is judged by the OLD list" 1 "$(run_tripwire "$BEFORE" "$(git rev-parse HEAD)")"
+
+# Audit 2026-10-06 F2': a malformed regex line in the list at BEFORE is an
+# error, never "clean" (grep exit 2 must not read as no-match). The malformed
+# list sits at BEFORE itself; the pushed change touches only src/.
+new_fixture
+printf 'CLAUDE\\.md\n(\n' > .github/gated-paths.regex; git add -A; git commit -qm malformed-list
+MAL=$(git rev-parse HEAD)
+echo y >> src/a.js; git add -A; git commit -qm after
+pulls_none
+check "audit-F2' malformed regex line in gated-paths.regex fails closed" 1 "$(run_tripwire "$MAL" "$(git rev-parse HEAD)")"
+
 # Controls: unchanged behaviour.
 new_fixture
 echo y >> src/a.js; git add -A; git commit -qm content
@@ -140,6 +183,41 @@ changed=$( cd "$ROOT" && REPO=joblas/cbarrgs-vibe-haven PR=1 STUB_FILES="$WORK/f
 patterns=$(grep -v '^[[:space:]]*$' "$ROOT/.github/gated-paths.regex")
 if grep -Eq -f <(printf '%s\n' "$patterns") <<< "$changed"; then r=held; else r=not-held; fi
 check "F3 gate: renaming functions/api/subscribers.ts out of functions/api is held" held "$r"
+
+# Audit 2026-10-06 F4a: --paginate must not hide page 2. Two pages of files, the
+# gated file (CLAUDE.md) on page 2 only; the gate's changed= list must carry it.
+gate_lines() { # extract the changed= and nfiles= lines from the gate step
+  grep -E '^(changed|nfiles)=' <<< "$GATE"
+}
+mkdir -p "$WORK/pages"
+cat > "$WORK/pages/1.json" <<'J'
+[{"filename":"src/a.js","status":"modified"},{"filename":"src/b.js","status":"modified"}]
+J
+cat > "$WORK/pages/2.json" <<'J'
+[{"filename":"CLAUDE.md","status":"modified"}]
+J
+page_out=$( cd "$ROOT" && REPO=joblas/cbarrgs-vibe-haven PR=1 STUB_FILES_PAGES="$WORK/pages" \
+  bash -c "set -euo pipefail; $(gate_lines | grep '^changed='); printf '%s\n' \"\$changed\"" 2>&1 )
+if grep -q 'CLAUDE.md' <<< "$page_out"; then r=listed; else r=missing; fi
+check "audit-F4a gate: a gated file on files-page 2 is listed (pagination works)" listed "$r"
+
+# Audit 2026-10-06 F3 (3000 files): past what the files API lists, the gate
+# must hold on the PR's changed_files count, not on the truncated list.
+cat > "$WORK/pr.json" <<'J'
+{"changed_files": 3000}
+J
+nfiles_line=$(gate_lines | grep '^nfiles=')
+nfiles=$( cd "$ROOT" && REPO=joblas/cbarrgs-vibe-haven PR=1 STUB_PR="$WORK/pr.json" \
+  bash -c "set -euo pipefail; $nfiles_line; printf '%s' \"\$nfiles\"" 2>&1 )
+if [ "$nfiles" -ge 3000 ]; then r=hold; else r=pass; fi
+check "audit-F3 gate: 3000 changed files reads as a hold" hold "$r"
+
+# Audit 2026-10-06 F4b: a gh failure while listing files must not read as an
+# empty (clean) list. The gate runs under set -euo pipefail, so a failed gh
+# aborts the step — assert that, not a silent continue.
+ghfail_rc=$( cd "$ROOT" && REPO=joblas/cbarrgs-vibe-haven PR=1 STUB_FAIL=1 \
+  bash -c "set -euo pipefail; $(gate_lines | grep '^changed=')" >/dev/null 2>&1; echo $? )
+check "audit-F4b gate: gh failure aborts the step (no silent empty list)" 1 "$ghfail_rc"
 
 # --------------------------------------------- Dependabot auto-merge (dependabot-auto-merge.yml)
 # F7: CLAUDE.md allows only minor/patch auto-merges; a major dev bump must not merge.
