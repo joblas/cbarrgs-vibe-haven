@@ -161,7 +161,7 @@ check "audit-F1' push deleting gated-paths.regex with a gated change fails close
 # narrowed list drops every pattern that matches the pushed change, so only
 # the OLD list can hold it.
 new_fixture
-printf '^src/\\n' > .github/gated-paths.regex; echo x >> CLAUDE.md
+printf '^src/\n' > .github/gated-paths.regex; echo x >> CLAUDE.md
 git add -A; git commit -qm narrow-list-with-gated-change
 pulls_none
 check "audit-F1' push narrowing gated-paths.regex is judged by the OLD list" 1 "$(run_tripwire "$BEFORE" "$(git rev-parse HEAD)")"
@@ -246,6 +246,12 @@ dep_run() { # update_type dep_type
 check "F7 major devDependency bump is not auto-merged" not-merged "$(dep_run version-update:semver-major direct:development)"
 check "control: minor bump is auto-merged" merged "$(dep_run version-update:semver-minor direct:production)"
 check "control: major production bump is not auto-merged" not-merged "$(dep_run version-update:semver-major direct:production)"
+# Review finding (fresh-context pass at 71bf53c): fetch-metadata can output an
+# empty update-type (non-semver or git-sourced versions) — an allow-list must
+# treat that as needs-human, never merge it. The merge runs on GITHUB_TOKEN,
+# which never triggers the gated-path tripwire, so an unseen merge is ungated.
+check "empty update-type is NOT auto-merged" not-merged "$(dep_run "" direct:production)"
+check "non-semver update-type is NOT auto-merged" not-merged "$(dep_run version-update:direct direct:production)"
 
 echo "workflow-guards: $pass passed, $fail failed"
 [ "$fail" -eq 0 ]
