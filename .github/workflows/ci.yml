@@ -86,13 +86,17 @@ jobs:
           # a gated path is caught. grep exits 1 for no match and 2 for a pattern
           # it cannot parse; only a clean "no match" lets a push through, and a
           # git diff failure is an error, never "clean" — both must fail closed.
+          # NB: the || rc=$? must sit OUTSIDE the $(…) — inside it, rc=$? runs
+          # in the subshell and the parent's rc stays 0, so a malformed list
+          # would read as clean (harness case "audit-F2'", verified on GNU grep
+          # 3.11: buggy idiom rc=0, correct idiom rc=2).
           diff_out=""
           if ! diff_out=$(git diff --no-renames --name-only "$BEFORE" "$AFTER"); then
             echo "::error title=Tripwire diff failed::git diff $BEFORE..$AFTER could not be computed; cannot verify gated paths"
             exit 1
           fi
           rc=0
-          hits=$(grep -E -f <(printf '%s\n' "$patterns") <<< "$diff_out" || rc=$?)
+          hits=$(grep -E -f <(printf '%s\n' "$patterns") <<< "$diff_out") || rc=$?
           case "$rc" in
             0) ;;
             1) hits="" ;;
