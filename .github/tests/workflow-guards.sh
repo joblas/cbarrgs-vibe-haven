@@ -186,6 +186,17 @@ printf 'x' > ".github/workflows/dé.yml"; git add -A; git commit -qm unicode-gat
 pulls_none
 check "review-53a059b: unicode-named gated workflow file fails the tripwire" 1 "$(run_tripwire "$BEFORE" "$(git rev-parse HEAD)")"
 
+# Review finding at 2d7dbc1 (pass-3): the same bypass class one step over — a
+# gated filename that is NOT valid UTF-8 (Latin-1) reads as binary to GNU grep,
+# which suppresses the match output ("binary file matches" goes to stderr,
+# stdout stays empty, exit 0) and the push read as clean. LC_ALL=C + grep -a
+# forces text mode; the fixture name uses a raw 0xE9 byte.
+new_fixture
+mkdir -p .github/workflows
+printf 'x' > "$(printf '.github/workflows/d\xe9.yml')"; git add -A; git commit -qm latin1-gated
+pulls_none
+check "review-2d7dbc1: invalid-UTF-8 gated filename fails the tripwire" 1 "$(run_tripwire "$BEFORE" "$(git rev-parse HEAD)")"
+
 # Controls: unchanged behaviour.
 new_fixture
 echo y >> src/a.js; git add -A; git commit -qm content

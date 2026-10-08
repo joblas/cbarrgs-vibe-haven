@@ -90,10 +90,17 @@ jobs:
           # file would read as clean. -z separates entries with NUL bytes, and
           # grep -z matches whole NUL-separated records (the pattern file stays
           # newline-separated; grep reads -f pattern files line-wise even under
-          # -z). NUL bytes cannot live in a shell variable, so both go through
+          # NUL bytes cannot live in a shell variable, so both go through
           # temp files. grep exits 1 for no match and 2 for a pattern it cannot
           # parse; only a clean "no match" lets a push through, and a git diff
           # failure is an error, never "clean" — both must fail closed.
+          # LC_ALL=C + grep -a: with raw bytes in the diff, a filename that is
+          # not valid UTF-8 makes GNU grep treat the input as binary, print
+          # "binary file matches" to stderr and NOTHING to stdout with exit 0 —
+          # a Latin-1-named gated workflow read as clean (verified on GNU grep
+          # 3.11, LANG=C.UTF-8). -a forces text mode and the C locale makes
+          # every byte valid, so the match is always visible. Patterns are
+          # ASCII, so the C locale cannot change what they mean.
           # NB: the || rc=$? must sit OUTSIDE the $(…) — inside it, rc=$? runs
           # in the subshell and the parent's rc stays 0, so a malformed list
           # would read as clean (harness case "audit-F2'", verified on GNU grep
@@ -105,7 +112,7 @@ jobs:
             exit 1
           fi
           rc=0
-          hits=$(grep -z -E -f "$pat_list" "$diff_list" | tr '\0' '\n') || rc=$?
+          hits=$(LC_ALL=C grep -a -z -E -f "$pat_list" "$diff_list" | tr '\0' '\n') || rc=$?
           case "$rc" in
             0) ;;
             1) hits="" ;;
