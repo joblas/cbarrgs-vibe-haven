@@ -83,20 +83,29 @@ jobs:
             exit 1
           fi
           # --no-renames lists a rename's source path too, so moving a file out of
-          # a gated path is caught. grep exits 1 for no match and 2 for a pattern
-          # it cannot parse; only a clean "no match" lets a push through, and a
-          # git diff failure is an error, never "clean" — both must fail closed.
+          # a gated path is caught. git -c core.quotePath=false + diff -z: the
+          # default name-only output C-quotes any path with non-ASCII bytes, a
+          # quote, backslash or control chars (".github/workflows/d\303\251.yml"),
+          # which a ^-anchored pattern can never match — a unicode-named gated
+          # file would read as clean. -z separates entries with NUL bytes, and
+          # grep -z matches whole NUL-separated records (the pattern file stays
+          # newline-separated; grep reads -f pattern files line-wise even under
+          # -z). NUL bytes cannot live in a shell variable, so both go through
+          # temp files. grep exits 1 for no match and 2 for a pattern it cannot
+          # parse; only a clean "no match" lets a push through, and a git diff
+          # failure is an error, never "clean" — both must fail closed.
           # NB: the || rc=$? must sit OUTSIDE the $(…) — inside it, rc=$? runs
           # in the subshell and the parent's rc stays 0, so a malformed list
           # would read as clean (harness case "audit-F2'", verified on GNU grep
           # 3.11: buggy idiom rc=0, correct idiom rc=2).
-          diff_out=""
-          if ! diff_out=$(git diff --no-renames --name-only "$BEFORE" "$AFTER"); then
+          diff_list=$(mktemp); pat_list=$(mktemp)
+          printf '%s\n' "$patterns" > "$pat_list"
+          if ! git -c core.quotePath=false diff -z --no-renames --name-only "$BEFORE" "$AFTER" > "$diff_list"; then
             echo "::error title=Tripwire diff failed::git diff $BEFORE..$AFTER could not be computed; cannot verify gated paths"
             exit 1
           fi
           rc=0
-          hits=$(grep -E -f <(printf '%s\n' "$patterns") <<< "$diff_out") || rc=$?
+          hits=$(grep -z -E -f "$pat_list" "$diff_list" | tr '\0' '\n') || rc=$?
           case "$rc" in
             0) ;;
             1) hits="" ;;

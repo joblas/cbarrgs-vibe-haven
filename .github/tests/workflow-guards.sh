@@ -176,6 +176,16 @@ echo y >> src/a.js; git add -A; git commit -qm after
 pulls_none
 check "audit-F2' malformed regex line in gated-paths.regex fails closed" 1 "$(run_tripwire "$MAL" "$(git rev-parse HEAD)")"
 
+# Review finding at 53a059b (fresh-context pass): a gated path with non-ASCII
+# bytes in its name is C-quoted by default git diff output and misses every
+# ^-anchored pattern — the tripwire read it as clean. -z + quotePath=false +
+# grep -z closes it (fixture: .github/workflows/dé.yml must fail the push).
+new_fixture
+mkdir -p .github/workflows
+printf 'x' > ".github/workflows/dé.yml"; git add -A; git commit -qm unicode-gated
+pulls_none
+check "review-53a059b: unicode-named gated workflow file fails the tripwire" 1 "$(run_tripwire "$BEFORE" "$(git rev-parse HEAD)")"
+
 # Controls: unchanged behaviour.
 new_fixture
 echo y >> src/a.js; git add -A; git commit -qm content
@@ -243,8 +253,15 @@ dep_run() { # update_type dep_type
   PR_URL=https://github.com/joblas/cbarrgs-vibe-haven/pull/1 UPDATE_TYPE="$1" DEP_TYPE="$2" bash -c "$DEPBOT" >/dev/null 2>&1
   if grep -q '^gh pr merge' "$GH_LOG"; then echo merged; else echo not-merged; fi
 }
+dep_commented() { # update_type — asserts the needs-human arm actually ran (a
+  # dropped *) arm would pass every not-merged case vacuously)
+  : > "$GH_LOG"
+  PR_URL=https://github.com/joblas/cbarrgs-vibe-haven/pull/1 UPDATE_TYPE="$1" DEP_TYPE=direct:production bash -c "$DEPBOT" >/dev/null 2>&1
+  if grep -q '^gh pr comment' "$GH_LOG"; then echo commented; else echo silent; fi
+}
 check "F7 major devDependency bump is not auto-merged" not-merged "$(dep_run version-update:semver-major direct:development)"
 check "control: minor bump is auto-merged" merged "$(dep_run version-update:semver-minor direct:production)"
+check "control: patch bump is auto-merged" merged "$(dep_run version-update:semver-patch direct:production)"
 check "control: major production bump is not auto-merged" not-merged "$(dep_run version-update:semver-major direct:production)"
 # Review finding (fresh-context pass at 71bf53c): fetch-metadata can output an
 # empty update-type (non-semver or git-sourced versions) — an allow-list must
@@ -252,6 +269,8 @@ check "control: major production bump is not auto-merged" not-merged "$(dep_run 
 # which never triggers the gated-path tripwire, so an unseen merge is ungated.
 check "empty update-type is NOT auto-merged" not-merged "$(dep_run "" direct:production)"
 check "non-semver update-type is NOT auto-merged" not-merged "$(dep_run version-update:direct direct:production)"
+check "empty update-type gets the needs-human comment" commented "$(dep_commented "")"
+check "major bump gets the needs-human comment" commented "$(dep_commented version-update:semver-major)"
 
 echo "workflow-guards: $pass passed, $fail failed"
 [ "$fail" -eq 0 ]
