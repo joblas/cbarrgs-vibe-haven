@@ -1,0 +1,103 @@
+# Ship review — the independent review half of the ship gate.
+#
+# Canonical copy: agent-playbook/ops/ship-gate/ship-review.yml. It pairs with
+# ship-gate.yml, which reads this review's verdict and does everything else
+# (labels, gated-path holds, the CI wait, the merge).
+#
+# Runs Anthropic's claude-code-action as the Claude GitHub App, billed to the
+# owner's Claude subscription, executing the repo-local /ship-review skill. Its
+# comments post as claude[bot], and ship-gate.yml counts no one else's verdict.
+#
+# Why pull_request, not pull_request_target: Anthropic's token exchange rejects
+# OIDC tokens from pull_request_target runs ("401 Unauthorized - Invalid OIDC
+# token", anthropics/claude-code-action#713), so from that event the review never
+# starts. Every ship-gate run in archive-salon-app and the-skate-workshop-v3
+# failed that way until the split.
+#
+# Why a PR still cannot review itself:
+# - The review instructions are not the PR's: the checkout below pins base.sha
+#   (on pull_request the default would be the PR's own code), the action's agent
+#   mode never checks out the PR head, and the action itself restores .claude/,
+#   CLAUDE.md and .mcp.json from the tip of the PR's base branch. That is trusted
+#   only for the default branch, the only branch ship-gate.yml merges into.
+# - On this event the workflow file is the PR's own copy, so a PR could edit it.
+#   Any such PR touches .github/, and ship-gate.yml holds every change to its
+#   own files (and every gated-paths.regex holds .github/) for the owner's
+#   word, whatever verdict it carries. Second layer, unverified until the
+#   README's self-edit test: the token exchange issues the claude[bot] token only
+#   to a workflow matching the default branch (the action skips "on PRs with
+#   workflow changes", src/github/token.ts).
+# - This workflow holds no merge credential. Merging lives in ship-gate.yml,
+#   which runs only from the default branch (workflow_run, pull_request_target).
+# - Secrets: a PR-edited copy of this file can read CLAUDE_CODE_OAUTH_TOKEN. That
+#   adds nothing to what write access already grants (any workflow pushed to any
+#   branch reads every repository secret), so keep write access to trusted
+#   accounts; forks never run this job.
+name: Ship review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  review:
+    # The job name is the check-run name.
+    name: ship-review
+    # A push supersedes the review of the head before it.
+    concurrency:
+      group: ship-review-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    # Only PRs into the default branch: the action takes the review skill from
+    # the base branch's tip, so a verdict on any other base would come from a
+    # skill nobody vetted, and could be reused if the PR is later retargeted.
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.base.ref == github.event.repository.default_branch &&
+      github.event.pull_request.draft == false &&
+      github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+      id-token: write
+    steps:
+      # A missing secret otherwise surfaces as an unrelated-looking auth error
+      # deep in the action; this repo ran without it for its gate's first days.
+      - name: Require the reviewer's login
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          if [ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]; then
+            echo "::error::CLAUDE_CODE_OAUTH_TOKEN secret is not set (create it with 'claude setup-token'); no review can run"
+            exit 1
+          fi
+
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 1
+
+      - name: Independent review (claude[bot], subscription-billed)
+        id: review
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: "/ship-review --comment ${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
+          # The action starts the inline-comment MCP server only when --allowedTools
+          # names it; the gh commands and Agent are listed so subagents never stall
+          # on a permission prompt in non-interactive mode.
+          claude_args: '--allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment:*),Bash(gh pr list:*),Bash(gh issue view:*),Bash(gh issue list:*),Bash(gh search:*),Agent"'
+
+      # The action returns success without reviewing when the token exchange
+      # refuses this workflow (a PR that edits it, or a bootstrap PR): it returns
+      # before setting `conclusion` (src/entrypoints/run.ts). No review must not
+      # look like a passing one, so fail here and the gate names it on the PR.
+      - name: Require that the review ran
+        if: steps.review.outputs.conclusion != 'success'
+        env:
+          CONCLUSION: ${{ steps.review.outputs.conclusion }}
+        run: |
+          echo "::error::the review did not run (conclusion: '${CONCLUSION:-none}'). A PR that edits the review workflow gets no review; the owner merges it by hand."
+          exit 1

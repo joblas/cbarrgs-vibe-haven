@@ -42,13 +42,14 @@ jobs:
           UPDATE_TYPE: ${{ steps.metadata.outputs.update-type }}
           DEP_TYPE: ${{ steps.metadata.outputs.dependency-type }}
         run: |
-          # Auto-merge all patch/minor updates (build already passed above)
-          # Auto-merge major bumps for dev dependencies (won't affect production)
-          # Flag major bumps for production dependencies for manual review
-          if [ "$UPDATE_TYPE" != "version-update:semver-major" ]; then
-            gh pr merge "$PR_URL" --merge --auto
-          elif [ "$DEP_TYPE" = "direct:development" ]; then
-            gh pr merge "$PR_URL" --merge --auto
-          else
-            gh pr comment "$PR_URL" --body "⚠️ Major version bump on a production dependency — needs manual review. Build passed but check for breaking API changes."
-          fi
+          # Auto-merge patch/minor updates only (build already passed above), as
+          # CLAUDE.md states. ALLOW-list: fetch-metadata can output an empty or
+          # non-semver update-type (git-sourced refs, non-semver versions); a
+          # deny-list would merge those unseen, and the merge runs on
+          # GITHUB_TOKEN, which never triggers the gated-path tripwire.
+          case "$UPDATE_TYPE" in
+            version-update:semver-minor|version-update:semver-patch)
+              gh pr merge "$PR_URL" --merge --auto ;;
+            *)
+              gh pr comment "$PR_URL" --body "⚠️ Not a minor/patch semver bump (update-type: '$UPDATE_TYPE', dependency-type: '$DEP_TYPE') — needs manual review. Build passed but a human merges this." ;;
+          esac
