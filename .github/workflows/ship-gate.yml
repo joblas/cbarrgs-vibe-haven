@@ -7,13 +7,12 @@
 #
 # The review itself runs in ship-review.yml (see its header for why it is a
 # separate workflow). This workflow runs when that review finishes, and on PR
-# events that change approval state. A deterministic step reads the claude[bot]
+# events that change approval state. A deterministic step reads the github-actions[bot]
 # verdict FOR THIS HEAD SHA, labels the PR, holds anything touching gated paths for the owner's one-word approval
 # (`joe-approved` label), waits for CI to pass at that head, and merges exactly the
 # reviewed head with SHIP_TOKEN (a PAT on the agent account) — never GITHUB_TOKEN,
 # because merges made with GITHUB_TOKEN do not trigger the push/workflow_run
-# workflows that deploy, and never the action's App token, which the action
-# revokes in its own final step.
+# workflows that deploy.
 #
 # Why workflow_run and pull_request_target: both run this file and the gated-path
 # list from the default branch, so a PR cannot edit its own gate. Secrets are
@@ -143,21 +142,40 @@ jobs:
           # (A push voids joe-approved in the void-approval job below.)
 
           # 1. Verdict for THIS head, from the review's own comments. Only the
-          #    Claude App counts (a Bot named claude[bot]); backticks are stripped so
+          #    review workflow's identity counts (a Bot named
+          #    github-actions[bot], GITHUB_TOKEN); backticks are stripped so
           #    a formatted SHA still matches; findings count by the head they were
           #    posted at (original_commit_id — GitHub moves commit_id forward on
           #    later pushes); pages are slurped so long PRs cannot hide findings.
           #    gh rejects --slurp together with --jq, so the pages are piped into jq;
           #    a non-numeric result (a failed query) is an error, never a merge.
-          bot='(.user.type == "Bot" and .user.login == "claude[bot]")'
-          clean=$(gh api "repos/$REPO/issues/$PR/comments?per_page=100" --paginate --slurp | jq \
-            "[.[][] | select($bot) | select((.body | gsub(\"\`\"; \"\") | contains(\"Reviewed head: $HEAD_SHA\")) and (.body | contains(\"No issues found\")))] | length")
-          findings=$(gh api "repos/$REPO/pulls/$PR/comments?per_page=100" --paginate --slurp | jq \
-            "[.[][] | select($bot and .original_commit_id == \"$HEAD_SHA\")] | length")
-          for n in "$clean" "$findings"; do
-            case "$n" in
-              ''|*[!0-9]*) echo "::error::verdict query returned a non-number (clean='$clean' findings='$findings')"; exit 1 ;;
-            esac
+          #    A verdict comment can lag a finished review run by tens of
+          #    seconds (the workflow_run event fires as the review job ends,
+          #    the comment becomes list-visible a beat later — seen live on
+          #    #127, 2026-10-09: the gate read clean=0 fourteen seconds after
+          #    the review's run had posted clean). The read is retried a
+          #    bounded few times; every attempt is the same strict query for
+          #    THIS exact head, so a retry never merges an unreviewed head —
+          #    it only gives an in-flight review a chance to become visible.
+          bot='(.user.type == "Bot" and .user.login == "github-actions[bot]")'
+          verdict_query() {
+            clean=$(gh api "repos/$REPO/issues/$PR/comments?per_page=100" --paginate --slurp | jq \
+              "[.[][] | select($bot) | select((.body | gsub(\"\`\"; \"\") | contains(\"Reviewed head: $HEAD_SHA\")) and (.body | contains(\"No issues found\")))] | length")
+            findings=$(gh api "repos/$REPO/pulls/$PR/comments?per_page=100" --paginate --slurp | jq \
+              "[.[][] | select($bot and .original_commit_id == \"$HEAD_SHA\")] | length")
+            for n in "$clean" "$findings"; do
+              case "$n" in
+                ''|*[!0-9]*) echo "::error::verdict query returned a non-number (clean='$clean' findings='$findings')"; exit 1 ;;
+              esac
+            done
+          }
+          if ! verdict_query; then exit 1; fi
+          for attempt in 1 2 3; do
+            if [ "$clean" -gt 0 ] && [ "$findings" -eq 0 ]; then break; fi
+            if [ "$attempt" = 3 ]; then break; fi
+            sleep 20
+            echo "::notice::verdict not visible yet (clean=$clean findings=$findings) — retry $attempt/3"
+            if ! verdict_query; then exit 1; fi
           done
           if [ "$clean" -eq 0 ] || [ "$findings" -gt 0 ]; then
             gh pr edit "$PR" --remove-label ship-reviewed 2>/dev/null || true
