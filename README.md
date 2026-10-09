@@ -146,3 +146,5 @@ Cloudflare Pages auto-deploys on push to `main`:
 ## License
 
 All rights reserved.
+
+<!-- ship-gate proof: one-line docs-only edit (comment marker), 2026-10-09 -->
