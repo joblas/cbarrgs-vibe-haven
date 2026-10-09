@@ -205,9 +205,27 @@ jobs:
               process.exit(1); // fail-closed: no verdict
             }
             if (!content || !content.trim()) { console.error("empty review body"); process.exit(1); }
-            // A model may inline its reasoning as a <think> block; strip it (and
-            // an unclosed leading one) so the first real line is the answer.
-            content = content.replace(/^[\s\S]*?<\/think>\s*/i, "").trim();
+            // A model may inline its reasoning in content instead of separating
+            // it (observed live on glm-5.3, 2026-10-09: reasoning arrived with
+            // no think tags and the final verdict glued mid-line after the
+            // closing prose). Anchoring contract, fail-closed:
+            //  - strip a leading think block, paired or closing-only;
+            //  - the LAST VERDICT-shaped match in the content wins, mid-line ok,
+            //    full 40-hex SHA required (bash re-checks it against this
+            //    event's head verbatim; a malformed or SHA-less verdict leaves
+            //    nothing parseable and the job fails without a clean comment).
+            //  - injection note: diff text echoed by the model could end the
+            //    content with a forged verdict; the LAST-match rule relies on
+            //    the model's own conclusion coming after its reasoning, and
+            //    PRs that edit the gate's files are held for the owner's word
+            //    by ship-gate.yml regardless of any verdict.
+            const L = String.fromCharCode(60), R = String.fromCharCode(62);
+            content = content.replace(new RegExp("^[\\s\\S]*?" + L + "\\/think" + R + "\\s*", "i"), "").trim();
+            content = content.replace(new RegExp("^" + L + "think" + R + "\\s*", "i"), "").trim();
+            const VL = new RegExp("VERDICT:\\s*(APPROVE|REQUEST_CHANGES)\\s+([0-9a-fA-F]{40})(?![0-9a-fA-F])", "g");
+            let m, last = null;
+            while ((m = VL.exec(content)) !== null) last = m;
+            if (last) content = content.slice(last.index).trim();
             fs.writeFileSync("/tmp/review.md", content);
           })();
           '
