@@ -149,15 +149,33 @@ jobs:
           #    later pushes); pages are slurped so long PRs cannot hide findings.
           #    gh rejects --slurp together with --jq, so the pages are piped into jq;
           #    a non-numeric result (a failed query) is an error, never a merge.
+          #    A verdict comment can lag a finished review run by tens of
+          #    seconds (the workflow_run event fires as the review job ends,
+          #    the comment becomes list-visible a beat later — seen live on
+          #    #127, 2026-10-09: the gate read clean=0 fourteen seconds after
+          #    the review's run had posted clean). The read is retried a
+          #    bounded few times; every attempt is the same strict query for
+          #    THIS exact head, so a retry never merges an unreviewed head —
+          #    it only gives an in-flight review a chance to become visible.
           bot='(.user.type == "Bot" and .user.login == "github-actions[bot]")'
-          clean=$(gh api "repos/$REPO/issues/$PR/comments?per_page=100" --paginate --slurp | jq \
-            "[.[][] | select($bot) | select((.body | gsub(\"\`\"; \"\") | contains(\"Reviewed head: $HEAD_SHA\")) and (.body | contains(\"No issues found\")))] | length")
-          findings=$(gh api "repos/$REPO/pulls/$PR/comments?per_page=100" --paginate --slurp | jq \
-            "[.[][] | select($bot and .original_commit_id == \"$HEAD_SHA\")] | length")
-          for n in "$clean" "$findings"; do
-            case "$n" in
-              ''|*[!0-9]*) echo "::error::verdict query returned a non-number (clean='$clean' findings='$findings')"; exit 1 ;;
-            esac
+          verdict_query() {
+            clean=$(gh api "repos/$REPO/issues/$PR/comments?per_page=100" --paginate --slurp | jq \
+              "[.[][] | select($bot) | select((.body | gsub(\"\`\"; \"\") | contains(\"Reviewed head: $HEAD_SHA\")) and (.body | contains(\"No issues found\")))] | length")
+            findings=$(gh api "repos/$REPO/pulls/$PR/comments?per_page=100" --paginate --slurp | jq \
+              "[.[][] | select($bot and .original_commit_id == \"$HEAD_SHA\")] | length")
+            for n in "$clean" "$findings"; do
+              case "$n" in
+                ''|*[!0-9]*) echo "::error::verdict query returned a non-number (clean='$clean' findings='$findings')"; exit 1 ;;
+              esac
+            done
+          }
+          if ! verdict_query; then exit 1; fi
+          for attempt in 1 2 3; do
+            if [ "$clean" -gt 0 ] && [ "$findings" -eq 0 ]; then break; fi
+            if [ "$attempt" = 3 ]; then break; fi
+            sleep 20
+            echo "::notice::verdict not visible yet (clean=$clean findings=$findings) — retry $attempt/3"
+            if ! verdict_query; then exit 1; fi
           done
           if [ "$clean" -eq 0 ] || [ "$findings" -gt 0 ]; then
             gh pr edit "$PR" --remove-label ship-reviewed 2>/dev/null || true
