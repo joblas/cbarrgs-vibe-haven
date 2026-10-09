@@ -228,8 +228,12 @@ jobs:
             exit 1
           fi
           body=$(< /tmp/review.md)
-          first=$(printf '%s' "$body" | head -n 1 | tr -d '\r')
-          rest=$(printf '%s' "$body" | tail -n +2 | sed '/^[[:space:]]*$/d')
+          # Pure-bash line split, never printf|head: with a large body, head -n 1
+          # closes the pipe early and printf's EPIPE fails the step under
+          # pipefail (seen live on the first run of this workflow, 2026-10-09).
+          body=${body//$'\r'/}
+          first=${body%%$'\n'*}
+          rest=${body#*$'\n'}
           # Parse the verdict: the full head SHA required, verbatim.
           if [[ "$first" =~ ^VERDICT:[[:space:]]*(APPROVE|REQUEST_CHANGES)[[:space:]]+([0-9a-fA-F]{40})[[:space:]]*$ ]]; then
             verdict="${BASH_REMATCH[1]}"; vsha="${BASH_REMATCH[2]}"
