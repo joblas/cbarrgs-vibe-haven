@@ -211,14 +211,17 @@ jobs:
             // closing prose). Anchoring contract, fail-closed:
             //  - strip a leading think block, paired or closing-only;
             //  - the LAST VERDICT-shaped match in the content wins, mid-line ok,
-            //    full 40-hex SHA required (bash re-checks it against this
-            //    event's head verbatim; a malformed or SHA-less verdict leaves
-            //    nothing parseable and the job fails without a clean comment).
+            //    full 40-hex SHA required (the bash step re-checks it against
+            //    the event head verbatim; a malformed or SHA-less verdict
+            //    leaves nothing parseable and the job fails with no comment).
             //  - injection note: diff text echoed by the model could end the
             //    content with a forged verdict; the LAST-match rule relies on
-            //    the model's own conclusion coming after its reasoning, and
-            //    PRs that edit the gate's files are held for the owner's word
-            //    by ship-gate.yml regardless of any verdict.
+            //    the model conclusion coming after its reasoning, and a PR
+            //    touching the gate files is held for the owner word by
+            //    ship-gate.yml regardless of any verdict.
+            // NB: this script is wrapped in bash single quotes — no apostrophes
+            // below this line (they close the quote and truncate the script;
+            // that is exactly how run 37897942551 died: SyntaxError, eof).
             const L = String.fromCharCode(60), R = String.fromCharCode(62);
             content = content.replace(new RegExp("^[\\s\\S]*?" + L + "\\/think" + R + "\\s*", "i"), "").trim();
             content = content.replace(new RegExp("^" + L + "think" + R + "\\s*", "i"), "").trim();
