@@ -165,7 +165,7 @@ const Hero: React.FC = () => {
               animate={{ opacity: 1, filter: 'blur(0px)' }}
               transition={{ duration: 0.8, delay: 0.5 }}
             >
-              {news?.headline || '"Solitude" Single · Out Now'}
+              {news?.headline || '"No Vengas A llorar" Single · Out Now'}
             </motion.p>
             <motion.p
               className="text-white/40 text-xs sm:text-sm font-extralight tracking-wide"
