@@ -105,7 +105,7 @@ const Promo: React.FC = () => {
                 transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
               />
               <h1 className="font-serif text-2xl sm:text-3xl font-light tracking-wider mb-2">
-                Solitude
+                No Vengas A llorar
               </h1>
               <p className="text-white/50 text-sm font-extralight tracking-wide">
                 New single &middot; Out Now
@@ -120,7 +120,7 @@ const Promo: React.FC = () => {
                 Listen Now
               </h2>
               <p className="text-white/25 text-xs font-extralight tracking-wide text-center mb-3">
-                "Solitude" single is out now — plus the "Pieces For You" EP
+                "No Vengas A llorar" single is out now — plus the "Pieces For You" EP
               </p>
               <div className="space-y-2">
                 {streamingPlatforms.map((platform) => (
