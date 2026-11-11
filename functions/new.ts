@@ -2,17 +2,23 @@
  * Cloudflare Pages Function to inject OG meta tags for /new page.
  * Social crawlers (iMessage, Instagram, Twitter, Facebook) don't execute JS,
  * so we intercept their requests and return HTML with proper meta tags.
- * Regular browsers get the normal SPA.
+ * Regular browsers get the normal SPA. Agents that ask for text/markdown get
+ * the llms.txt summary (links + current release) as markdown.
  */
+
+import { markdownFor, varyOnAccept, type MarkdownEnv } from './_markdown';
 
 const CRAWLER_UAS = /bot|crawl|spider|facebookexternalhit|whatsapp|telegram|slack|discord|linkedin|twitter|applebot|iframely|embedly|preview/i;
 
-export const onRequest: PagesFunction = async (context) => {
+export const onRequest: PagesFunction<MarkdownEnv> = async (context) => {
+  const markdown = await markdownFor(context, '/llms.txt');
+  if (markdown) return markdown;
+
   const ua = context.request.headers.get('user-agent') || '';
 
   // Only intercept crawlers — let real users through to the SPA
   if (!CRAWLER_UAS.test(ua)) {
-    return context.next();
+    return varyOnAccept(await context.next());
   }
 
   const html = `<!DOCTYPE html>
@@ -46,6 +52,6 @@ export const onRequest: PagesFunction = async (context) => {
 </html>`;
 
   return new Response(html, {
-    headers: { 'Content-Type': 'text/html; charset=utf-8' },
+    headers: { 'Content-Type': 'text/html; charset=utf-8', 'Vary': 'Accept' },
   });
 };
