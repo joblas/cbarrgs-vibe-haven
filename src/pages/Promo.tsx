@@ -153,16 +153,16 @@ const Promo: React.FC = () => {
           <BlurFade delay={0.35}>
             <div className="mb-7 sm:mb-8">
               <h2 className="text-xs font-extralight tracking-[0.2em] text-white/35 uppercase mb-1 text-center">
-                New Merch Just Arrived
+                Merch
               </h2>
               <p className="text-white/25 text-xs font-extralight tracking-wide text-center mb-3">
-                In the shop soon
+                In the shop now
               </p>
                <div className="grid grid-cols-3 gap-2 sm:gap-2.5 mb-3">
                  {[
-                   { src: '/images/merch/tshirt.jpeg', alt: 'Cbarrgs tee', soldOut: true },
-                   { src: '/images/merch/Pin.jpeg', alt: 'Cbarrgs pin', soldOut: false },
-                   { src: '/images/merch/stickers.jpeg', alt: 'Cbarrgs stickers', soldOut: false },
+                   { src: '/images/merch/tshirt.webp', alt: 'Cbarrgs tee', soldOut: true },
+                   { src: '/images/merch/Pin.webp', alt: 'Cbarrgs pin', soldOut: false },
+                   { src: '/images/merch/stickers.webp', alt: 'Cbarrgs stickers', soldOut: false },
                  ].map((item) => (
                    <a
                      key={item.alt}
@@ -175,16 +175,12 @@ const Promo: React.FC = () => {
                        src={item.src}
                        alt={item.alt}
                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                       loading="eager"
+                       loading="lazy"
+                       decoding="async"
                      />
                      {item.soldOut && (
-                       <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm text-white/80 text-xs font-extralight tracking-wider">
+                       <div className="absolute inset-0 flex items-center justify-center bg-black/60 text-white/80 text-xs font-extralight tracking-wider">
                          Sold Out
-                       </div>
-                     )}
-                     {!item.soldOut && item.alt === 'Cbarrgs tee' && (
-                       <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm text-white/80 text-xs font-extralight tracking-wider">
-                         New Design Coming Soon
                        </div>
                      )}
                    </a>

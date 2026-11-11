@@ -60,9 +60,6 @@ const Navigation: React.FC = () => {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         announceToScreenReader(`Navigated to ${targetId.replace('-', ' ')} section`);
       }
-    } else if (!isHomePage && !href.startsWith('/')) {
-      const targetId = href.replace('/#', '');
-      localStorage.setItem('scrollTarget', targetId);
     }
   };
 

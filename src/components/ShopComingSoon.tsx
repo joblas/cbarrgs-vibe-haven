@@ -15,23 +15,23 @@ interface Product {
 
 const products: Product[] = [
   {
-    title: "New Tees",
+    title: "Tees",
     description: "From the EP \"Pieces For You\"",
-    image: "/images/merch/tshirt.jpeg",
+    image: "/images/merch/tshirt.webp",
     alt: "Cbarrgs Pieces For You t-shirt",
     soldOut: true
   },
   {
     title: "Pins",
     description: "From the EP \"Pieces For You\"",
-    image: "/images/merch/Pin.jpeg",
+    image: "/images/merch/Pin.webp",
     alt: "Cbarrgs Pieces For You enamel pin",
     soldOut: false
   },
   {
     title: "Stickers",
     description: "Vinyl art stickers",
-    image: "/images/merch/stickers.jpeg",
+    image: "/images/merch/stickers.webp",
     alt: "Cbarrgs vinyl sticker designs",
     soldOut: false
   },
@@ -45,21 +45,17 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => (
     className="group flex-shrink-0 w-[240px] sm:w-[280px] md:w-[300px] cursor-pointer block relative"
   >
     <div className="relative p-3.5 sm:p-5 bg-white/[0.03] border border-white/10 rounded-lg transition-all duration-300 group-hover:border-white/20 group-hover:bg-white/[0.06]">
-      <div className="aspect-square mb-3 overflow-hidden rounded-md bg-white/5">
+      <div className="relative aspect-square mb-3 overflow-hidden rounded-md bg-white/5">
         <img
           src={product.image}
           alt={product.alt}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          loading="eager"
+          loading="lazy"
+          decoding="async"
         />
         {product.soldOut && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm text-white/80 text-xs font-extralight tracking-wider">
+          <div className="absolute inset-0 flex items-center justify-center bg-black/60 text-white/80 text-xs font-extralight tracking-wider">
             Sold Out
-          </div>
-        )}
-        {!product.soldOut && product.alt === 'Cbarrgs Pieces For You t-shirt' && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm text-white/80 text-xs font-extralight tracking-wider">
-            New Design Coming Soon
           </div>
         )}
       </div>
@@ -96,7 +92,7 @@ const ShopComingSoon: React.FC = () => {
 
           <BlurFade delay={0.2}>
             <p className="text-white/50 mb-8 sm:mb-12 font-extralight max-w-md mx-auto text-sm sm:text-base px-5 tracking-wide">
-              Just arrived — from the upcoming EP "Pieces For You." In the shop soon.
+              From the "Pieces For You" EP. In the shop now.
             </p>
           </BlurFade>
 

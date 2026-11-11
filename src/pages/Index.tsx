@@ -1,5 +1,6 @@
 
 import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Footer from '@/components/Footer';
 import SkipToContent from '@/components/SkipToContent';
 import Hero from '@/components/Hero';
@@ -12,35 +13,27 @@ import { useReducedMotion } from '@/hooks/useAccessibility';
 const Index: React.FC = () => {
   const prefersReducedMotion = useReducedMotion();
 
+  const { hash } = useLocation();
+
   useEffect(() => {
     document.documentElement.style.scrollBehavior = prefersReducedMotion ? 'auto' : 'smooth';
-
-    const scrollTarget = localStorage.getItem('scrollTarget');
-    if (scrollTarget) {
-      localStorage.removeItem('scrollTarget');
-
-      setTimeout(() => {
-        const element = document.getElementById(scrollTarget);
-        if (element) {
-          element.scrollIntoView({
-            behavior: prefersReducedMotion ? 'auto' : 'smooth',
-            block: 'start'
-          });
-          const sectionName = scrollTarget.replace('-', ' ');
-          const announcement = document.createElement('div');
-          announcement.setAttribute('aria-live', 'polite');
-          announcement.setAttribute('class', 'sr-only');
-          announcement.textContent = `Navigated to ${sectionName} section`;
-          document.body.appendChild(announcement);
-          setTimeout(() => document.body.removeChild(announcement), 1000);
-        }
-      }, 100);
-    }
-
     return () => {
       document.documentElement.style.scrollBehavior = '';
     };
   }, [prefersReducedMotion]);
+
+  // Links from other pages arrive as /#section. The browser's own jump runs
+  // before React renders the sections, so scroll once they exist.
+  useEffect(() => {
+    if (!hash) return;
+    const timer = window.setTimeout(() => {
+      document.getElementById(decodeURIComponent(hash.slice(1)))?.scrollIntoView({
+        behavior: prefersReducedMotion ? 'auto' : 'smooth',
+        block: 'start',
+      });
+    }, 100);
+    return () => window.clearTimeout(timer);
+  }, [hash, prefersReducedMotion]);
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">

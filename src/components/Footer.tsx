@@ -27,9 +27,6 @@ const Footer: React.FC = () => {
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-    } else if (!isHomePage && !href.startsWith('/')) {
-      const targetId = href.replace('/#', '');
-      localStorage.setItem('scrollTarget', targetId);
     }
   };
 

@@ -26,10 +26,17 @@ const Hero: React.FC = () => {
         setDropOpen(false);
       }
     };
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setDropOpen(false);
+    };
     if (dropOpen) {
       document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleEscape);
     }
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
+    };
   }, [dropOpen]);
 
   const handleScrollToSection = (e: React.MouseEvent, sectionId: string) => {

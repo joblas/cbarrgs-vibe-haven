@@ -37,7 +37,7 @@ const TermsOfService: React.FC = () => {
                 
                 <div className="space-y-6 text-white/80 leading-relaxed">
                   <p>
-                    Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                    Last updated: March 26, 2025
                   </p>
                   
                   <h3 className="text-xl font-bold mt-6 mb-3 text-white">
