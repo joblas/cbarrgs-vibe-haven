@@ -1,9 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { LazyMotion, domAnimation } from "framer-motion";
+import { LazyMotion, MotionConfig, domAnimation } from "framer-motion";
 
 // Eager load the main page for fast initial render
 import Index from "./pages/Index";
@@ -26,9 +24,9 @@ const PageLoader = () => (
 const App = () => {
   return (
     <LazyMotion features={domAnimation}>
-      <TooltipProvider>
+      {/* Honour the OS "reduce motion" setting for every Framer Motion animation. */}
+      <MotionConfig reducedMotion="user">
         <Toaster />
-        <Sonner />
         <BrowserRouter>
           <Suspense fallback={<PageLoader />}>
             <Routes>
@@ -40,7 +38,7 @@ const App = () => {
             </Routes>
           </Suspense>
         </BrowserRouter>
-      </TooltipProvider>
+      </MotionConfig>
     </LazyMotion>
   );
 };
