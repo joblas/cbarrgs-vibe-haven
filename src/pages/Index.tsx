@@ -7,6 +7,7 @@ import Hero from '@/components/Hero';
 import About from '@/components/About';
 import ShopComingSoon from '@/components/ShopComingSoon';
 import Listen from '@/components/Listen';
+import Featured from '@/components/Featured';
 import ScrollProgress from '@/components/ui/scroll-progress';
 import { useReducedMotion } from '@/hooks/useAccessibility';
 
@@ -45,6 +46,7 @@ const Index: React.FC = () => {
       <main id="main-content" className="relative" role="main">
         <Hero />
         <Listen />
+        <Featured />
         <ShopComingSoon />
         <About />
       </main>
