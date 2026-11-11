@@ -1,33 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { fadeIn, slideUp } from '@/utils/transitions';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Switch } from '@/components/ui/switch';
 import SkipToContent from '@/components/SkipToContent';
-import { useToast } from '@/components/ui/use-toast';
 
 const PrivacyPolicy: React.FC = () => {
-  const [isOptedOut, setIsOptedOut] = useState(false);
-  const [shareAccountData, setShareAccountData] = useState(false);
-  const [email, setEmail] = useState('');
-  const toast = useToast();
-
   useEffect(() => {
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
   }, []);
-
-  const handleOptOut = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsOptedOut(true);
-    // In a real app, this would send the opt-out preference to a server
-    toast.toast({
-      title: "Opt-out request received",
-      description: "We've received your request to opt out of data collection.",
-    });
-  };
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -56,76 +38,19 @@ const PrivacyPolicy: React.FC = () => {
                   <h3 className="text-xl font-bold mb-4 text-white">
                     Do not sell or share my personal information
                   </h3>
-                  
+
                   <p className="mb-4 text-white/80 leading-relaxed">
-                    As described in our Privacy Policy, we collect personal information from your interactions with us and our website, including through cookies and similar technologies. We may also share this personal information with third parties, including advertising partners. We do this in order to show you ads on other websites that are more relevant to your interests and for other reasons outlined in our privacy policy.
+                    We don't sell your personal information, and we don't share it for targeted advertising. This website runs no advertising trackers. Visit counts come from Cloudflare Web Analytics, which doesn't use cookies.
                   </p>
-                  
+
                   <p className="mb-4 text-white/80 leading-relaxed">
-                    Sharing of personal information for targeted advertising based on your interaction on different websites may be considered "sales", "sharing", or "targeted advertising" under certain U.S. state privacy laws. Depending on where you live, you may have the right to opt out of these activities. If you would like to exercise this opt-out right, please follow the instructions below.
+                    The music player on this site is provided by Spotify and follows Spotify's privacy policy. The merch store at shopify.cbarrgs.com runs on Shopify and has its own privacy policy.
                   </p>
-                  
+
                   <p className="mb-6 text-white/80 leading-relaxed">
-                    If you visit our website with the Global Privacy Control opt-out preference signal enabled, depending on where you are, we will treat this as a request to opt-out of activity that may be considered a "sale" or "sharing" of personal information or other uses that may be considered targeted advertising for the device and browser you used to visit our website.
+                    To ask what personal information we hold about you, or to have it deleted, email{' '}
+                    <a href="mailto:privacy@cbarrgs.com" className="underline underline-offset-4 hover:text-white">privacy@cbarrgs.com</a>.
                   </p>
-                  
-                  <p className="mb-6 text-white/80 leading-relaxed">
-                    By clicking "opt out", the browser on this device will be opted out of sharing personal data. If you select the checkbox and enter an email, the related customer account will also be opted out.
-                  </p>
-                  
-                  <div className="mb-6 flex items-center space-x-2">
-                    <Checkbox 
-                      id="share-data-checkbox" 
-                      checked={shareAccountData} 
-                      onCheckedChange={(checked) => setShareAccountData(checked as boolean)}
-                      aria-label="Don't share data from my account"
-                    />
-                    <label 
-                      htmlFor="share-data-checkbox" 
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Don't share data from my account (optional)
-                    </label>
-                  </div>
-                  
-                  {shareAccountData && (
-                    <div className="mb-6">
-                      <label htmlFor="email-input" className="block mb-2 text-sm font-medium">
-                        Email address
-                      </label>
-                      <input
-                        id="email-input"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-sm focus:outline-none focus:ring-1 focus:ring-white/50 text-white placeholder:text-white/50"
-                        placeholder="Enter your email"
-                        aria-describedby="optout-email-description"
-                      />
-                      <p id="optout-email-description" className="mt-1 text-sm text-white/60">
-                        We'll use this to opt out all data associated with your account.
-                      </p>
-                    </div>
-                  )}
-                  
-                  <button
-                    onClick={handleOptOut}
-                    className="btn-primary"
-                    aria-live="polite"
-                    disabled={isOptedOut}
-                  >
-                    {isOptedOut ? "Opted out" : "Opt out"}
-                  </button>
-                  
-                  {isOptedOut && (
-                    <div className="mt-4 flex items-center text-white/80 space-x-2" role="status">
-                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-                        <path d="M8 12L11 15L16 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                      <span>The browser on this device is opted out</span>
-                    </div>
-                  )}
                 </div>
               </section>
               
