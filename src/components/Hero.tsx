@@ -157,7 +157,7 @@ const Hero: React.FC = () => {
                   <span className="animate-pulse absolute inline-flex h-full w-full rounded-full bg-white/60 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-white/90" />
                 </span>
-                <span className="text-white/90 font-light tracking-wider text-xs sm:text-sm">{news?.ctaText || "New Single Out Now · Merch In The Shop"}</span>
+                <span className="text-white/90 font-light tracking-wider text-xs sm:text-sm">{news?.ctaText || `Listen to ${LATEST_RELEASE.title} · Shop Merch`}</span>
               </motion.div>
             </Link>
           </motion.div>
@@ -181,7 +181,7 @@ const Hero: React.FC = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.7 }}
             >
-              {news?.subheadline || "Tees, pins & stickers · In the shop now"}
+              {news?.subheadline || `Stream the new ${LATEST_RELEASE.type.toLowerCase()} · Shop official merch`}
             </motion.p>
           </motion.div>
 
