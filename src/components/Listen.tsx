@@ -4,6 +4,8 @@ import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { prefersReducedMotion } from '@/utils/animations';
 import BlurFade from '@/components/ui/blur-fade';
 import TextReveal from '@/components/ui/text-reveal';
+import { SPOTIFY_URL } from '@/utils/constants';
+import { LATEST_RELEASE, LATEST_RELEASE_SPOTIFY_EMBED } from '@/data/latestRelease';
 
 const Listen: React.FC = () => {
   const reducedMotion = prefersReducedMotion();
@@ -56,18 +58,18 @@ const Listen: React.FC = () => {
                 >
                   <iframe
                     style={{ borderRadius: '8px' }}
-                    src="https://open.spotify.com/embed/artist/4qRI7BqjuKH3ulYQrEYnLa?utm_source=generator&theme=0"
+                    src={LATEST_RELEASE_SPOTIFY_EMBED}
                     width="100%"
                     height="352"
                     frameBorder="0"
                     allowFullScreen
                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                     loading="lazy"
-                    title="Cbarrgs Spotify Profile - Listen to tracks and albums"
-                    aria-label="Embedded Spotify player showing Cbarrgs music catalog"
+                    title={`${LATEST_RELEASE.title} by Cbarrgs on Spotify`}
+                    aria-label={`Spotify player: ${LATEST_RELEASE.title}, the new ${LATEST_RELEASE.type.toLowerCase()} by Cbarrgs`}
                   >
                     <p>
-                      <a href="https://open.spotify.com/artist/4qRI7BqjuKH3ulYQrEYnLa" target="_blank" rel="noopener noreferrer">
+                      <a href={SPOTIFY_URL} target="_blank" rel="noopener noreferrer">
                         Listen to Cbarrgs on Spotify
                       </a>
                     </p>
@@ -88,6 +90,17 @@ const Listen: React.FC = () => {
                 </div>
               )}
             </div>
+          </BlurFade>
+
+          <BlurFade delay={0.3}>
+            <a
+              href={SPOTIFY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 sm:mt-8 inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/20 text-white/80 text-sm font-extralight tracking-wider transition-colors duration-300 hover:border-white/40 hover:text-white"
+            >
+              Follow Cbarrgs on Spotify
+            </a>
           </BlurFade>
         </div>
       </div>

@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { SHOPIFY_STORE, SPOTIFY_URL } from '@/utils/constants';
+import { SHOPIFY_STORE } from '@/utils/constants';
+import { LATEST_RELEASE, LATEST_RELEASE_SPOTIFY_URL } from '@/data/latestRelease';
 import {
   floatingVariants,
   staggerContainerVariants,
@@ -172,7 +173,7 @@ const Hero: React.FC = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.5 }}
             >
-              {news?.headline || '"No Vengas A llorar" Single · Out Now'}
+              {news?.headline || `"${LATEST_RELEASE.title}" ${LATEST_RELEASE.type} · Out Now`}
             </motion.p>
             <motion.p
               className="text-white/60 text-xs sm:text-sm font-extralight tracking-wide"
@@ -192,7 +193,7 @@ const Hero: React.FC = () => {
           >
             <Magnetic strength={0.15} radius={80}>
               <a
-                href={SPOTIFY_URL}
+                href={LATEST_RELEASE_SPOTIFY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white/50 hover:text-white text-sm sm:text-base font-extralight tracking-[0.15em] transition-colors duration-300 underline-offset-4 hover:underline py-2"

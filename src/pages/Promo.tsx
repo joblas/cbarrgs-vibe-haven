@@ -6,12 +6,12 @@ import { faSpotify, faApple, faYoutube, faSoundcloud, faInstagram } from '@forta
 import { ArrowLeft, ShoppingBag, Mail } from 'lucide-react';
 import {
   SPOTIFY_URL,
-  APPLE_MUSIC_URL,
   YOUTUBE_CHANNEL,
   SOUNDCLOUD_URL,
   INSTAGRAM_URL,
   SHOPIFY_STORE,
 } from '@/utils/constants';
+import { LATEST_RELEASE, LATEST_RELEASE_SPOTIFY_URL } from '@/data/latestRelease';
 import { prefersReducedMotion } from '@/utils/animations';
 import SubscribeForm from '@/components/SubscribeForm';
 import BlurFade from '@/components/ui/blur-fade';
@@ -20,14 +20,14 @@ import Magnetic from '@/components/ui/magnetic';
 const streamingPlatforms = [
   {
     name: 'Spotify',
-    url: SPOTIFY_URL,
+    url: LATEST_RELEASE_SPOTIFY_URL,
     icon: faSpotify,
     color: 'hover:bg-white/[0.08] hover:border-white/30',
     iconColor: 'group-hover:text-white',
   },
   {
     name: 'Apple Music',
-    url: APPLE_MUSIC_URL,
+    url: LATEST_RELEASE.appleMusicUrl,
     icon: faApple,
     color: 'hover:bg-white/[0.08] hover:border-white/30',
     iconColor: 'group-hover:text-white',
@@ -105,10 +105,10 @@ const Promo: React.FC = () => {
                 transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
               />
               <h1 className="font-serif text-2xl sm:text-3xl font-light tracking-wider mb-2">
-                No Vengas A llorar
+                {LATEST_RELEASE.title}
               </h1>
               <p className="text-white/50 text-sm font-extralight tracking-wide">
-                New single &middot; Out Now
+                New {LATEST_RELEASE.type.toLowerCase()} &middot; Out Now
               </p>
             </div>
           </BlurFade>
@@ -120,7 +120,7 @@ const Promo: React.FC = () => {
                 Listen Now
               </h2>
               <p className="text-white/50 text-xs font-extralight tracking-wide text-center mb-3">
-                "No Vengas A llorar" single is out now — plus the "Pieces For You" EP
+                "{LATEST_RELEASE.title}" {LATEST_RELEASE.type.toLowerCase()} is out now — plus the "Pieces For You" EP
               </p>
               <div className="space-y-2">
                 {streamingPlatforms.map((platform) => (
