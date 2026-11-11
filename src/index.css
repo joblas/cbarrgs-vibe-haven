@@ -115,7 +115,7 @@
   }
 
   .btn-secondary {
-    @apply px-6 py-3 rounded-sm border-2 border-white/80 backdrop-blur-sm bg-white/10 hover:bg-white/20 focus:bg-white/20 text-white font-medium transform transition-all focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 active:scale-95;
+    @apply px-6 py-3 rounded-sm border-2 border-white/80 bg-white/10 hover:bg-white/20 focus:bg-white/20 text-white font-medium transform transition-all focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 active:scale-95;
     min-height: 44px; /* Minimum touch target size */
     min-width: 44px;
   }
@@ -128,7 +128,7 @@
   }
 
   .glass-panel {
-    @apply backdrop-blur-md bg-white/10 border border-white/20;
+    @apply bg-black/80 border border-white/20;
   }
 
   /* Bedroom Pop / Lo-Fi Aesthetic - Very subtle grain */
@@ -192,7 +192,8 @@
   padding: 0.5rem 0;
 }
 
-.shop-carousel:hover .shop-carousel-track {
+.shop-carousel:hover .shop-carousel-track,
+.shop-carousel:focus-within .shop-carousel-track {
   animation-play-state: paused;
 }
 
@@ -206,14 +207,22 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .shop-carousel-track {
-    animation: none;
+  /* No auto-scroll: the container scrolls by hand and the loop copies go away. */
+  .shop-carousel {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
   }
 
+  .shop-carousel-track {
+    animation: none;
+  }
+
   .shop-carousel-track > * {
     scroll-snap-align: start;
+  }
+
+  .shop-carousel-copy {
+    display: none;
   }
 }
 

@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 export const useAccessibility = () => {
-  const announceToScreenReader = (message: string) => {
+  const announceToScreenReader = useCallback((message: string) => {
     const announcement = document.createElement('div');
     announcement.setAttribute('aria-live', 'polite');
     announcement.setAttribute('aria-atomic', 'true');
@@ -14,9 +14,9 @@ export const useAccessibility = () => {
     setTimeout(() => {
       document.body.removeChild(announcement);
     }, 1000);
-  };
+  }, []);
 
-  const trapFocus = (container: HTMLElement) => {
+  const trapFocus = useCallback((container: HTMLElement) => {
     const focusableElements = container.querySelectorAll(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
@@ -45,7 +45,7 @@ export const useAccessibility = () => {
     return () => {
       container.removeEventListener('keydown', handleTabKey);
     };
-  };
+  }, []);
 
   return { announceToScreenReader, trapFocus };
 };

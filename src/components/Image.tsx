@@ -66,8 +66,6 @@ const Image: React.FC<ImageProps> = ({
           className="absolute inset-0 bg-cover bg-center"
           style={{ 
             backgroundImage: `url(${placeholder})`,
-            filter: 'blur(8px)',
-            transform: 'scale(1.05)', // Slightly reduced scale for performance
           }}
           aria-hidden="true"
         />
@@ -86,7 +84,7 @@ const Image: React.FC<ImageProps> = ({
         height={height}
         decoding="async" // Use async decoding for performance
         fetchPriority={priority ? "high" : "auto"} // Prioritize fetch for important images
-        onLoad={() => setIsLoaded(true)}
+        onLoad={() => { if (shouldLoad) setIsLoaded(true); }}
         onError={() => {
           setHasError(true);
           setIsLoaded(true); // Consider loaded so we remove the blur
