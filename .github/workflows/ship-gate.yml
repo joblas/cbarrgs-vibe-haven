@@ -4,12 +4,16 @@
 # .github/workflows/ship-gate.yml together with .github/workflows/ship-review.yml,
 # .claude/skills/ship-review/SKILL.md and .github/gated-paths.regex (see
 # ops/ship-gate/README.md).
+# This repo's copy differs from the canonical one in one way: gated paths merge
+# on the clean review (D-115, adopted 2026-11-11), and only owner-only paths and
+# needs-joe PRs wait for the owner. See CLAUDE.md, Shipping.
 #
 # The review itself runs in ship-review.yml (see its header for why it is a
 # separate workflow). This workflow runs when that review finishes, and on PR
 # events that change approval state. A deterministic step reads the github-actions[bot]
-# verdict FOR THIS HEAD SHA, labels the PR, holds anything touching gated paths for the owner's one-word approval
-# (`joe-approved` label), waits for CI to pass at that head, and merges exactly the
+# verdict FOR THIS HEAD SHA, labels the PR, holds owner-only paths and needs-joe PRs
+# for the owner's one-word approval (`joe-approved` label), waits for CI to pass
+# at that head, and merges exactly the
 # reviewed head with SHIP_TOKEN (a PAT on the agent account) — never GITHUB_TOKEN,
 # because merges made with GITHUB_TOKEN do not trigger the push/workflow_run
 # workflows that deploy.
@@ -27,8 +31,9 @@
 # Fail-closed by construction: no clean verdict for this exact head = no merge;
 # a finding at this head = no merge; a cut-off review (timeout) = no verdict;
 # the owner's approval is voided by any later push (the label is stripped, and
-# a label older than the head's latest pull_request run is ignored); the gate's
-# own files always wait for the owner; a renamed file counts at its old path
+# a label older than the head's latest pull_request run is ignored); owner-only
+# paths, the gate's own files among them, always wait for the owner; a renamed
+# file counts at its old path
 # too; a gated-path regex that fails to parse holds; the gate merges only into
 # the default branch.
 #
@@ -184,7 +189,10 @@ jobs:
           fi
           gh pr edit "$PR" --add-label ship-reviewed
 
-          # 2. Gated paths (the regex comes from the BASE checkout) and holds.
+          # 2. Gated paths (the regex comes from the BASE checkout), owner-only
+          #    paths, and holds. Under D-115 a gated path no longer holds: it is
+          #    labeled gated-path and merges on the clean review like any PR.
+          #    Owner-only paths hold whatever the verdict says.
           #    The diff is captured first: piping gh into grep -q can SIGPIPE gh
           #    and fail open under pipefail. Blank regex lines are dropped because
           #    an empty pattern matches every path. Missing regex = hold.
@@ -197,6 +205,7 @@ jobs:
           nfiles=$(gh api "repos/$REPO/pulls/$PR" --jq .changed_files)
           case "$nfiles" in ''|*[!0-9]*) echo "::error::changed-file count is not a number ('$nfiles')"; exit 1 ;; esac
           hold=0
+          gated=0
           if [ "$nfiles" -ge 3000 ]; then
             echo "::warning::$nfiles changed files is past what the files API lists; holding for owner approval"
             hold=1
@@ -206,19 +215,25 @@ jobs:
             echo "::warning::.github/gated-paths.regex missing or empty on the base branch; holding for owner approval"
             hold=1
           else
-            # grep exits 1 for no match and 2 for a pattern it cannot parse; only
-            # a clean "no match" lets a PR through unheld.
+            # grep exits 1 for no match and 2 for a pattern it cannot parse; a
+            # pattern that fails to parse still holds (fail closed).
             rc=0
             grep -Eq -f <(printf '%s\n' "$patterns") <<< "$changed" || rc=$?
             case "$rc" in
-              0) hold=1; gh pr edit "$PR" --add-label needs-joe 2>/dev/null || true ;;
+              0) gated=1; gh pr edit "$PR" --add-label gated-path 2>/dev/null || true ;;
               1) ;;
               *) echo "::warning::.github/gated-paths.regex failed to parse (grep exit $rc); holding for owner approval"; hold=1 ;;
             esac
           fi
-          # The gate's own files always wait for the owner, whatever a repo's regex
-          # says: a PR that edits its reviewer could otherwise vouch for itself.
-          if grep -Eq '^(\.github/workflows/ship-(gate|review)\.yml|\.github/gated-paths\.regex|\.claude/skills/ship-review/)' <<< "$changed"; then
+          # Owner-only paths always wait for the owner, whatever the verdict: a PR
+          # that edits them could otherwise vouch for itself. Every workflow file
+          # (any workflow can hold a token that merges), the gated-path list,
+          # agent config and the reviewer's skill (.claude/), the rules the
+          # reviewer enforces (CLAUDE.md), and Cloudflare config (wrangler.*).
+          # Hardcoded here, so only a change to this file, itself owner-only,
+          # can narrow it.
+          owner_only='^(\.github/workflows/|\.github/gated-paths\.regex$|\.claude/|CLAUDE\.md$|wrangler\.(toml|jsonc|json)$)'
+          if grep -Eq "$owner_only" <<< "$changed"; then
             hold=1
             gh pr edit "$PR" --add-label needs-joe 2>/dev/null || true
           fi
@@ -319,7 +334,11 @@ jobs:
             exit 0
           fi
           gh pr merge "$PR" --merge --delete-branch --match-head-commit "$HEAD_SHA"
-          gh pr comment "$PR" --body "Merged by the ship gate. Review clean at $HEAD_SHA; gate run ${{ github.run_id }}."
+          note=""
+          if [ "$gated" = 1 ] && [ "$hold" = 0 ]; then
+            note=" Touches gated paths; merged on the clean review under D-115 (Joe, 2026-10-06: \"we have agents in place now and i dont want to be a blocker\")."
+          fi
+          gh pr comment "$PR" --body "Merged by the ship gate. Review clean at $HEAD_SHA; gate run ${{ github.run_id }}.$note"
 
   void-approval:
     # A push voids the owner's word for the head before it. This is its own job
