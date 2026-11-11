@@ -12,43 +12,54 @@ interface Env {
   ADMIN_API_KEY?: string;
 }
 
+interface Subscriber {
+  email: string;
+  subscribedAt: string;
+}
+
+const HEADERS = { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' };
+
+/** Constant-time comparison; hashing first makes the inputs equal length. */
+async function safeEqual(a: string, b: string): Promise<boolean> {
+  const encoder = new TextEncoder();
+  const [hashA, hashB] = await Promise.all([
+    crypto.subtle.digest('SHA-256', encoder.encode(a)),
+    crypto.subtle.digest('SHA-256', encoder.encode(b)),
+  ]);
+  return crypto.subtle.timingSafeEqual(hashA, hashB);
+}
+
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const { env, request } = context;
 
-  // Require admin key
-  const authHeader = request.headers.get('Authorization') || '';
-  const token = authHeader.replace('Bearer ', '');
-
-  if (!env.ADMIN_API_KEY || token !== env.ADMIN_API_KEY) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-      status: 401,
-      headers: { 'Content-Type': 'application/json' },
-    });
+  const token = /^Bearer (.+)$/.exec(request.headers.get('Authorization') || '')?.[1];
+  if (!env.ADMIN_API_KEY || !token || !(await safeEqual(token, env.ADMIN_API_KEY))) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: HEADERS });
   }
 
-  // List all subscriber keys from KV
-  const list = await env.SUBSCRIBERS.list();
-  const subscribers: Array<{ email: string; subscribedAt: string }> = [];
-
-  for (const key of list.keys) {
-    // Skip internal keys
-    if (key.name.startsWith('__')) continue;
-
-    const value = await env.SUBSCRIBERS.get(key.name);
-    if (value) {
+  // KV list returns at most 1000 keys per call; follow the cursor to the end.
+  const subscribers: Subscriber[] = [];
+  let cursor: string | undefined;
+  do {
+    const page = await env.SUBSCRIBERS.list({ cursor });
+    // Subscriber keys are email addresses; skip internal keys such as the old __count__.
+    const names = page.keys.map((key) => key.name).filter((name) => name.includes('@'));
+    const values = await Promise.all(names.map((name) => env.SUBSCRIBERS.get(name)));
+    names.forEach((name, i) => {
+      const value = values[i];
+      if (!value) return;
       try {
         subscribers.push(JSON.parse(value));
       } catch {
-        subscribers.push({ email: key.name, subscribedAt: 'unknown' });
+        subscribers.push({ email: name, subscribedAt: 'unknown' });
       }
-    }
-  }
+    });
+    cursor = page.list_complete ? undefined : page.cursor;
+  } while (cursor);
 
   return new Response(JSON.stringify({
     count: subscribers.length,
     subscribers,
     exportedAt: new Date().toISOString(),
-  }), {
-    headers: { 'Content-Type': 'application/json' },
-  });
+  }), { headers: HEADERS });
 };
