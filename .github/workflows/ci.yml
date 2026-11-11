@@ -25,7 +25,7 @@ jobs:
       # The tripwire asks the API which PR (if any) produced the pushed commit.
       pull-requests: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # Full history: the tripwire below diffs the pushed range.
           fetch-depth: 0
