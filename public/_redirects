@@ -1,3 +1,10 @@
-# SPA fallback — all routes serve index.html
-# This ensures React Router handles client-side routing
-/*  /index.html  200
+# Only the app's real routes rewrite to the SPA shell. Every other path gets
+# dist/404.html (a noindex copy of the shell, built by vite.config.ts) with a
+# 404 status, and the app renders its NotFound page there.
+/blog               /                    301
+/new/               /new                 301
+/privacy-policy/    /privacy-policy      301
+/terms-of-service/  /terms-of-service    301
+/new                /                    200
+/privacy-policy     /                    200
+/terms-of-service   /                    200
