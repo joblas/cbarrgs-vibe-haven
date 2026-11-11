@@ -256,6 +256,28 @@ ghfail_rc=$( cd "$ROOT" && REPO=joblas/cbarrgs-vibe-haven PR=1 STUB_FAIL=1 \
   bash -c "set -euo pipefail; $(gate_lines | grep '^changed=')" >/dev/null 2>&1; echo $? )
 check "audit-F4b gate: gh failure aborts the step (no silent empty list)" 1 "$ghfail_rc"
 
+# D-115 (adopted 2026-11-11): owner-only paths hold whatever the verdict says;
+# every other path, gated ones included, merges on the clean review. The
+# pattern is read from the gate itself, so these checks follow the real list.
+owner_only_line=$(grep -E '^owner_only=' <<< "$GATE")
+owner_held() { # changed-file list
+  ( eval "$owner_only_line"; if grep -Eq "$owner_only" <<< "$1"; then echo held; else echo merges; fi )
+}
+check "owner-only pattern is present in the gate" yes "$([ -n "$owner_only_line" ] && echo yes || echo no)"
+for p in .github/workflows/ci.yml .github/workflows/dependabot-auto-merge.yml \
+         .github/workflows/ship-gate.yml .github/workflows/ship-review.yml \
+         .github/gated-paths.regex .claude/skills/ship-review/SKILL.md \
+         .claude/settings.json CLAUDE.md wrangler.toml wrangler.jsonc; do
+  check "owner-only: $p is held" held "$(owner_held "$p")"
+done
+for p in functions/api/subscribe.ts functions/api/subscribers.ts functions/_email.ts \
+         package.json package-lock.json AGENTS.md .github/dependabot.yml \
+         .github/tests/workflow-guards.sh src/pages/PrivacyPolicy.tsx docs/CLAUDE.md; do
+  check "not owner-only: $p merges on the clean review" merges "$(owner_held "$p")"
+done
+check "owner-only: CLAUDE.md as a rename's old name is held" held \
+  "$(owner_held "$(printf 'docs/rules.md\nCLAUDE.md')")"
+
 # --------------------------------------------- Dependabot auto-merge (dependabot-auto-merge.yml)
 # F7: CLAUDE.md allows only minor/patch auto-merges; a major dev bump must not merge.
 DEPBOT=$(step_run "$ROOT/.github/workflows/dependabot-auto-merge.yml" "Auto-merge if build passes")

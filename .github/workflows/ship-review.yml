@@ -20,9 +20,9 @@
 # code, and this workflow holds no merge credential. Merging lives entirely in
 # ship-gate.yml, which runs only from the default branch (pull_request_target,
 # workflow_run) with SHIP_TOKEN. On this event the workflow file is the PR's own
-# copy, so a PR could edit it — any such PR touches .github/, and ship-gate.yml
-# holds every change to its own files (and every gated-paths.regex holds
-# .github/) for the owner's word, whatever verdict it carries.
+# copy, so a PR could edit it — any such PR touches .github/workflows/, an
+# owner-only path that ship-gate.yml holds for the owner's word, whatever
+# verdict it carries.
 #
 # Fail-closed by construction: missing secret, API error, truncation, malformed
 # verdict, SHA mismatch — each fails the job or blocks the clean verdict, and
