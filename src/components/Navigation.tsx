@@ -81,7 +81,7 @@ const Navigation: React.FC = () => {
       <motion.nav
         id="navigation"
         className={`fixed w-full z-50 transition-all duration-300 ${
-          scrolled ? 'py-4 bg-black/90 backdrop-blur-md' : 'py-6 bg-transparent'
+          scrolled ? 'py-4 bg-black/90' : 'py-6 bg-transparent'
         }`}
         variants={navVariants}
         initial="hidden"

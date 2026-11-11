@@ -8,11 +8,6 @@ export default defineConfig(({ mode }) => ({
   base: '/',
   server: {
     host: '0.0.0.0',
-    port: 8080,
-    strictPort: true,
-    hmr: {
-      clientPort: 8080
-    },
     // Add security headers to mitigate the CORS vulnerability in esbuild
     cors: {
       // Restrict CORS to same origin in development

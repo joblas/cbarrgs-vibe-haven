@@ -121,7 +121,7 @@ const Footer: React.FC = () => {
               <span className="hidden sm:inline text-white/20">|</span>
               <a href={`mailto:${BOOKING_EMAIL}`} className="hover:text-white transition-colors duration-300">{BOOKING_EMAIL}</a>
             </div>
-            <p className="text-white/40">&copy; {currentYear} Cbarrgs. All rights reserved.</p>
+            <p className="text-white/60">&copy; {currentYear} Cbarrgs. All rights reserved.</p>
             <div className="flex gap-6">
               <Link
                 to="/privacy-policy"

@@ -11,7 +11,6 @@ interface BlurFadeProps {
   delay?: number;
   duration?: number;
   yOffset?: number;
-  blur?: string;
   once?: boolean;
   amount?: number;
 }
@@ -22,7 +21,6 @@ const BlurFade: React.FC<BlurFadeProps> = ({
   delay = 0,
   duration = 0.6,
   yOffset = 12,
-  blur = '6px',
   once = true,
   amount = 0.2,
 }) => {
@@ -33,12 +31,10 @@ const BlurFade: React.FC<BlurFadeProps> = ({
     hidden: {
       opacity: 0,
       y: yOffset,
-      filter: `blur(${blur})`,
     },
     visible: {
       opacity: 1,
       y: 0,
-      filter: 'blur(0px)',
     },
   };
 

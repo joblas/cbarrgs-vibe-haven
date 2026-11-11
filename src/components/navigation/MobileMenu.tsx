@@ -82,9 +82,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, navItems, handleNavItem
           aria-modal="true"
           aria-label="Mobile navigation menu"
         >
-          {/* Backdrop with blur */}
+          {/* Backdrop */}
           <motion.div
-            className="absolute inset-0 bg-black/95 backdrop-blur-xl"
+            className="absolute inset-0 bg-black/95"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
@@ -95,8 +95,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, navItems, handleNavItem
           <div
             className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] pointer-events-none"
             style={{
-              background: 'radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 60%)',
-              filter: 'blur(60px)',
+              background: 'radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.015) 35%, transparent 70%)',
             }}
             aria-hidden="true"
           />

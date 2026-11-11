@@ -37,12 +37,16 @@ const products: Product[] = [
   },
 ];
 
-const ProductCard: React.FC<{ product: Product }> = ({ product }) => (
+// The carousel loops by rendering the list three times; only the first copy is
+// exposed to keyboard and screen-reader users, so each product is announced once.
+const ProductCard: React.FC<{ product: Product; copy?: boolean }> = ({ product, copy = false }) => (
   <a
     href={SHOPIFY_STORE}
     target="_blank"
     rel="noopener noreferrer"
-    className="group flex-shrink-0 w-[240px] sm:w-[280px] md:w-[300px] cursor-pointer block relative"
+    aria-hidden={copy || undefined}
+    tabIndex={copy ? -1 : undefined}
+    className={`group flex-shrink-0 w-[240px] sm:w-[280px] md:w-[300px] cursor-pointer block relative${copy ? ' shop-carousel-copy' : ''}`}
   >
     <div className="relative p-3.5 sm:p-5 bg-white/[0.03] border border-white/10 rounded-lg transition-all duration-300 group-hover:border-white/20 group-hover:bg-white/[0.06]">
       <div className="relative aspect-square mb-3 overflow-hidden rounded-md bg-white/5">
@@ -101,7 +105,7 @@ const ShopComingSoon: React.FC = () => {
             <div className="shop-carousel mb-8 sm:mb-12">
               <div className="shop-carousel-track">
                 {scrollItems.map((product, index) => (
-                  <ProductCard key={index} product={product} />
+                  <ProductCard key={index} product={product} copy={index >= products.length} />
                 ))}
               </div>
             </div>
@@ -122,7 +126,7 @@ const ShopComingSoon: React.FC = () => {
 
           {/* Thank you message */}
           <BlurFade delay={0.5}>
-            <p className="text-white/40 text-sm sm:text-base font-extralight mt-10 sm:mt-16 tracking-wide">
+            <p className="text-white/60 text-sm sm:text-base font-extralight mt-10 sm:mt-16 tracking-wide">
               Thanks for listening :)
             </p>
           </BlurFade>

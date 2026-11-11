@@ -53,7 +53,7 @@ const PrivacyPolicy: React.FC = () => {
                 </h2>
                 
                 <div className="mb-6">
-                  <h3 className="text-xl font-bold mb-4 text-green-500">
+                  <h3 className="text-xl font-bold mb-4 text-white">
                     Do not sell or share my personal information
                   </h3>
                   
@@ -100,9 +100,9 @@ const PrivacyPolicy: React.FC = () => {
                         onChange={(e) => setEmail(e.target.value)}
                         className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-sm focus:outline-none focus:ring-1 focus:ring-white/50 text-white placeholder:text-white/50"
                         placeholder="Enter your email"
-                        aria-describedby="email-description"
+                        aria-describedby="optout-email-description"
                       />
-                      <p id="email-description" className="mt-1 text-sm text-white/60">
+                      <p id="optout-email-description" className="mt-1 text-sm text-white/60">
                         We'll use this to opt out all data associated with your account.
                       </p>
                     </div>
@@ -118,7 +118,7 @@ const PrivacyPolicy: React.FC = () => {
                   </button>
                   
                   {isOptedOut && (
-                    <div className="mt-4 flex items-center text-green-500 space-x-2" role="status">
+                    <div className="mt-4 flex items-center text-white/80 space-x-2" role="status">
                       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
                         <path d="M8 12L11 15L16 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

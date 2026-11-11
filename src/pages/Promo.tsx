@@ -22,29 +22,29 @@ const streamingPlatforms = [
     name: 'Spotify',
     url: SPOTIFY_URL,
     icon: faSpotify,
-    color: 'hover:bg-[#1DB954]/20 hover:border-[#1DB954]/40',
-    iconColor: 'group-hover:text-[#1DB954]',
+    color: 'hover:bg-white/[0.08] hover:border-white/30',
+    iconColor: 'group-hover:text-white',
   },
   {
     name: 'Apple Music',
     url: APPLE_MUSIC_URL,
     icon: faApple,
-    color: 'hover:bg-[#FC3C44]/20 hover:border-[#FC3C44]/40',
-    iconColor: 'group-hover:text-[#FC3C44]',
+    color: 'hover:bg-white/[0.08] hover:border-white/30',
+    iconColor: 'group-hover:text-white',
   },
   {
     name: 'YouTube',
     url: YOUTUBE_CHANNEL,
     icon: faYoutube,
-    color: 'hover:bg-[#FF0000]/20 hover:border-[#FF0000]/40',
-    iconColor: 'group-hover:text-[#FF0000]',
+    color: 'hover:bg-white/[0.08] hover:border-white/30',
+    iconColor: 'group-hover:text-white',
   },
   {
     name: 'SoundCloud',
     url: SOUNDCLOUD_URL,
     icon: faSoundcloud,
-    color: 'hover:bg-[#FF5500]/20 hover:border-[#FF5500]/40',
-    iconColor: 'group-hover:text-[#FF5500]',
+    color: 'hover:bg-white/[0.08] hover:border-white/30',
+    iconColor: 'group-hover:text-white',
   },
 ];
 
@@ -82,7 +82,7 @@ const Promo: React.FC = () => {
           <div className="pt-5 sm:pt-6">
             <Link
               to="/"
-              className="inline-flex items-center gap-2 text-white/40 hover:text-white text-sm font-extralight tracking-wider transition-colors duration-300 py-2"
+              className="inline-flex items-center gap-2 text-white/60 hover:text-white text-sm font-extralight tracking-wider transition-colors duration-300 py-2"
             >
               <ArrowLeft className="w-4 h-4" />
               cbarrgs.com
@@ -116,10 +116,10 @@ const Promo: React.FC = () => {
           {/* Section: Listen */}
           <BlurFade delay={0.15}>
             <div className="mb-7 sm:mb-8">
-              <h2 className="text-xs font-extralight tracking-[0.2em] text-white/35 uppercase mb-1 text-center">
+              <h2 className="text-xs font-extralight tracking-[0.2em] text-white/50 uppercase mb-1 text-center">
                 Listen Now
               </h2>
-              <p className="text-white/25 text-xs font-extralight tracking-wide text-center mb-3">
+              <p className="text-white/50 text-xs font-extralight tracking-wide text-center mb-3">
                 "No Vengas A llorar" single is out now — plus the "Pieces For You" EP
               </p>
               <div className="space-y-2">
@@ -138,7 +138,7 @@ const Promo: React.FC = () => {
                     <span className="font-extralight tracking-wider text-sm">
                       {platform.name}
                     </span>
-                    <span className="ml-auto text-white/25 text-xs font-extralight tracking-wider group-hover:text-white/50 transition-colors">
+                    <span className="ml-auto text-white/50 text-xs font-extralight tracking-wider group-hover:text-white/80 transition-colors">
                       Play
                     </span>
                   </a>
@@ -152,10 +152,10 @@ const Promo: React.FC = () => {
           {/* Section: Shop */}
           <BlurFade delay={0.35}>
             <div className="mb-7 sm:mb-8">
-              <h2 className="text-xs font-extralight tracking-[0.2em] text-white/35 uppercase mb-1 text-center">
+              <h2 className="text-xs font-extralight tracking-[0.2em] text-white/50 uppercase mb-1 text-center">
                 Merch
               </h2>
-              <p className="text-white/25 text-xs font-extralight tracking-wide text-center mb-3">
+              <p className="text-white/50 text-xs font-extralight tracking-wide text-center mb-3">
                 In the shop now
               </p>
                <div className="grid grid-cols-3 gap-2 sm:gap-2.5 mb-3">
@@ -201,7 +201,7 @@ const Promo: React.FC = () => {
           {/* Section: Stay Connected */}
           <BlurFade delay={0.45}>
             <div className="mb-7 sm:mb-8">
-              <h2 className="text-xs font-extralight tracking-[0.2em] text-white/35 uppercase mb-3 text-center">
+              <h2 className="text-xs font-extralight tracking-[0.2em] text-white/50 uppercase mb-3 text-center">
                 Stay Connected
               </h2>
               <div className="p-4 sm:p-5 rounded-lg bg-white/[0.03] border border-white/[0.08]">
@@ -219,7 +219,7 @@ const Promo: React.FC = () => {
           {/* Section: Follow */}
           <BlurFade delay={0.55}>
             <div className="mb-8 sm:mb-10">
-              <h2 className="text-xs font-extralight tracking-[0.2em] text-white/35 uppercase mb-3 text-center">
+              <h2 className="text-xs font-extralight tracking-[0.2em] text-white/50 uppercase mb-3 text-center">
                 Follow
               </h2>
               <div className="flex justify-center gap-4 sm:gap-5">
@@ -245,7 +245,7 @@ const Promo: React.FC = () => {
             <div className="text-center">
               <Link
                 to="/"
-                className="text-white/25 hover:text-white/50 text-xs font-extralight tracking-wider transition-colors duration-300"
+                className="text-white/50 hover:text-white/80 text-xs font-extralight tracking-wider transition-colors duration-300"
               >
                 cbarrgs.com
               </Link>

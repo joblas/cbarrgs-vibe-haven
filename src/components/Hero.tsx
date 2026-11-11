@@ -60,7 +60,7 @@ const Hero: React.FC = () => {
        {/* Background Image */}
        <img
          src="/lovable-uploads/cbarrgs-insta-bw.webp"
-         alt="Cbarrgs artistic background image"
+         alt=""
          fetchPriority="high"
          decoding="async"
          className="fixed inset-0 w-full h-full object-cover z-0 pointer-events-none transition-opacity duration-1000 ease-in-out"
@@ -153,7 +153,7 @@ const Hero: React.FC = () => {
                 whileTap={reducedMotion ? {} : { scale: 0.98 }}
               >
                 <span className="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white/60 opacity-75" />
+                  <span className="animate-pulse absolute inline-flex h-full w-full rounded-full bg-white/60 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-white/90" />
                 </span>
                 <span className="text-white/90 font-light tracking-wider text-xs sm:text-sm">{news?.ctaText || "New Single Out Now · Merch In The Shop"}</span>
@@ -168,16 +168,16 @@ const Hero: React.FC = () => {
           >
             <motion.p
               className="text-white/80 text-sm sm:text-base md:text-lg font-extralight tracking-wider"
-              initial={{ opacity: 0, filter: 'blur(4px)' }}
-              animate={{ opacity: 1, filter: 'blur(0px)' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.5 }}
             >
               {news?.headline || '"No Vengas A llorar" Single · Out Now'}
             </motion.p>
             <motion.p
-              className="text-white/40 text-xs sm:text-sm font-extralight tracking-wide"
-              initial={{ opacity: 0, filter: 'blur(4px)' }}
-              animate={{ opacity: 1, filter: 'blur(0px)' }}
+              className="text-white/60 text-xs sm:text-sm font-extralight tracking-wide"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.7 }}
             >
               {news?.subheadline || "Tees, pins & stickers · In the shop now"}
@@ -218,7 +218,7 @@ const Hero: React.FC = () => {
               <AnimatePresence>
                 {dropOpen && (
                   <motion.div
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2 flex flex-col items-center gap-2 py-3 px-5 rounded-lg bg-black/90 border border-white/10 backdrop-blur-sm"
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2 flex flex-col items-center gap-2 py-3 px-5 rounded-lg bg-black/90 border border-white/10"
                     initial={{ opacity: 0, y: -8, scaleY: 0.8 }}
                     animate={{ opacity: 1, y: 0, scaleY: 1 }}
                     exit={{ opacity: 0, y: -8, scaleY: 0.8 }}
