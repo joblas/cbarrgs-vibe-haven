@@ -4,23 +4,30 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
-permissions:
-  contents: write
-  pull-requests: write
+# Nothing by default; each job asks for exactly what it needs.
+permissions: {}
 
 jobs:
-  auto-merge:
+  # Installing a dependency runs its install scripts. This job does that with a
+  # read-only token that is not persisted into .git/config, so a malicious
+  # package cannot push to main.
+  build:
+    # Both: the PR is Dependabot's AND this push is Dependabot's, so a commit
+    # someone else pushes onto a Dependabot branch never rides along.
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
-
+    permissions:
+      contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
@@ -29,9 +36,18 @@ jobs:
       - name: Build
         run: npm run build
 
+  # The write token lives only here, in a job that never checks out or runs PR code.
+  auto-merge:
+    needs: build
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
       - name: Fetch Dependabot metadata
         id: metadata
-        uses: dependabot/fetch-metadata@v2
+        uses: dependabot/fetch-metadata@21025c705c08248db411dc16f3619e6b5f9ea21a # v2.5.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -41,15 +57,25 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           UPDATE_TYPE: ${{ steps.metadata.outputs.update-type }}
           DEP_TYPE: ${{ steps.metadata.outputs.dependency-type }}
+          ECOSYSTEM: ${{ steps.metadata.outputs.package-ecosystem }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           # Auto-merge patch/minor updates only (build already passed above), as
           # CLAUDE.md states. ALLOW-list: fetch-metadata can output an empty or
           # non-semver update-type (git-sourced refs, non-semver versions); a
           # deny-list would merge those unseen, and the merge runs on
           # GITHUB_TOKEN, which never triggers the gated-path tripwire.
+          # npm only: CLAUDE.md's exception covers package.json bumps, and a
+          # github-actions bump edits .github/workflows, a gated path that
+          # needs the owner's approval. --match-head-commit merges only the
+          # head that the build job just built.
+          if [ "$ECOSYSTEM" != "npm_and_yarn" ] && [ "$ECOSYSTEM" != "npm" ]; then
+            gh pr comment "$PR_URL" --body "⚠️ Ecosystem '$ECOSYSTEM' touches gated paths — needs the owner's review. Build passed but a human merges this."
+            exit 0
+          fi
           case "$UPDATE_TYPE" in
             version-update:semver-minor|version-update:semver-patch)
-              gh pr merge "$PR_URL" --merge --auto ;;
+              gh pr merge "$PR_URL" --merge --auto --match-head-commit "$HEAD_SHA" ;;
             *)
               gh pr comment "$PR_URL" --body "⚠️ Not a minor/patch semver bump (update-type: '$UPDATE_TYPE', dependency-type: '$DEP_TYPE') — needs manual review. Build passed but a human merges this." ;;
           esac

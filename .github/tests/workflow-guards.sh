@@ -281,15 +281,17 @@ check "owner-only: CLAUDE.md as a rename's old name is held" held \
 # --------------------------------------------- Dependabot auto-merge (dependabot-auto-merge.yml)
 # F7: CLAUDE.md allows only minor/patch auto-merges; a major dev bump must not merge.
 DEPBOT=$(step_run "$ROOT/.github/workflows/dependabot-auto-merge.yml" "Auto-merge if build passes")
-dep_run() { # update_type dep_type
+dep_run() { # update_type dep_type [ecosystem, default npm_and_yarn]
   : > "$GH_LOG"
-  PR_URL=https://github.com/joblas/cbarrgs-vibe-haven/pull/1 UPDATE_TYPE="$1" DEP_TYPE="$2" bash -c "$DEPBOT" >/dev/null 2>&1
+  PR_URL=https://github.com/joblas/cbarrgs-vibe-haven/pull/1 UPDATE_TYPE="$1" DEP_TYPE="$2" \
+    ECOSYSTEM="${3-npm_and_yarn}" HEAD_SHA=0000000 bash -c "$DEPBOT" >/dev/null 2>&1
   if grep -q '^gh pr merge' "$GH_LOG"; then echo merged; else echo not-merged; fi
 }
 dep_commented() { # update_type — asserts the needs-human arm actually ran (a
   # dropped *) arm would pass every not-merged case vacuously)
   : > "$GH_LOG"
-  PR_URL=https://github.com/joblas/cbarrgs-vibe-haven/pull/1 UPDATE_TYPE="$1" DEP_TYPE=direct:production bash -c "$DEPBOT" >/dev/null 2>&1
+  PR_URL=https://github.com/joblas/cbarrgs-vibe-haven/pull/1 UPDATE_TYPE="$1" DEP_TYPE=direct:production \
+    ECOSYSTEM=npm_and_yarn HEAD_SHA=0000000 bash -c "$DEPBOT" >/dev/null 2>&1
   if grep -q '^gh pr comment' "$GH_LOG"; then echo commented; else echo silent; fi
 }
 check "F7 major devDependency bump is not auto-merged" not-merged "$(dep_run version-update:semver-major direct:development)"
@@ -304,6 +306,11 @@ check "empty update-type is NOT auto-merged" not-merged "$(dep_run "" direct:pro
 check "non-semver update-type is NOT auto-merged" not-merged "$(dep_run version-update:direct direct:production)"
 check "empty update-type gets the needs-human comment" commented "$(dep_commented "")"
 check "major bump gets the needs-human comment" commented "$(dep_commented version-update:semver-major)"
+# Ecosystem guard: only npm bumps may auto-merge. A github-actions bump edits
+# .github/workflows, a gated path, so even a patch bump waits for the owner.
+check "github-actions patch bump is NOT auto-merged" not-merged "$(dep_run version-update:semver-patch direct:production github_actions)"
+check "missing ecosystem is NOT auto-merged" not-merged "$(dep_run version-update:semver-patch direct:production "")"
+check "npm (not npm_and_yarn) patch bump is auto-merged" merged "$(dep_run version-update:semver-patch direct:production npm)"
 
 echo "workflow-guards: $pass passed, $fail failed"
 [ "$fail" -eq 0 ]

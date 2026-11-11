@@ -28,3 +28,13 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: globals
         update-types: ["version-update:semver-major"]
+      # typescript-eslint supports TypeScript < 6.1; 7.x crashed `npm run lint`.
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
+
+  # Keep the SHA-pinned GitHub Actions current.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
