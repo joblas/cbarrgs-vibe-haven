@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,6 +12,7 @@ let lastSubmitTime = 0;
 
 const SubscribeForm: React.FC = () => {
   const [email, setEmail] = useState('');
+  const honeypotRef = useRef<HTMLInputElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<{ email?: string }>({});
   const { toast } = useToast();
@@ -61,7 +62,7 @@ const SubscribeForm: React.FC = () => {
       const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim() }),
+        body: JSON.stringify({ email: email.trim(), website: honeypotRef.current?.value ?? '' }),
       });
 
       const data = await res.json();
@@ -116,6 +117,11 @@ const SubscribeForm: React.FC = () => {
       <form onSubmit={handleSubmit} className="space-y-4" noValidate>
         <fieldset disabled={isSubmitting}>
           <legend className="sr-only">Subscribe to Cbarrgs newsletter</legend>
+
+          {/* Spam trap: hidden from people and screen readers; bots that fill every field get caught server-side. */}
+          <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}>
+            <input ref={honeypotRef} type="text" name="website" tabIndex={-1} autoComplete="off" defaultValue="" />
+          </div>
           
           <div>
             <label htmlFor="email-subscribe" className="sr-only">

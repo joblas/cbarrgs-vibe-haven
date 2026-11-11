@@ -12,16 +12,17 @@ interface MarketingNews {
   ctaText?: string;
 }
 
+const ENTITIES: Record<string, string> = {
+  '&middot;': '·', '&amp;': '&', '&quot;': '"', '&#39;': "'", '&apos;': "'", '&lt;': '<', '&gt;': '>',
+};
+
+// Decode entities in one pass first, then strip tags, so encoded markup
+// (e.g. "&lt;img onerror=...&gt;") can't come out the other side as a tag.
 function toPlainText(value: unknown): string | undefined {
   if (typeof value !== 'string') return undefined;
   const text = value
+    .replace(/&(?:middot|amp|quot|#39|apos|lt|gt);/g, (entity) => ENTITIES[entity])
     .replace(/<[^>]*>/g, '')
-    .replace(/&middot;/g, '·')
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;|&apos;/g, "'")
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
     .trim();
   return text.length > 0 && text.length <= 200 ? text : undefined;
 }
@@ -30,6 +31,8 @@ export const onRequestGet: PagesFunction = async () => {
   try {
     const upstream = await fetch(AGENT_NEWS_URL, {
       signal: AbortSignal.timeout(5000),
+      // Edge-cache the worker's answer for 5 minutes instead of calling it on every page view.
+      cf: { cacheTtl: 300, cacheEverything: true },
     });
     if (!upstream.ok) throw new Error(`agent responded ${upstream.status}`);
     const raw = (await upstream.json()) as MarketingNews;
