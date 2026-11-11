@@ -1,6 +1,23 @@
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import { readFile, writeFile } from "fs/promises";
+
+// Cloudflare Pages serves dist/404.html, with a 404 status, for any path that
+// public/_redirects doesn't route to the app. Make it a noindex copy of the app
+// shell so the React NotFound page renders there.
+const spaNotFoundPage = (): Plugin => ({
+  name: "spa-not-found-page",
+  apply: "build",
+  async closeBundle() {
+    const dist = path.resolve(__dirname, "dist");
+    const html = await readFile(path.join(dist, "index.html"), "utf8");
+    await writeFile(
+      path.join(dist, "404.html"),
+      html.replace("<head>", '<head>\n    <meta name="robots" content="noindex" />'),
+    );
+  },
+});
 // lovable-tagger removed — migrated to Cloudflare Pages
 
 // https://vitejs.dev/config/
@@ -35,6 +52,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
+    spaNotFoundPage(),
     // componentTagger removed — was Lovable-specific
   ].filter(Boolean),
   resolve: {
