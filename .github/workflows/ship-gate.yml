@@ -187,6 +187,18 @@ jobs:
             echo "::notice::not clean at $HEAD_SHA (clean=$clean findings=$findings); the builder fixes and the next push re-runs"
             exit 0
           fi
+          # A clean comment alone is not enough: any workflow job holding a token
+          # that can comment posts as github-actions[bot] too. Require the Ship
+          # review workflow itself to have succeeded at this exact head (it
+          # fails when it posts findings).
+          reviewed=$(gh api "repos/$REPO/actions/runs?head_sha=$HEAD_SHA&per_page=100" --jq \
+            '[.workflow_runs[] | select((.path | split("@")[0]) == ".github/workflows/ship-review.yml" and .event == "pull_request" and .conclusion == "success")] | length')
+          case "$reviewed" in ''|*[!0-9]*) echo "::error::review-run query returned a non-number ('$reviewed')"; exit 1 ;; esac
+          if [ "$reviewed" -eq 0 ]; then
+            gh pr edit "$PR" --remove-label ship-reviewed 2>/dev/null || true
+            echo "::notice::a clean comment exists at $HEAD_SHA but no successful Ship review run does; not merging"
+            exit 0
+          fi
           gh pr edit "$PR" --add-label ship-reviewed
 
           # 2. Gated paths (the regex comes from the BASE checkout), owner-only
@@ -226,13 +238,14 @@ jobs:
             esac
           fi
           # Owner-only paths always wait for the owner, whatever the verdict: a PR
-          # that edits them could otherwise vouch for itself. Every workflow file
-          # (any workflow can hold a token that merges), the gated-path list,
-          # agent config and the reviewer's skill (.claude/), the rules the
-          # reviewer enforces (CLAUDE.md), and Cloudflare config (wrangler.*).
+          # that edits them could otherwise vouch for itself. All of .github/
+          # (any workflow can hold a token that merges; dependabot.yml decides
+          # what reaches the auto-merge job; the gated-path list), agent config
+          # and the reviewer's skill (.claude/), the rules the reviewer
+          # enforces (CLAUDE.md), and Cloudflare config (wrangler.*).
           # Hardcoded here, so only a change to this file, itself owner-only,
           # can narrow it.
-          owner_only='^(\.github/workflows/|\.github/gated-paths\.regex$|\.claude/|CLAUDE\.md$|wrangler\.(toml|jsonc|json)$)'
+          owner_only='^(\.github/|\.claude/|CLAUDE\.md$|wrangler\.(toml|jsonc|json)$)'
           if grep -Eq "$owner_only" <<< "$changed"; then
             hold=1
             gh pr edit "$PR" --add-label needs-joe 2>/dev/null || true

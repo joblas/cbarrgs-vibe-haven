@@ -95,13 +95,14 @@ read both before design work; don't re-derive the aesthetic from scratch.
   change only through a PR. Under D-115 (Joe, 2026-10-06: "we have agents in
   place now and i dont want to be a blocker"; adopted here by Joe 2026-11-11),
   the gate merges a gated-path PR like any other: a clean independent review at
-  the head SHA plus green CI. The gate labels it `gated-path` and quotes D-115
+  the head SHA plus green CI; the gate also requires the Ship review run itself
+  to have succeeded at that head. The gate labels it `gated-path` and quotes D-115
   on the merge. One exception: Dependabot's minor/patch bumps to `package.json`
   merge through `dependabot-auto-merge.yml`; the gate skips Dependabot PRs.
 - **Owner-only paths** wait for Joe's word whatever the review says, because a
   change there could let an agent approve its own way around the gate: all of
-  `.github/workflows/**` (any workflow can hold a token that merges),
-  `.github/gated-paths.regex`, all of `.claude/**` (agent config and the
+  `.github/**` (any workflow can hold a token that merges, and
+  `dependabot.yml` decides what reaches the auto-merge job), all of `.claude/**` (agent config and the
   reviewer's skill), `CLAUDE.md` (these rules), and `wrangler.toml|jsonc|json`
   (Cloudflare config). The gate labels them `needs-joe` and merges only after
   Joe adds `joe-approved` from the owner account; any later push voids it.
