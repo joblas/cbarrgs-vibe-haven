@@ -23,3 +23,8 @@ export const BOOKING_EMAIL = "bookings@cbarrgs.com";
 
 // Store information
 export const SHOPIFY_STORE = "https://shopify.cbarrgs.com/";
+// Hero "drop" menu. "new" lists every product, newest first.
+export const SHOPIFY_NEW_DROP = "https://shopify.cbarrgs.com/collections/all?sort_by=created-descending";
+// "archive" shows only once the store has an Archive collection; set this to
+// "https://shopify.cbarrgs.com/collections/archive" when it exists.
+export const SHOPIFY_ARCHIVE: string | null = null;
