@@ -21,6 +21,16 @@ const Hero: React.FC = () => {
   const [bgImageLoaded, setBgImageLoaded] = useState(false);
   const { news } = useMarketingNews();
 
+  // The marketing bot's copy wins; otherwise the newest release speaks.
+  // Without a bot headline the release title is the display line and its
+  // type/status move to the ruled label above it.
+  const showReleaseLabel = !news?.headline;
+  const headline = news?.headline || LATEST_RELEASE.title;
+  const subheadline =
+    news?.subheadline || `Stream the new ${LATEST_RELEASE.type.toLowerCase()} · Shop official merch`;
+  const ctaText = news?.ctaText || `Listen to ${LATEST_RELEASE.title} · Shop Merch`;
+  const longHeadline = headline.length > 28;
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (dropRef.current && !dropRef.current.contains(e.target as Node)) {
@@ -136,8 +146,19 @@ const Hero: React.FC = () => {
 
       {/* Content */}
       <div className="relative z-20 text-center px-5 sm:px-6 max-w-screen-xl mx-auto w-full">
+        {/* Scrim: a soft black pool behind the copy so it reads over the
+            illustration without blur or filters. */}
+        <div
+          className="absolute -inset-x-40 -inset-y-32 md:-inset-x-24 md:-inset-y-36 -z-10 pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(closest-side, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.76) 35%, rgba(0,0,0,0.6) 55%, rgba(0,0,0,0.38) 72%, rgba(0,0,0,0.16) 87%, rgba(0,0,0,0) 100%)',
+          }}
+          aria-hidden="true"
+        />
+
         <motion.div
-          className="space-y-5 sm:space-y-6 md:space-y-8"
+          className="flex flex-col items-center"
           variants={staggerContainerVariants}
           initial="hidden"
           animate="visible"
@@ -145,101 +166,89 @@ const Hero: React.FC = () => {
           {/* Spacer for logo */}
           <div className="h-12 sm:h-16 md:h-20" aria-hidden="true" />
 
-          {/* Primary CTA - Promo Page Pill */}
-          <motion.div variants={staggerItemVariants}>
-            <Link to="/new">
-              <motion.div
-                className="inline-flex items-center gap-2.5 sm:gap-3 px-5 sm:px-8 py-3 sm:py-3.5 rounded-full border border-white/20 bg-white/[0.05] hover:bg-white/[0.12] hover:border-white/40 transition-all duration-300 cursor-pointer group"
-                whileHover={reducedMotion ? {} : { scale: 1.03 }}
-                whileTap={reducedMotion ? {} : { scale: 0.98 }}
-              >
-                <span className="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5">
-                  <span className="animate-pulse absolute inline-flex h-full w-full rounded-full bg-white/60 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-white/90" />
-                </span>
-                <span className="text-white/90 font-light tracking-wider text-xs sm:text-sm">{news?.ctaText || `Listen to ${LATEST_RELEASE.title} · Shop Merch`}</span>
-              </motion.div>
-            </Link>
-          </motion.div>
-
-          {/* Landing page headline */}
+          {/* Release: ruled label strip + display title. The strip is as wide
+              as the title, like the label on a record sleeve. */}
           <motion.div
-            className="space-y-2 sm:space-y-2.5"
+            className="inline-flex flex-col items-stretch max-w-full"
             variants={staggerItemVariants}
           >
-            <motion.p
-              className="text-white/80 text-sm sm:text-base md:text-lg font-extralight tracking-wider"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
+            {showReleaseLabel && (
+              <p className="flex items-center justify-between gap-6 border-y border-white/20 py-2.5 mb-5 sm:mb-7 text-[10px] sm:text-[11px] font-light uppercase tracking-[0.28em] text-white/75">
+                <span>New {LATEST_RELEASE.type.toLowerCase()}</span>
+                <span>Out now <span aria-hidden="true">/</span> Ya disponible</span>
+              </p>
+            )}
+            <h2
+              className={`font-serif italic font-normal text-white text-balance [text-shadow:0_2px_28px_rgba(0,0,0,0.55)] ${
+                longHeadline
+                  ? 'text-[clamp(2rem,5.5vw,4rem)] leading-[1.08]'
+                  : 'text-[clamp(3rem,9vw,6.5rem)] leading-[0.98]'
+              }`}
             >
-              {news?.headline || `"${LATEST_RELEASE.title}" ${LATEST_RELEASE.type} · Out Now`}
-            </motion.p>
-            <motion.p
-              className="text-white/60 text-xs sm:text-sm font-extralight tracking-wide"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-            >
-              {news?.subheadline || `Stream the new ${LATEST_RELEASE.type.toLowerCase()} · Shop official merch`}
-            </motion.p>
+              {headline}
+            </h2>
           </motion.div>
 
-          {/* Navigation links */}
+          <motion.p
+            className="mt-5 sm:mt-8 max-w-md text-sm sm:text-base font-light tracking-wider text-white/70"
+            variants={staggerItemVariants}
+          >
+            {subheadline}
+          </motion.p>
+
+          {/* Actions */}
           <motion.nav
-            className="flex flex-row justify-center items-center gap-8 sm:gap-10 pt-2"
+            className="mt-8 sm:mt-10 grid grid-cols-2 gap-3 w-full max-w-[22rem] sm:flex sm:w-auto sm:max-w-none sm:justify-center"
             variants={staggerItemVariants}
             aria-label="Quick links"
           >
-            <Magnetic strength={0.15} radius={80}>
-              <a
-                href={LATEST_RELEASE_SPOTIFY_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white/50 hover:text-white text-sm sm:text-base font-extralight tracking-[0.15em] transition-colors duration-300 underline-offset-4 hover:underline py-2"
-              >
-                listen
-              </a>
-            </Magnetic>
+            <a
+              href={LATEST_RELEASE_SPOTIFY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sm:min-w-[11.5rem] inline-flex h-12 items-center justify-center gap-2.5 px-6 bg-white text-black text-xs font-normal uppercase tracking-[0.25em] transition-colors duration-300 hover:bg-white/80"
+            >
+              listen
+              <svg className="h-3.5 w-3.5 shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                <path d="M7 17L17 7M9 7h8v8" />
+              </svg>
+            </a>
             <div ref={dropRef} className="relative">
-              <Magnetic strength={0.15} radius={80}>
-                <button
-                  onClick={() => setDropOpen((prev) => !prev)}
-                  className="text-white/50 hover:text-white text-sm sm:text-base font-extralight tracking-[0.15em] transition-colors duration-300 underline-offset-4 hover:underline leading-none py-2"
-                  aria-expanded={dropOpen}
-                  aria-haspopup="true"
-                >
-                  drop<motion.span
-                    className="inline-block text-[10px] ml-1 align-middle"
-                    animate={{ rotate: dropOpen ? 180 : 0 }}
-                    transition={{ duration: 0.2 }}
-                  >&#9662;</motion.span>
-                </button>
-              </Magnetic>
+              <button
+                onClick={() => setDropOpen((prev) => !prev)}
+                className="w-full sm:min-w-[11.5rem] inline-flex h-12 items-center justify-center gap-2 px-6 border border-white/40 text-white text-xs font-light uppercase tracking-[0.25em] transition-colors duration-300 hover:border-white hover:bg-white/[0.06]"
+                aria-expanded={dropOpen}
+                aria-haspopup="true"
+              >
+                drop<motion.span
+                  className="inline-block text-[10px] align-middle"
+                  animate={{ rotate: dropOpen ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >&#9662;</motion.span>
+              </button>
               <AnimatePresence>
                 {dropOpen && (
                   <motion.div
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2 flex flex-col items-center gap-2 py-3 px-5 rounded-lg bg-black/90 border border-white/10"
-                    initial={{ opacity: 0, y: -8, scaleY: 0.8 }}
-                    animate={{ opacity: 1, y: 0, scaleY: 1 }}
-                    exit={{ opacity: 0, y: -8, scaleY: 0.8 }}
+                    className="absolute top-full inset-x-0 mt-2 z-30 flex flex-col border border-white/15 bg-black"
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
                     transition={{ duration: 0.2, ease: 'easeOut' }}
-                    style={{ transformOrigin: 'top center' }}
                   >
                     <a
                       href={SHOPIFY_STORE}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-white/70 hover:text-white text-sm font-extralight tracking-wider transition-colors duration-200 whitespace-nowrap py-1"
+                      className="px-5 py-3.5 text-white/80 hover:text-white hover:bg-white/[0.06] text-xs font-light uppercase tracking-[0.25em] transition-colors duration-200 whitespace-nowrap"
                     >
                       new
                     </a>
-                    <div className="w-8 h-px bg-white/10" />
+                    <div className="mx-5 h-px bg-white/10" />
                     <a
                       href={SHOPIFY_STORE}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-white/50 hover:text-white text-sm font-extralight tracking-wider transition-colors duration-200 whitespace-nowrap py-1"
+                      className="px-5 py-3.5 text-white/60 hover:text-white hover:bg-white/[0.06] text-xs font-light uppercase tracking-[0.25em] transition-colors duration-200 whitespace-nowrap"
                     >
                       archive
                     </a>
@@ -248,6 +257,19 @@ const Hero: React.FC = () => {
               </AnimatePresence>
             </div>
           </motion.nav>
+
+          {/* Smart-link page (/new): every platform + merch */}
+          <motion.div className="mt-6" variants={staggerItemVariants}>
+            <Link
+              to="/new"
+              className="group inline-flex items-baseline gap-2 py-2 text-[13px] font-light tracking-wider text-white/65 transition-colors duration-300 hover:text-white"
+            >
+              <span className="underline decoration-white/25 underline-offset-[6px] transition-colors duration-300 group-hover:decoration-white/60">
+                {ctaText}
+              </span>
+              <span aria-hidden="true">&rarr;</span>
+            </Link>
+          </motion.div>
         </motion.div>
       </div>
 
