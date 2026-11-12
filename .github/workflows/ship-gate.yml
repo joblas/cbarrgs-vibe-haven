@@ -190,13 +190,19 @@ jobs:
           # A clean comment alone is not enough: any workflow job holding a token
           # that can comment posts as github-actions[bot] too. Require the Ship
           # review workflow itself to have succeeded at this exact head (it
-          # fails when it posts findings).
-          reviewed=$(gh api "repos/$REPO/actions/runs?head_sha=$HEAD_SHA&per_page=100" --jq \
-            '[.workflow_runs[] | select((.path | split("@")[0]) == ".github/workflows/ship-review.yml" and .event == "pull_request" and .conclusion == "success")] | length')
-          case "$reviewed" in ''|*[!0-9]*) echo "::error::review-run query returned a non-number ('$reviewed')"; exit 1 ;; esac
-          if [ "$reviewed" -eq 0 ]; then
+          # fails when it posts findings): the LATEST Ship review run for this
+          # PR's branch at this head, so an older success cannot outvote a later
+          # failure.
+          # A PR that edits ship-review.yml is owner-only (step 2), so the run's
+          # workflow file is the trusted one whenever this can merge unheld.
+          # Runs are matched to the PR by its head branch: a run's pull_requests
+          # list can be empty for an open PR (seen on #144, 2026-11-11).
+          head_ref=$(gh pr view "$PR" --json headRefName --jq .headRefName)
+          reviewed=$(gh api "repos/$REPO/actions/runs?head_sha=$HEAD_SHA&per_page=100" | jq -r --arg b "$head_ref" \
+            '[.workflow_runs[] | select((.path | split("@")[0]) == ".github/workflows/ship-review.yml" and .event == "pull_request" and .head_branch == $b)] | max_by(.run_number) | if . == null then "none" else (.conclusion // "pending") end')
+          if [ "$reviewed" != "success" ]; then
             gh pr edit "$PR" --remove-label ship-reviewed 2>/dev/null || true
-            echo "::notice::a clean comment exists at $HEAD_SHA but no successful Ship review run does; not merging"
+            echo "::notice::a clean comment exists at $HEAD_SHA but the latest Ship review run for PR $PR there is '$reviewed'; not merging"
             exit 0
           fi
           gh pr edit "$PR" --add-label ship-reviewed
