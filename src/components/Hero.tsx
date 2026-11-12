@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { SHOPIFY_STORE } from '@/utils/constants';
+import { SHOPIFY_STORE, SHOPIFY_NEW_DROP, SHOPIFY_ARCHIVE } from '@/utils/constants';
 import { LATEST_RELEASE, LATEST_RELEASE_SPOTIFY_URL } from '@/data/latestRelease';
 import {
   floatingVariants,
@@ -236,22 +236,26 @@ const Hero: React.FC = () => {
                     transition={{ duration: 0.2, ease: 'easeOut' }}
                   >
                     <a
-                      href={SHOPIFY_STORE}
+                      href={SHOPIFY_NEW_DROP}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-5 py-3.5 text-white/80 hover:text-white hover:bg-white/[0.06] text-xs font-light uppercase tracking-[0.25em] transition-colors duration-200 whitespace-nowrap"
                     >
                       new
                     </a>
-                    <div className="mx-5 h-px bg-white/10" />
-                    <a
-                      href={SHOPIFY_STORE}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-5 py-3.5 text-white/60 hover:text-white hover:bg-white/[0.06] text-xs font-light uppercase tracking-[0.25em] transition-colors duration-200 whitespace-nowrap"
-                    >
-                      archive
-                    </a>
+                    {SHOPIFY_ARCHIVE && (
+                      <>
+                        <div className="mx-5 h-px bg-white/10" />
+                        <a
+                          href={SHOPIFY_ARCHIVE}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-5 py-3.5 text-white/60 hover:text-white hover:bg-white/[0.06] text-xs font-light uppercase tracking-[0.25em] transition-colors duration-200 whitespace-nowrap"
+                        >
+                          archive
+                        </a>
+                      </>
+                    )}
                   </motion.div>
                 )}
               </AnimatePresence>
