@@ -266,13 +266,14 @@ owner_held() { # changed-file list
 check "owner-only pattern is present in the gate" yes "$([ -n "$owner_only_line" ] && echo yes || echo no)"
 for p in .github/workflows/ci.yml .github/workflows/dependabot-auto-merge.yml \
          .github/workflows/ship-gate.yml .github/workflows/ship-review.yml \
-         .github/gated-paths.regex .claude/skills/ship-review/SKILL.md \
+         .github/gated-paths.regex .github/dependabot.yml .github/actions/x/action.yml \
+         .github/tests/workflow-guards.sh .claude/skills/ship-review/SKILL.md \
          .claude/settings.json CLAUDE.md wrangler.toml wrangler.jsonc; do
   check "owner-only: $p is held" held "$(owner_held "$p")"
 done
 for p in functions/api/subscribe.ts functions/api/subscribers.ts functions/_email.ts \
-         package.json package-lock.json AGENTS.md .github/dependabot.yml \
-         .github/tests/workflow-guards.sh src/pages/PrivacyPolicy.tsx docs/CLAUDE.md; do
+         package.json package-lock.json AGENTS.md src/pages/PrivacyPolicy.tsx \
+         docs/CLAUDE.md docs/.github/notes.md; do
   check "not owner-only: $p merges on the clean review" merges "$(owner_held "$p")"
 done
 check "owner-only: CLAUDE.md as a rename's old name is held" held \
