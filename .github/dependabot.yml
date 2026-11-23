@@ -12,6 +12,15 @@ updates:
         update-types:
           - minor
           - patch
+      # stylelint and stylelint-config-standard are coupled: the config's peer
+      # dependency requires a matching stylelint. Group them so a bump of
+      # either (including majors) arrives as one PR and merges as one — never
+      # one merged without the other.
+      stylelint-stack:
+        applies-to: version-updates
+        patterns:
+          - stylelint
+          - stylelint-config-standard
     ignore:
       # Major version bumps that would break the project
       - dependency-name: tailwindcss

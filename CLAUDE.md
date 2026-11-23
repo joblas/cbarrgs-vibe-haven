@@ -39,7 +39,7 @@ npm run preview    # preview production build
   bot — no site deploy needed.
 - Hero section has logo top-left, shopping cart (SVG) top-right, "drop" dropdown (Hellion USA style)
 - `/new` page is the single marketing URL — goes in all bios, flyers, QR codes
-- Dependabot auto-merges minor/patch updates via GitHub Actions
+- Dependabot auto-merges minor/patch updates via GitHub Actions; reviewed major bumps to package files merge through the ship gate (see Shipping)
 - All constants/URLs centralized in `src/utils/constants.ts`
 - Social links data in `src/data/socialLinks.ts`
 
@@ -97,8 +97,14 @@ read both before design work; don't re-derive the aesthetic from scratch.
   the gate merges a gated-path PR like any other: a clean independent review at
   the head SHA plus green CI; the gate also requires the Ship review run itself
   to have succeeded at that head. The gate labels it `gated-path` and quotes D-115
-  on the merge. One exception: Dependabot's minor/patch bumps to `package.json`
-  merge through `dependabot-auto-merge.yml`; the gate skips Dependabot PRs.
+  on the merge. Two exceptions: Dependabot's minor/patch bumps to `package.json`
+  merge through `dependabot-auto-merge.yml` (no ship review for them), while its
+  MAJOR bumps to `package.json`/`package-lock.json` get the ship review and
+  merge through the gate like any gated-path PR: a clean independent review at
+  the head SHA plus green CI. Coupled packages are grouped in
+  `.github/dependabot.yml` (stylelint and stylelint-config-standard) so a
+  coupled bump arrives as one PR and merges as one; a major bump that touches
+  owner-only paths still waits for Joe.
 - **Owner-only paths** wait for Joe's word whatever the review says, because a
   change there could let an agent approve its own way around the gate: all of
   `.github/**` (any workflow can hold a token that merges, and
