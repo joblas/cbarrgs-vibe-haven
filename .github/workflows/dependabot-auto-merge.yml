@@ -77,5 +77,5 @@ jobs:
             version-update:semver-minor|version-update:semver-patch)
               gh pr merge "$PR_URL" --merge --auto --match-head-commit "$HEAD_SHA" ;;
             *)
-              gh pr comment "$PR_URL" --body "⚠️ Not a minor/patch semver bump (update-type: '$UPDATE_TYPE', dependency-type: '$DEP_TYPE') — needs manual review. Build passed but a human merges this." ;;
+              gh pr comment "$PR_URL" --body "⚠️ Not a minor/patch semver bump (update-type: '$UPDATE_TYPE', dependency-type: '$DEP_TYPE') — not auto-merged. Reviewed major bumps to the package files merge through the ship gate: independent review at this head plus green CI (owner-only paths still wait for the owner's approval). Build passed." ;;
           esac

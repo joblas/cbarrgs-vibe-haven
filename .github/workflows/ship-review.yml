@@ -34,21 +34,63 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
+  scope:
+    # Decide whether the review runs. Non-Dependabot PRs are always reviewed
+    # (the gate's path). Dependabot minor/patch bumps stay review-less and keep
+    # merging through dependabot-auto-merge.yml; only Dependabot MAJOR bumps get
+    # the ship review, after which ship-gate.yml merges them like any
+    # gated-path PR: a clean independent review at the head SHA plus green CI.
+    name: scope
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.base.ref == github.event.repository.default_branch &&
+      github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      review: ${{ steps.decide.outputs.review }}
+    steps:
+      - name: Dependabot update type
+        id: meta
+        if: github.actor == 'dependabot[bot]'
+        uses: dependabot/fetch-metadata@21025c705c08248db411dc16f3619e6b5f9ea21a # v2.5.0
+        with:
+          github-token: ${{ github.token }}
+      - name: Review scope
+        id: decide
+        env:
+          ACTOR: ${{ github.actor }}
+          TYPE: ${{ steps.meta.outputs.update-type }}
+        run: |
+          set -euo pipefail
+          if [ "$ACTOR" != "dependabot[bot]" ]; then
+            echo "review=true" >> "$GITHUB_OUTPUT"
+          elif [ "$TYPE" = "version-update:semver-major" ]; then
+            echo "review=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Dependabot minor/patch bump: no ship review (it merges through dependabot-auto-merge.yml)"
+            echo "review=false" >> "$GITHUB_OUTPUT"
+          fi
+
   review:
+    needs: scope
     # The job name is the check-run name.
     name: ship-review
     # A push supersedes the review of the head before it.
     concurrency:
       group: ship-review-${{ github.event.pull_request.number }}
       cancel-in-progress: true
-    # Same-repo, non-draft, non-Dependabot PRs into the default branch only:
-    # Dependabot PRs merge through dependabot-auto-merge.yml and the gate skips
-    # them; a PR targeting another branch is not judged by the gate anyway.
+    # Same-repo, non-draft PRs into the default branch, scoped by `scope`:
+    # every non-Dependabot PR, and Dependabot major bumps only. A PR targeting
+    # another branch is not judged by the gate anyway.
     if: >-
+      needs.scope.outputs.review == 'true' &&
       github.event.pull_request.head.repo.full_name == github.repository &&
       github.event.pull_request.base.ref == github.event.repository.default_branch &&
-      github.event.pull_request.draft == false &&
-      github.actor != 'dependabot[bot]'
+      github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
