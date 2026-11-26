@@ -94,7 +94,7 @@ jobs:
     steps:
       # Both events check out the default branch: the gated-path list comes from
       # the trusted branch, not from the PR.
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 1
 
